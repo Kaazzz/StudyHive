@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Study Hive</title>
+    <link rel="stylesheet" href="{% static 'css/auth.css' %}">
+</head>
+<body>
+    <div class="auth-container">
+        <!-- Left-aligned form -->
+        <div class="auth-box">
+            <h2>Login to Study Hive</h2>
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="id_username">Username</label>
+                    {{ form.username }}
+                </div>
+                <div class="form-group">
+                    <label for="id_password">Password</label>
+                    {{ form.password }}
+                </div>
+                <button type="submit" class="auth-btn">Login</button>
+            </form>
+            <p>Don't have an account? <a href="{% url 'register' %}">Register here</a></p>
+        </div>
+
+        <!-- Right-side visual/artwork section -->
+        <div class="visual-container" style="background-image: url('{% static 'media/groupart.png' %}');">
+            <!-- Placeholder for visual-->
+        </div>
+    </div>
+</body>
+</html>

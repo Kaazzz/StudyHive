@@ -1,0 +1,120 @@
+/* Base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Center form */
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    min-height: 100vh;
+    background-color: #f7f9fc;
+}
+
+/* Auth box styling */
+.auth-box {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 400px; 
+    text-align: center;
+    margin-right: 20px; 
+}
+
+/* Heading */
+.auth-box h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+}
+
+/* Form fields */
+.auth-box form p {
+    margin-bottom: 15px;
+}
+
+.auth-box input[type="text"],
+.auth-box input[type="password"],
+.auth-box input[type="email"] {
+    width: 100%;
+    padding: 12px 15px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+.auth-box input[type="text"]:focus,
+.auth-box input[type="password"]:focus,
+.auth-box input[type="email"]:focus {
+    border-color: #4CAF50;
+    outline: none;
+}
+
+/* Submit button */
+.auth-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+}
+
+.auth-btn:hover {
+    background-color: #45a049;
+}
+
+/* Links */
+.auth-box p {
+    margin-top: 20px;
+}
+
+.auth-box a {
+    color: #4CAF50;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.auth-box a:hover {
+    color: #45a049;
+}
+
+/* Visual container */
+.visual-container {
+    width: 400px; 
+    height: 300px; 
+    background-image: url('../media/groupart.png'); 
+    background-size: cover;
+    background-position: center; 
+    border-radius: 10px; 
+    margin-left: 20px; 
+    padding: 20px; 
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .auth-container {
+        flex-direction: column; 
+    }
+
+    .auth-box {
+        width: 90%; 
+        margin: 0; 
+        margin-bottom: 20px; 
+    }
+
+    .visual-container {
+        width: 90%; 
+        height: 250px; s
+    }
+}

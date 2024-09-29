@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Hive</title>
+    <link rel="stylesheet" href="{'css/styles.css' %}">  <!-- Add your stylesheets here -->
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <!-- Conditional Display Based on User Authentication -->
+                {% if user.is_authenticated %}
+                    <li>Welcome, {{ user.username }}!</li>
+                    <li><a href="{% url 'logout' %}">Logout</a></li>
+                {% else %}
+                    <li><a href="{% url 'login' %}" class="btn">Login</a></li>
+                    <li><a href="{% url 'register' %}" class="btn">Register</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Welcome to Study Hive</h1>
+        <p>Find and join the best study groups to enhance your academic performance.</p>
+
+        <!-- Additional Content of the Index Page -->
+        <!-- Add anything related to group listings or features here -->
+
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Study Hive. All rights reserved.</p>
+    </footer>
+</body>
+</html>
