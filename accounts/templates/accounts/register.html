@@ -32,11 +32,22 @@
                 </div>
                 <button type="submit" class="auth-btn">Register</button>
             </form>
+            {% if form.errors %}
+            <div class="error-message">
+                <ul>
+                    {% for field in form %}
+                        {% if field.errors %}
+                            <li>{{ field.errors }}</li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
             <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
         </div>
 
         <!-- Right-side visual/artwork section -->
-        <div class="visual-container" style="background-image: url('{% static 'media/groupart.png' %}');">
+        <div class="visual-container">
             <!-- Placeholder for visual-->
         </div>
     </div>

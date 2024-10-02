@@ -1,0 +1,181 @@
+/* .btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.btn:hover {
+    background-color: #45a049;
+} */
+/* For the body (general css) */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f7f7f7;
+}
+
+/* for the header */
+header {
+    background-color: #FFE03C;
+    height: 30px;
+    padding: 20px;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 30px;
+}
+
+.profile-pic {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover; 
+    cursor: pointer;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+}
+
+.user-info span {
+    margin-right: 10px;
+    font-weight: bold;
+    color: #333;
+    font-size: 16px;
+}
+
+.profile-pic {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+}
+
+h1 {
+    color: #333;
+}
+
+.user-menu {
+    display: flex;
+    gap: 10px;
+}
+
+button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.join-button {
+    background-color: #3498db; /* Blue */
+    color: white;
+}
+
+.create-button {
+    background-color: #2ecc71; /* Green */
+    color: white;
+}
+
+/* for the sidebar */
+
+.sidebar {
+    width: 200px;
+    background-color: #eaeaea;
+    padding: 20px;
+    position: fixed;
+    height: 100vh;
+}
+
+.sidebar h2 {
+    margin-top: 0;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar li {
+    padding: 10px 0;
+}
+
+main {
+    margin-left: 220px; /* To leave space for sidebar */
+    padding: 20px;
+}
+
+.group-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 20px;
+}
+
+.group-card {
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+}
+
+.group-card:hover {
+    transform: scale(1.05);
+}
+
+/* main-header and its dropdown button */
+
+.main-header {
+    position: relative; /* Position relative for dropdown positioning */
+    margin-bottom: 20px; /* Space below the header */
+}
+
+.user-menu {
+    display: flex;
+    justify-content: flex-end; /* Align items to the right */
+}
+
+.dropdown-button, .join-button {
+    background-color: #2980b9; /* Darker blue */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+}
+
+.dropdown-content {
+    display: none; /* Initially hidden */
+    position: absolute; /* Position dropdown below the button */
+    top: 40px; /* Adjust as needed */
+    right: 0; /* Align to the right */
+    background-color: #2980b9; /* Background color for dropdown */
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 10; /* Ensure it appears above other content */
+}
+
+.dropdown-content button {
+    display: block; /* Display as block for full width */
+    width: 100%; /* Full width buttons */
+    padding: 10px;
+    border: none;
+    background-color: transparent; /* Transparent background */
+    cursor: pointer;
+}
+
+.dropdown-content button:hover {
+    background-color: #d5d5d5; /* Darker on hover */
+    color: black;
+}

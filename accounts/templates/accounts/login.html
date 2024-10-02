@@ -14,21 +14,56 @@
             <h2>Login to Study Hive</h2>
             <form method="post">
                 {% csrf_token %}
+                
+                <!-- Display non-field errors -->
+                <!-- {% if form.non_field_errors %}
+                <div class="error-message">
+                    <ul>
+                        {% for error in form.non_field_errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %} -->
+                
                 <div class="form-group">
                     <label for="id_username">Username</label>
                     {{ form.username }}
+                    <!-- Display errors for the username field -->
+                    {% if form.username.errors %}
+                    <div class="error-message">
+                        <ul>
+                            {% for error in form.username.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
                 </div>
+                
                 <div class="form-group">
                     <label for="id_password">Password</label>
                     {{ form.password }}
+                    <!-- Display errors for the password field -->
+                    <!-- {% if form.password.errors %}
+                    <div class="error-message">
+                        <ul>
+                            {% for error in form.password.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %} -->
                 </div>
+                
                 <button type="submit" class="auth-btn">Login</button>
             </form>
+
             <p>Don't have an account? <a href="{% url 'register' %}">Register here</a></p>
         </div>
 
         <!-- Right-side visual/artwork section -->
-        <div class="visual-container" style="background-image: url('{% static 'media/groupart.png' %}');">
+        <div class="visual-container">
             <!-- Placeholder for visual-->
         </div>
     </div>

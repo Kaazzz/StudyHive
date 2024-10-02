@@ -1,38 +1,99 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Study Hive</title>
-    <link rel="stylesheet" href="{'css/styles.css' %}">  <!-- Add your stylesheets here -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <title>StudyHive - Study Groups</title>
 </head>
 <body>
     <header>
-        <nav>
-            <ul>
-                <!-- Conditional Display Based on User Authentication -->
-                {% if user.is_authenticated %}
-                    <li>Welcome, {{ user.username }}!</li>
-                    <li><a href="{% url 'logout' %}">Logout</a></li>
-                {% else %}
-                    <li><a href="{% url 'login' %}" class="btn">Login</a></li>
-                    <li><a href="{% url 'register' %}" class="btn">Register</a></li>
-                {% endif %}
-            </ul>
-        </nav>
+        <div class="header-content">
+            <h1>StudyHive</h1>
+            <div class="user-info">
+                <span>Welcome, {{ user.username }}!</span>
+                <img src="{% static 'media/profile-pic.svg' %}" alt="Profile Picture" class="profile-pic">
+            </div>
+        </div>
     </header>
 
+    <div class="sidebar">
+        <!-- <h2>My Groups</h2> -->
+        <ul>
+            <li>My Groups</li>
+            <li>Messages</li>
+            <li>Calendar</li>
+            <li>About Us</li>
+            <li><a href="{% url 'logout' %}">Logout</a></li>
+        </ul>
+    </div>
+
     <main>
-        <h1>Welcome to Study Hive</h1>
-        <p>Find and join the best study groups to enhance your academic performance.</p>
+        <div class="main-header">
+            <div class="user-menu">
+                <button class="dropdown-button" id="dropDownButton">Join or create study group</button>
+                <div class="dropdown-content" id="dropdownMenu">
+                    <button class="create-button" onclick="window.location.href='{% url 'create_group' %}'">Create study group</button>
+                    <button class="join-button" onclick="window.location.href='{% url 'join_group' %}'">Join study group</button>
+                </div>
+            </div>
+        </div>
 
-        <!-- Additional Content of the Index Page -->
-        <!-- Add anything related to group listings or features here -->
+        <h2>Study Groups</h2>
+            {% comment %}
+            <div class="group-card">Research 101</div>
+            <div class="group-card">Botany</div>
+            <div class="group-card">Understanding the Self</div>
+            <div class="group-card">Cool Kids Only</div>
+            <div class="group-card">Python 101</div>
+            <div class="group-card">Sigma Star</div>
+            {% endcomment %}
+        <section class="group-grid">
+            <h3>Your Created Groups</h3>
+            {% for group in created_groups %}
+                <div class="group-card">
+                    <h3>{{ group.group_name }}</h3>
+                    <p>{{ group.description }}</p>
+                    <p><strong>Subject:</strong> {{ group.subject }}</p>
+                    <p>Members: {{ group.members.count }}</p>
+                    <p><strong>Private Group:</strong> {{ group.is_private|yesno:"Yes,No" }}</p>
+                </div>
+            {% empty %}
+                <p>No groups created yet. Why not create your own?</p>
+            {% endfor %}
 
+            <h3>Your Joined Groups</h3>
+            {% for group in joined_groups %}
+                <div class="group-card">
+                    <h3>{{ group.group_name }}</h3>
+                    <p>{{ group.description }}</p>
+                    <p><strong>Subject:</strong> {{ group.subject }}</p>
+                    <p>Members: {{ group.members.count }}</p>
+                    <p><strong>Private Group:</strong> {{ group.is_private|yesno:"Yes,No" }}</p>
+                </div>
+            {% empty %}
+                <p>You haven't joined any groups yet.</p>
+            {% endfor %}
+        </section>
     </main>
 
-    <footer>
-        <p>&copy; 2024 Study Hive. All rights reserved.</p>
-    </footer>
+    <script>
+        const joinGroupButton = document.getElementById('dropDownButton');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+
+        joinGroupButton.addEventListener('click', (event) => {
+            dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+            event.stopPropagation();
+        });
+
+        // Hide dropdown when clicking outside of the dropdown or button
+        document.addEventListener('click', (event) => {
+            if (!dropdownMenu.contains(event.target) && !joinGroupButton.contains(event.target)) {
+                dropdownMenu.style.display = 'none';
+            }
+        });
+    </script>
 </body>
 </html>
