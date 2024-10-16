@@ -59,8 +59,8 @@
 
 /* Submit button */
 .auth-btn {
-    background-color: #4CAF50;
-    color: white;
+    background-color: #fcec0f;
+    color: rgb(0, 0, 0);
     padding: 12px 20px;
     border: none;
     border-radius: 5px;
@@ -71,7 +71,7 @@
 }
 
 .auth-btn:hover {
-    background-color: #45a049;
+    background-color: #e9d30a;
 }
 
 /* Links */
@@ -80,28 +80,28 @@
 }
 
 .auth-box a {
-    color: #4CAF50;
+    color: #0039f5;
     text-decoration: none;
     transition: color 0.3s ease;
 }
 
 .auth-box a:hover {
-    color: #45a049;
+    color: #0039f5;
 }
 
-/* Visual container */
+
 .visual-container {
-    width: 400px; 
-    height: 300px; 
+    width: 500px; 
+    height: 500px; 
     background-image: url('../media/groupart.png'); 
-    background-size: cover;
+    background-size: cover; 
     background-position: center; 
     border-radius: 10px; 
     margin-left: 20px; 
     padding: 20px; 
 }
 
-/* Responsive Design */
+
 @media (max-width: 768px) {
     .auth-container {
         flex-direction: column; 
@@ -115,6 +115,29 @@
 
     .visual-container {
         width: 90%; 
-        height: 250px; s
-    }
+        height: 300px; 
+}
+
+
+.messages {
+    margin: 10px auto;
+    max-width: 400px;
+    padding: 0 15px;
+}
+
+.alert {
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    font-size: 16px;
+    color: white;
+}
+
+.alert.success {
+    background-color: #4CAF50; 
+}
+
+.alert.error {
+    background-color: #f44336; 
+}
 }
