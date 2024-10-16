@@ -52,3 +52,9 @@ def join_group(request):
         form = JoinGroupForm()
 
     return render(request, 'join_group.html', {'form': form})
+
+@login_required
+def group_dashboard(request, unique_id):
+    group = get_object_or_404(StudyGroup, unique_id=unique_id)
+# threads = group.discussion_threads.all() # implement this in the future
+    return render(request, 'group_dashboard.html', {'group': group})
