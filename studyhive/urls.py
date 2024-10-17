@@ -16,9 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from accounts.views import landing_page_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', landing_page_view, name='landing-page'),
     path('accounts/', include('accounts.urls')), 
-    path('', include('groups.urls')),  
+    path('', include('groups.urls')),
+      
 ]

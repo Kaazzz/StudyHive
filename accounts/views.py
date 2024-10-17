@@ -48,3 +48,5 @@ def logout_view(request):
     logout(request)
     return redirect('login')  
 
+def landing_page_view(request):
+    return render(request, 'accounts/index.html')
