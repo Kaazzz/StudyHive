@@ -1,10 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>My Post</title>
-    <link rel="stylesheet" href="css/post_styles.css">
-</head>
-<body>
+
     <header id="header">
         <h1>My Website</h1>
         
@@ -22,17 +16,40 @@
 
     <button type="submit"> <a href="{% url 'create_post' %}">create post</a></button>
 
+
     
     <h1>Post List</h1>
     <ul>
-        {% for post in posts %}
-            <li>
-                <h2>{{ post.title }}</h2>
-                <p>{{ post.description }}</p>
-            </li>
-        {% endfor %}
+      {% for post in posts %}
+        <li>
+          <h2>{{ post.title }}</h2>
+          <p>{{ post.description }}</p>
+    
+          <h2>Comments</h2>
+          <div id="comments-{{ post.id }}">
+            {% if not post.comments.all %}
+              <p>No comments yet. Be the first to add one!</p>
+              <br/>
+              <button type="submit">
+                <a href="{% url 'comment_post' post.id %}">add comment</a>
+            </button>
+            {% else %}
+              {% for comment in post.comments.all %}
+                <p>{{ comment.author }} - {{ comment.created_at }}</p>
+                <br/>
+                {{ comment.text }}
+                <br/>
+                <button type="submit">
+                  <a href="{% url 'comment_post' post.id %}">add comment</a>
+                </button>
+              {% endfor %}
+              
+            {% endif %}
+          </div>
+
+        </li>
+      {% endfor %}
     </ul>
     
+    
     </div>
-</body>
-</html>
