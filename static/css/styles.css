@@ -12,10 +12,10 @@ header {
     height: 30px;
     padding: 20px;
     position: fixed;
-    top: 0; /* Stay at the top */
-    left: 0; /* Align to the left */
-    right: 0; /* Align to the right */
-    z-index: 1000; /* Higher z-index to stay above other elements */
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
 }
 
 .header-content {
@@ -87,7 +87,7 @@ button {
     padding: 20px;
     position: fixed;
     height: 100vh;
-    top: 60px; /* Adjust this to account for the header's height */
+    top: 60px; 
 }
 
 .sidebar h2 {
@@ -137,7 +137,19 @@ main {
 
 .group-card:hover {
     transform: scale(1.05);
-    background-color: #FFE03C;
+    background-color: #FDFD96;
+    font-weight: bold;
+}
+
+.group-card:hover button {
+    background-color: #2980b9;
+    color: #ffffff;
+}
+
+.enter-group-button:hover {
+    font-weight: bold;
+    background-color: #3498db;
+    color: white;
 }
 
 @media (max-width: 600px) {
@@ -190,9 +202,4 @@ main {
 .dropdown-content button:hover {
     background-color: #3498db;
     /* color: black; */
-}
-
-.enter-group-button:hover {
-    background-color: #3498db;
-    color: white;
 }

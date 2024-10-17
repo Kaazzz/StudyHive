@@ -34,18 +34,24 @@
         <p>Description: {{ group.description }}</p>
         <p>Subject: {{ group.subject }}</p>
         <p>Members: {{ group.members.count }}</p>
-        
-        <!-- Display all members -->
+      
         <h2>Group Members:</h2>
         <ul>
             {% for member in group.members.all %}
-                <li>{{ member.username }}</li> <!-- Adjust this if you have a different field for display -->
+                <li>{{ member.username }}</li> 
             {% empty %}
                 <li>No members in this group yet.</li>
             {% endfor %}
         </ul>
 
-        <!-- Future threads implementation here -->
+        <!-- Future threads -->
+        <section class="thread-grid">
+            <div style="background-color: gray; height: 100%;">
+                <h2>Sample thread muna kasi wala pay implementation </h2><br>
+
+                Hi guys, mao ni ang topic for today uwu!
+            </div>
+        </section>
     </main>
 </body>
 </html>

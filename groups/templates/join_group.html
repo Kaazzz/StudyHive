@@ -7,6 +7,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <title>Join a Study Group</title>
+    <style>
+        main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: calc(100vh - 100px);
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+
+        .form-container {
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        button {
+            background-color: #2980b9;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #3498db;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -21,7 +55,7 @@
 
     <div class="sidebar">
         <ul>
-            <li>My Groups</li>
+            <li><a href="{% url 'index' %}">My Groups</a></li>
             <li>Messages</li>
             <li>Calendar</li>
             <li>About Us</li>
@@ -30,12 +64,14 @@
     </div>
 
     <main>
-        <form method="POST">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Join Group</button>
-        </form>
-
+        <div class="form-container">
+            <form method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Join Group</button>
+            </form>
+        </div>
+        
         <p><a href="{% url 'index' %}">Back to Home</a></p>
     </main>
 </body>
