@@ -23,5 +23,6 @@ urlpatterns = [
     path('', landing_page_view, name='landing-page'),
     path('accounts/', include('accounts.urls')), 
     path('', include('groups.urls')),
+    path('posts/', include('posts.urls')),
       
 ]
