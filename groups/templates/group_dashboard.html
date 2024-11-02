@@ -1,0 +1,51 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/home_styles.css' %}">
+    <title>{{ group.group_name }} - Dashboard</title>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>StudyHive</h1>
+            <div class="user-info">
+                <span>Welcome, {{ user.username }}!</span>
+                <img src="{% static 'media/profile-pic.svg' %}" alt="Profile Picture" class="profile-pic">
+            </div>
+        </div>
+    </header>
+
+    <div class="sidebar">
+        <ul>
+            <li><a href="{% url 'index' %}">My Groups</a></li>
+            <li>Messages</li>
+            <li>Calendar</li>
+            <li>About Us</li>
+            <li><a href="{% url 'logout' %}">Logout</a></li>
+        </ul>
+    </div>
+
+    <main>
+        <h1>Welcome to the Group Dashboard: {{ group.group_name }}</h1>
+        <p>Description: {{ group.description }}</p>
+        <p>Subject: {{ group.subject }}</p>
+        <p>Members: {{ group.members.count }}</p>
+        
+        <!-- Display all members -->
+        <h2>Group Members:</h2>
+        <ul>
+            {% for member in group.members.all %}
+                <li>{{ member.username }}</li> <!-- Adjust this if you have a different field for display -->
+            {% empty %}
+                <li>No members in this group yet.</li>
+            {% endfor %}
+        </ul>
+
+        <!-- Future threads implementation here -->
+    </main>
+</body>
+</html>

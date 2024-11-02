@@ -1,0 +1,198 @@
+/* For the body (general css) */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f7f7f7;
+}
+
+/* for the header */
+header {
+    background-color: #FFE03C;
+    height: 30px;
+    padding: 20px;
+    position: fixed;
+    top: 0; /* Stay at the top */
+    left: 0; /* Align to the left */
+    right: 0; /* Align to the right */
+    z-index: 1000; /* Higher z-index to stay above other elements */
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* height: 30px; */
+    height: 100%;
+}
+
+.profile-pic {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover; 
+    cursor: pointer;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+}
+
+.user-info span {
+    margin-right: 10px;
+    font-weight: bold;
+    color: #333;
+    font-size: 16px;
+}
+
+.profile-pic {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+}
+
+h1 {
+    color: #333;
+}
+
+.user-menu {
+    display: flex;
+    gap: 10px;
+}
+
+button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.join-button {
+    background-color: #3498db;
+    color: white;
+}
+
+.create-button {
+    background-color: #2ecc71;
+    color: white;
+}
+
+/* for the sidebar */
+.sidebar {
+    width: 100px;
+    background-color: #eaeaea;
+    padding: 20px;
+    position: fixed;
+    height: 100vh;
+    top: 60px; /* Adjust this to account for the header's height */
+}
+
+.sidebar h2 {
+    margin-top: 0;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar li {
+    padding: 10px 0;
+}
+
+main {
+    margin-left: 220px;
+    padding: 80px 30px 20px;
+}
+
+.group-grid {
+    display: grid;
+    margin: 20px 0;
+    gap: 20px;  
+}
+
+.group-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+}
+
+.group-card {
+    flex: 1 1 250px;
+    max-width: 250px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+    margin-bottom: 15px;
+}
+
+.group-card:hover {
+    transform: scale(1.05);
+    background-color: #FFE03C;
+}
+
+@media (max-width: 600px) {
+    .group-card {
+        flex: 1 0 100%;
+    }
+}
+
+
+/* main-header and its dropdown button */
+.main-header {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.user-menu {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.dropdown-button, .join-button {
+    background-color: #2980b9;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 40px;
+    right: 0;
+    background-color: #2980b9;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+}
+
+.dropdown-content button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.dropdown-content button:hover {
+    background-color: #3498db;
+    /* color: black; */
+}
+
+.enter-group-button:hover {
+    background-color: #3498db;
+    color: white;
+}
