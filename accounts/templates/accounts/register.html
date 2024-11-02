@@ -1,55 +1,76 @@
 {% load static %}
+{% load widget_tweaks %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - Study Hive</title>
-    <link rel="stylesheet" href="{% static 'css/auth.css' %}">
+    <link rel="stylesheet" href="{% static 'css/output.css' %}">
 </head>
-<body>
-    <div class="auth-container">
+<body class="bg-yellow-50 font-sans min-h-screen flex flex-col items-center justify-center">
+    <div class="grid md:grid-cols-2 items-center gap-4 max-md:gap-8 max-w-6xl max-md:max-w-lg w-full p-4 m-4 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] rounded-md">
+        
         <!-- Left-aligned form -->
-        <div class="auth-box">
-            <h2>Register for Study Hive</h2>
-            <form method="post">
+        <div class="border-gray-300 rounded-md p-6 md:max-w-md w-full px-4 py-4">
+            <form class="space-y-4" method="post">
                 {% csrf_token %}
-                <div class="form-group">
-                    <label for="id_username">Username</label>
-                    {{ form.username }}
+                <div class="mb-12">
+                    <h3 class="text-gray-800 text-4xl font-extrabold">Register for Study Hive</h3>
+                    <p class="text-sm mt-4 text-gray-800">Already have an account? 
+                        <a href="{% url 'login' %}" class="text-yellow-400 font-semibold hover:underline ml-1 whitespace-nowrap">Login here</a>
+                    </p>
                 </div>
-                <div class="form-group">
-                    <label for="id_first_name">First Name</label>
-                    {{ form.first_name }}
+                
+                <div class="mb-6">
+                    <label class="text-gray-800 text-xs block mb-2" for="id_username">Username</label>
+                    {{ form.username|add_class:"w-full text-gray-800 text-sm border-b border-gray-300 focus:border-blue-600 px-2 py-3 outline-none" }}
+                    <br>
                 </div>
-                <div class="form-group">
-                    <label for="id_last_name">Last Name</label>
-                    {{ form.last_name }}
+                <div class="mb-6">
+                    <label class="text-gray-800 text-xs block mb-2" for="id_first_name">First Name</label>
+                    {{ form.first_name|add_class:"w-full text-gray-800 text-sm border-b border-gray-300 focus:border-blue-600 px-2 py-3 outline-none" }}
+                    <br>
                 </div>
-                <div class="form-group">
-                    <label for="id_email">Email</label>
-                    {{ form.email }}
+                <div class="mb-6">
+                    <label class="text-gray-800 text-xs block mb-2" for="id_last_name">Last Name</label>
+                    {{ form.last_name|add_class:"w-full text-gray-800 text-sm border-b border-gray-300 focus:border-blue-600 px-2 py-3 outline-none" }}
+                    <br>
                 </div>
-                <div class="form-group">
-                    <label for="id_birthday">Birthday</br></label>
-                    {{ form.birthday }}
+                
+                <div class="mb-6">
+                    <label class="text-gray-800 text-xs block mb-2" for="id_email">Email</label>
+                    {{ form.email|add_class:"w-full text-gray-800 text-sm border-b border-gray-300 focus:border-blue-600 px-2 py-3 outline-none" }}
+                    <br>
                 </div>
-                <div class="form-group">
-                    <label for="id_password1"></br>Password</label>
-                    {{ form.password1 }}
+                <div class="mb-6">
+                    <label class="text-gray-800 text-xs block mb-2" for="id_birthday">Birthday</label>
+                    {{ form.birthday|add_class:"w-full text-gray-800 text-sm border-b border-gray-300 focus:border-blue-600 px-2 py-3 outline-none" }}
+                    <br>
                 </div>
-                <div class="form-group">
-                    <label for="id_password2">Confirm Password</label>
-                    {{ form.password2 }}
+                <div class="mb-6">
+                    <label class="text-gray-800 text-xs block mb-2" for="id_password1">Password</label>
+                    {{ form.password1|add_class:"w-full text-gray-800 text-sm border-b border-gray-300 focus:border-blue-600 px-2 py-3 outline-none" }}
+                    <br>
                 </div>
-                <button type="submit" class="auth-btn">Register</button>
+                <div class="mb-6">
+                    <label class="text-gray-800 text-xs block mb-2" for="id_password2">Confirm Password</label>
+                    {{ form.password2|add_class:"w-full text-gray-800 text-sm border-b border-gray-300 focus:border-blue-600 px-2 py-3 outline-none" }}
+                    <br>
+                </div>
+
+                <div class="mt-12">
+                    <button type="submit" class="w-full py-2.5 px-4 text-sm font-semibold rounded-md text-black bg-yellow-300 hover:bg-yellow-500 transition">
+                        Register
+                    </button>
+                </div>
             </form>
-            <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
         </div>
 
-        <!-- Right-side visual/artwork section -->
-        <div class="visual-container" style="background-image: url('{% static 'media/groupart.png' %}');">
-            <!-- Placeholder for visual-->
+        <!-- Right-aligned image -->
+        <div class="lg:h-[400px] md:h-[300px] max-md:mt-8 ">
+            <img src="{% static 'media/regart.png' %}" class="w-full h-full max-md:w-4/5 mx-auto block object-cover" alt="Visual Art" />
         </div>
     </div>
 
@@ -61,8 +82,6 @@
             </div>
         {% endfor %}
     </div>
-{% endif %}
+    {% endif %}
 </body>
 </html>
-
-

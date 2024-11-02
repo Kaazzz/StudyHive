@@ -20,7 +20,7 @@ from accounts.views import landing_page_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', landing_page_view, name='landing-page'),
+    path('', landing_page_view, name='home'),
     path('accounts/', include('accounts.urls')), 
     path('', include('groups.urls')),
       

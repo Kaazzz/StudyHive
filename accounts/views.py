@@ -1,44 +1,46 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .forms import CustomUserCreationForm
+from .forms import CustomUserCreationForm, CustomLoginForm
 from .models import Profile
+def login_view(request):
+    if request.method == 'POST':
+        form = CustomLoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                messages.success(request, "Login successful!")
+                return redirect('home')  # Adjust this to your home URL name
+            else:
+                messages.error(request, "Invalid username or password.")
+    else:
+        form = CustomLoginForm()
+    
+    return render(request, 'accounts/login.html', {'form': form})
 
-def register(request):
+def register_view(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            user.profile.birthday = form.cleaned_data.get('birthday')  
-            user.profile.save()
-            login(request, user)
-            messages.success(request, "Registration successful! Welcome, {user.username}.")
-            return redirect('index')  
-        else:
-            messages.error(request, "Registration failed. Please correct the errors below.")
+            user = form.save()  
+            
+            user.first_name = form.cleaned_data.get('first_name')
+            user.last_name = form.cleaned_data.get('last_name')
+            user.save()  
+            
+           
+            profile = Profile.objects.get(user=user)
+            profile.birthday = form.cleaned_data.get('birthday')
+            profile.save()  
+
+            messages.success(request, f'Account created for {user.username}!')
+            return redirect('login') 
     else:
         form = CustomUserCreationForm()
-    
     return render(request, 'accounts/register.html', {'form': form})
-
-
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.forms import AuthenticationForm
-
-def login_view(request):
-    if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST)
-        if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                login(request, user)
-                return redirect('home')  
-    else:
-        form = AuthenticationForm()
-    return render(request, 'accounts/login.html', {'form': form})
-
 
 
 from django.contrib.auth import logout
@@ -49,4 +51,4 @@ def logout_view(request):
     return redirect('login')  
 
 def landing_page_view(request):
-    return render(request, 'accounts/index.html')
+    return render(request, 'accounts/index.html')  # Replace with your landing page template
