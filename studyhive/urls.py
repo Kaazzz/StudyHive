@@ -23,5 +23,6 @@ urlpatterns = [
     path('', landing_page_view, name='landing-page'),
     path('accounts/', include('accounts.urls')), 
     path('', include('groups.urls')),
-      
+    
+    path("__reload__/", include("django_browser_reload.urls")),
 ]

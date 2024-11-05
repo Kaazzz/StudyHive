@@ -9,25 +9,9 @@
     <title>Join a Study Group</title>
 </head>
 <body>
-    <header>
-        <div class="header-content">
-            <h1>StudyHive</h1>
-            <div class="user-info">
-                <span>Welcome, {{ user.username }}!</span>
-                <img src="{% static 'media/profile-pic.svg' %}" alt="Profile Picture" class="profile-pic">
-            </div>
-        </div>
-    </header>
+    {% include 'header.html' %}
 
-    <div class="sidebar">
-        <ul>
-            <li>My Groups</li>
-            <li>Messages</li>
-            <li>Calendar</li>
-            <li>About Us</li>
-            <li><a href="{% url 'logout' %}">Logout</a></li>
-        </ul>
-    </div>
+    {% include 'sidebar.html' %}
 
     <main>
         <form method="POST">

@@ -1,0 +1,11 @@
+{% load static %}
+
+<header>
+    <div class="header-content">
+        <h1>StudyHive</h1>
+        <div class="user-info">
+            <span>Welcome, {{ user.username }}!</span>
+            <img src="{% static 'media/profile-pic.svg' %}" alt="Profile Picture" class="profile-pic">
+        </div>
+    </div>
+</header>

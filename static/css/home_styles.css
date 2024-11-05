@@ -58,11 +58,6 @@ h1 {
     color: #333;
 }
 
-.user-menu {
-    display: flex;
-    gap: 10px;
-}
-
 button {
     padding: 10px 15px;
     border: none;
@@ -71,12 +66,12 @@ button {
 }
 
 .join-button {
-    background-color: #3498db;
+    /* background-color: #0056b3; */
     color: white;
 }
 
 .create-button {
-    background-color: #2ecc71;
+    /* background-color: #0056b3; */
     color: white;
 }
 
@@ -137,15 +132,13 @@ main {
 
 .group-card:hover {
     transform: scale(1.05);
-    background-color: #FFE03C;
+    background-color: #fff1ab;
 }
 
-@media (max-width: 600px) {
-    .group-card {
-        flex: 1 0 100%;
-    }
+.group-card:hover .enter-group-button {
+    background-color: #ff9900; /* Color when hovering over the card */
+    color: #ffffff;
 }
-
 
 /* main-header and its dropdown button */
 .main-header {
@@ -153,9 +146,10 @@ main {
     margin-bottom: 20px;
 }
 
-.user-menu {
+.join-or-create-container {
     display: flex;
     justify-content: flex-end;
+    gap: 10px;
 }
 
 .dropdown-button, .join-button {
@@ -188,11 +182,5 @@ main {
 }
 
 .dropdown-content button:hover {
-    background-color: #3498db;
-    /* color: black; */
-}
-
-.enter-group-button:hover {
-    background-color: #3498db;
-    color: white;
+    background-color: #0056b3;
 }

@@ -13,7 +13,7 @@ def register(request):
             user.profile.save()
             login(request, user)
             messages.success(request, "Registration successful! Welcome, {user.username}.")
-            return redirect('index')  
+            return redirect('login')  
         else:
             messages.error(request, "Registration failed. Please correct the errors below.")
     else:

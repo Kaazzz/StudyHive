@@ -1,11 +1,12 @@
 {% load static %}
+{% load static tailwind_tags %} 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% comment %} <link rel="stylesheet" href="{% static 'css/home_styles.css' %}"> {% endcomment %}
-    <link rel="stylesheet" href="/static/css/home_styles.css?{% now "U" %}"/>
+    {% tailwind_css %}
+    <link rel="stylesheet" href="{% static 'css/home_styles.css' %}">
     <title>StudyHive - Study Groups</title>
     <style>
         .modal {
@@ -39,66 +40,6 @@
             text-decoration: none;
             cursor: pointer;
         }
-
-        .join-or-create-container {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-
-        .search-container {
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        #searchInput {
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            flex: 1;
-            margin-right: 10px;
-        }
-
-        #filterSelect {
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            margin-right: 10px;
-        }
-
-        #searchButton {
-            padding: 10px 15px;
-            font-size: 16px;
-            background-color: #2980b9;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        #searchButton:hover {
-            background-color: #0056b3;
-        }
-
-        .results-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: flex-start;
-            margin-bottom: 20px;
-            {% comment %} margin-top: 20px; {% endcomment %}
-        }
-
-        .result-item {
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            background-color: white;
-            margin-bottom: 10px;
-        }
     </style>
 </head>
 <body>
@@ -108,50 +49,16 @@
 
     <main>
         <div class="main-header">
-            <div class="join-or-create-container">
+            <div class="tailwind-container">
+                {% include 'search_bar.html' %}
+            </div>
+            <div class="user-menu">
                 <button class="dropdown-button" id="dropDownButton">Join or create study group</button>
                 <div class="dropdown-content" id="dropdownMenu">
                     <button class="create-button" onclick="window.location.href='{% url 'create_group' %}'">Create study group</button>
                     <button class="join-button" onclick="window.location.href='{% url 'join_group' %}'">Join study group</button>
                 </div>
             </div>
-            {% comment %} search bar {% endcomment %}
-            {% include 'search_bar.html' %}
-            {% comment %} <div class="search-container">
-                <h2>Group Discovery</h2>
-                <input type="text" id="searchInput" placeholder="Search..." />
-                <select id="filterSelect">
-                    <option value="all">All</option>
-                    <option value="group">Group</option>
-                    <option value="member">Member</option>
-                    <option value="subject">Subject</option>
-                </select>
-                <button id="searchButton">Search</button>
-            </div> {% endcomment %}
-            {% comment %} Results {% endcomment %}
-            {% comment %} <div id="resultsContainer" class="results-container">
-                {% if query %}
-                    <h2>Results for "{{ query }}"</h2>
-                {% else %}
-                    <h2>Search for a group</h2>
-                {% endif %}
-                
-                {% if results %}
-                    {% for group in results %}
-                        <div class="result-item">
-                            <h3>{{ group.group_name }}</h3>
-                            <p>Subject: {{ group.subject }}</p>
-                            <p>Members: {{ group.members.count }}</p>
-                            <button onclick="window.location.href='{% url 'group_dashboard' group.unique_id %}'">View Group</button>
-                        </div>
-                    {% endfor %}
-                {% else %}
-                    <p>No results found.</p>
-                {% endif %}
-            </div> {% endcomment %}
-            <section class="group-grid">
-                <div id="resultsContainer" class="results-container"></div>
-            </section>
         </div>
 
         <h2>Study Groups</h2>
@@ -294,11 +201,9 @@
 
         function enterGroup() {
             const groupCode = document.getElementById('modalCode').textContent;
-            window.location.href = `{% url 'group_dashboard' 'GROUP_CODE' %}`.replace('GROUP_CODE', encodeURIComponent(groupCode));
+            console.log("Group Code:", groupCode);
+            window.location.href = '/groups/' + encodeURIComponent(groupCode) + '/';
         }
     </script>
 </body>
 </html>
-
-{% comment %} console.log("Group Code:", groupCode);
-window.location.href = '/groups/' + encodeURIComponent(groupCode) + '/'; {% endcomment %}

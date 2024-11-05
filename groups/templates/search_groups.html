@@ -1,0 +1,39 @@
+{% comment %} {% load static %}
+
+<style>
+    .results-container {
+        margin-top: 20px;
+    }
+
+    .result-item {
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        background-color: white;
+        margin-bottom: 10px;
+    }
+</style>
+
+<div id="resultsContainer" class="results-container">
+    {% if query %}
+        <h2>Results for "{{ query }}"</h2>
+    {% else %}
+        <h2>Search for a group</h2>
+    {% endif %}
+    
+    {% if results %}
+        {% for group in results %}
+            <div class="result-item">
+                <h3>{{ group.group_name }}</h3>
+                <p>Subject: {{ group.subject }}</p>
+                <p>Members: {{ group.members.count }}</p>
+                <button onclick="window.location.href='{% url 'group_dashboard' group.unique_id %}'">View Group</button>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No results found.</p>
+    {% endif %}
+</div>
+
+
+<script src="{% static 'scripts/scripts.js' %}"></script> {% endcomment %}
