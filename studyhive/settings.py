@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'groups',
     'accounts',
     'widget_tweaks',
+    'posts',
 ]
 
 MIDDLEWARE = [
