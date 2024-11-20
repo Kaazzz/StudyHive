@@ -47,7 +47,11 @@
             <h1>StudyHive</h1>
             <div class="user-info">
                 <span>Welcome, {{ user.username }}!</span>
-                <img src="{% static 'media/profile-pic.svg' %}" alt="Profile Picture" class="profile-pic">
+                <img 
+                    src="{% static 'media/profile-pic.svg' %}" 
+                     alt="Profile Picture" 
+                    class="profile-pic w-10 h-10 rounded-full cursor-pointer"
+                    onclick="window.location.href='{% url 'profile' %}'">
             </div>
         </div>
     </header>
