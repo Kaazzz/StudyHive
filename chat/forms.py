@@ -1,27 +1,21 @@
-from django.db import models
-from django.contrib.auth.models import User 
+from django import forms
+from .models import Chat_Room, Message, UploadedFile
 
-# Create your models here.
+class Chat_RoomForm(forms.ModelForm):
+    class Meta:
+        model = Chat_Room
+        fields = ['title', 'description']
 
-class Chat_Room(models.Model):
-    title = models.CharField(max_length=100)
-    description = models.TextField()
-    author = models.ForeignKey(User, on_delete=models.CASCADE)  
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+class MessageForm(forms.ModelForm):
+    class Meta:
+        model = Message
+        fields =('text',)
 
-    def __str__(self):
-        return self.title
+    def __init__(self, *args, **kwargs):
+        super(MessageForm, self).__init__(*args, **kwargs)
+        self.fields['text'].widget.attrs = {'rows': 3}
 
-class Message(models.Model):
-    post = models.ForeignKey(Chat_Room,related_name='comments', on_delete=models.CASCADE)
-    text = models.TextField()
-    name = models.CharField(max_length=100)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f'{self.author} on {self.post.title}'   
-
-class UploadedFile(models.Model):
-    file = models.FileField(upload_to='uploads/')
-    uploaded_at = models.DateTimeField(auto_now_add=True)
+class FileUploadForm(forms.ModelForm):
+    class Meta:
+        model = UploadedFile
+        fields = ('file',)
