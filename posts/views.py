@@ -39,3 +39,8 @@ def comment_post(request, post_id):
         form = CommentForm()
 
     return render(request, 'comment_post.html', {'form': form, 'post': post})
+
+
+def TW(request):
+    
+    return render(request, 'TW.html')

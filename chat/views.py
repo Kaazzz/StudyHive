@@ -9,8 +9,8 @@ from django.http import HttpResponse
 
 @login_required
 def chat(request):
-    posts = Chat_Room.objects.all()
-    return render(request, 'chat_room.html', {'posts': posts})  # Use plural 'posts'
+    chats = Chat_Room.objects.all()
+    return render(request, 'chat_room.html', {'chats': chats})  # Use plural 'chats'
 
 
 @login_required
@@ -33,13 +33,13 @@ def create_chat(request):
 @login_required
 def send_message(request, post_id):
     """Sends a message to an existing chat room."""
-    post = get_object_or_404(Chat_Room, pk=post_id)
+    chat = get_object_or_404(Chat_Room, pk=post_id)
 
     if request.method == 'POST':
         form = MessageForm(request.POST)
         if form.is_valid():
             comment = form.save(commit=False)  # Prevent initial save
-            comment.post = post
+            comment.post = chat
             comment.user = request.user
             comment.save()
             # Consider redirecting to the specific chat room or a list view
@@ -47,7 +47,7 @@ def send_message(request, post_id):
     else:
         form = MessageForm()
 
-    return render(request, 'send_message.html', {'form': form, 'post': post})
+    return render(request, 'send_message.html', {'form': form, 'chat': chat})
 
 def file_upload(request):
     if request.method == 'POST':
