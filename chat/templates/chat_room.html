@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Chat_Room</title>
+  <style>
+    ul {
+    /* Remove default list style */
+    list-style-type: none;
+    /* Add some padding for better spacing */
+    padding: 0;
+    }
+
+    h1 {
+    font-size: 2em;
+    margin-bottom: 10px;
+    }
+
+    h2 {
+    font-size: 1.5em;
+    margin-top: 10px;
+    }
+
+
+    button {
+    background-color: #eee;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    }
+
+    button:hover {
+    background-color: #ddd;
+    }
+
+    .post {
+      border: 1px solid #ddd;
+      padding: 10px;
+      margin-bottom: 15px;
+    }
+    .post-title {
+      font-weight: bold;
+    }
+    .comment {
+      margin-left: 20px;
+      padding: 5px;
+      border-left: 1px solid #eee;
+    }
+    .comment-author {
+      font-style: italic;
+    }
+
+    .post {
+    border-color: #ccc;
+    background-color: #fafafa;
+    }
+
+    .comment {
+    border-left-color: #ddd;
+    background-color: #f5f5f5;
+    }
+
+    .post-author, .comment-author {
+    color: #333;
+    font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>Chat_Room</h1>
+  <h1>Welcome {{ user.username }}</h1>
+
+  <form action="{% url 'create_post' %}" method="post">
+    {% csrf_token %}
+    <button type="submit">Create Chat_Room</button>
+  </form>
+  
+  {% if posts %}
+  <ul>
+    {% for post in posts %}
+    <li class="post">
+      <h2 class="post-title">{{ post.title }}</h2>
+      <p>{{ post.description }}</p>
+      <p>By: {{ post.author.username }} on {{ post.created_at }}</p>
+      {% if post.comments.all %}
+      <h3>messages</h3>
+      <ul>
+        {% for comment in post.comments.all %}
+        <li class="comment">
+          <p>{{ comment.text }}</p>
+          <p class="comment-author">By: {{ post.author.username }} on {{ comment.created_at }}</p>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p>No messages yet.</p>
+      {% endif %}
+  
+      <form action="{% url 'comment_post' post.pk %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Send message</button>
+      </form>
+  
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p>There are no chat rooms yet.</p>
+  {% endif %}
+</body>
+</html>
