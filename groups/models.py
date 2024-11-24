@@ -27,3 +27,11 @@ class StudyGroup(models.Model):
 
     def __str__(self):
         return self.group_name
+    
+
+    class Profile(models.Model):
+        user = models.OneToOneField(User, on_delete=models.CASCADE)
+        birthday = models.DateField(null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.user.username}'s Profile"

@@ -4,6 +4,7 @@ from django.contrib import messages
 from .forms import StudyGroupForm, JoinGroupForm
 from .models import StudyGroup
 
+
 @login_required
 def home(request):
     # return render(request, 'index.html')
@@ -58,3 +59,8 @@ def group_dashboard(request, unique_id):
     group = get_object_or_404(StudyGroup, unique_id=unique_id)
 # threads = group.discussion_threads.all() # implement this in the future
     return render(request, 'group_dashboard.html', {'group': group})
+
+
+@login_required
+def profile_view(request):
+    return render(request, 'groups/profile.html', {'user': request.user})

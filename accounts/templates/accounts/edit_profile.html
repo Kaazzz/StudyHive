@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'css/output.css' %}" rel="stylesheet">
+    <title>Edit Profile</title>
+</head>
+<body class="bg-gray-100 font-sans">
+
+    <!-- Header -->
+    <header class="bg-yellow-300 shadow-md h-20">
+        <div class="container mx-auto px-6 py-4 flex items-center justify-between">
+            <h1 class="text-2xl font-bold text-black">StudyHive</h1>
+        </div>
+    </header>
+
+
+    <!-- Edit Profile Section -->
+    <main class="container mx-auto mt-10">
+        <div class="bg-white shadow-md rounded-lg p-6 md:p-8 max-w-4xl mx-auto">
+            <h2 class="text-2xl font-semibold mb-6">Edit Personal Information</h2>
+
+            <form method="POST" class="space-y-6">
+                {% csrf_token %}
+                <!-- Add custom spacing between the fields -->
+                <div class="space-y-4">
+                    {{ form.as_p }}
+                </div>
+
+                <button type="submit" class="w-full bg-yellow-300 text-black py-2 px-4 rounded-md shadow-sm hover:bg-red-400 focus:outline-none mt-4">
+                    Save Changes
+                </button>
+            </form>
+
+            <br>
+                <a href="{% url 'profile' %}" class="inline-block text-blue-600 font-medium mb-4 hover:underline">
+                    ← Back to Profile
+                </a>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-10 bg-gray-800 text-white py-4">
+        <div class="container mx-auto text-center text-sm">
+            © 2024 StudyHive. All rights reserved.
+        </div>
+    </footer>
+
+</body>
+</html>
