@@ -6,7 +6,7 @@ module.exports = {
     './accounts/templates/**/*.html',  
     './groups/templates/**/*.html',     
     './*/templates/**/*.html', 
-    './posts/templates/*.{html,js}',       
+    './posts/templates/*.html',       
   ],
   theme: {
     extend: {},
