@@ -43,4 +43,4 @@ def comment_post(request, post_id):
 
 def TW(request):
     
-    return render(request, 'TW.html')
+    return render(request, 'posts/TW.html')
