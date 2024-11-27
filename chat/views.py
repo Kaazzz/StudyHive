@@ -40,7 +40,7 @@ def send_message(request, post_id):
         if form.is_valid():
             comment = form.save(commit=False)  # Prevent initial save
             comment.post = chat
-            comment.user = request.user
+            comment.author = request.user
             comment.save()
             # Consider redirecting to the specific chat room or a list view
             return redirect('chat') 

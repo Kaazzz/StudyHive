@@ -16,7 +16,7 @@ class Chat_Room(models.Model):
 class Message(models.Model):
     post = models.ForeignKey(Chat_Room,related_name='comments', on_delete=models.CASCADE)
     text = models.TextField()
-    name = models.CharField(max_length=100)
+    author = models.ForeignKey(User, on_delete=models.CASCADE) 
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

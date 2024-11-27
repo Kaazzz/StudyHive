@@ -1,7 +1,8 @@
 from django.shortcuts import render,redirect, get_object_or_404
-from .models import Post
+from .models import Post, Comment
 from .forms import PostForm,CommentForm
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 # Create your views here.
 
 
@@ -32,7 +33,7 @@ def comment_post(request, post_id):
             comment = form.save(commit=False) 
 
             comment.post = post  
-            comment.user = request.user  
+            comment.author = request.user  
             comment.save()
             return redirect('post')  
     else:
@@ -44,3 +45,19 @@ def comment_post(request, post_id):
 def TW(request):
     
     return render(request, 'posts/TW.html')
+
+def delete_post(request, post_id):
+    if request.method == 'POST':
+        post = Post.objects.get(pk=post_id)
+        post.delete()
+        return redirect('post')  # Redirect to your desired page
+
+    return render(request, 'post.html')
+
+def delete_comment(request, comment_id):
+    if request.method == 'POST':
+        comment = Comment.objects.get(pk=comment_id)
+        comment.delete()
+        return redirect('post')  # Redirect to the post's detail page or a list of comments
+
+    return render(request, 'post.html', {'comment': comment})

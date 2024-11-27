@@ -1,112 +1,82 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Posts with Comments</title>
-  <style>
-    ul {
-    /* Remove default list style */
-    list-style-type: none;
-    /* Add some padding for better spacing */
-    padding: 0;
-    }
-
-    h1 {
-    font-size: 2em;
-    margin-bottom: 10px;
-    }
-
-    h2 {
-    font-size: 1.5em;
-    margin-top: 10px;
-    }
-
-
-    button {
-    background-color: #eee;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 3px;
-    cursor: pointer;
-    }
-
-    button:hover {
-    background-color: #ddd;
-    }
-
-    .post {
-      border: 1px solid #ddd;
-      padding: 10px;
-      margin-bottom: 15px;
-    }
-    .post-title {
-      font-weight: bold;
-    }
-    .comment {
-      margin-left: 20px;
-      padding: 5px;
-      border-left: 1px solid #eee;
-    }
-    .comment-author {
-      font-style: italic;
-    }
-
-    .post {
-    border-color: #ccc;
-    background-color: #fafafa;
-    }
-
-    .comment {
-    border-left-color: #ddd;
-    background-color: #f5f5f5;
-    }
-
-    .post-author, .comment-author {
-    color: #333;
-    font-weight: bold;
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="{% static 'css/output.css' %}" rel="stylesheet">
 </head>
-<body>
-  <h1>Posts with Comments</h1>
-  <h1>Welcome {{ user.username }}</h1>
+<body class="bg-gray-100 font-sans">
 
-  <form action="{% url 'create_post' %}" method="post">
-    {% csrf_token %}
-    <button type="submit">Create A Post</button>
-  </form>
-  
-  {% if posts %}
-  <ul>
-    {% for post in posts %}
-    <li class="post">
-      <h2 class="post-title">{{ post.title }}</h2>
-      <p>{{ post.description }}</p>
-      <p>By: {{ post.author.username }} on {{ post.created_at }}</p>
-      {% if post.comments.all %}
-      <h3>Comments</h3>
-      <ul>
-        {% for comment in post.comments.all %}
-        <li class="comment">
-          <p>{{ comment.text }}</p>
-          <p class="comment-author">By: {{ post.author.username }} on {{ comment.created_at }}</p>
-        </li>
+  <header class="bg-yellow-300 shadow-md h-20">
+    <div class="container mx-auto px-6 py-4 flex items-center justify-between">
+        <h1 class="text-2xl font-bold python manage.py collectstatictext-black">StudyHive</h1>
+        <h2 class="text-xl font-medium mb-4">Welcome, {{ user.username }}</h2>
+    </div>
+  </header>
+
+  <div class="container mx-auto px-4 py-8">
+
+    <div class="flex justify-between items-center mb-4">  
+      <form action="{% url 'create_post' %}" method="post" class="flex">  
+        {% csrf_token %}
+      <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700">Create A Post</button>
+      </form>
+    </div>
+
+    {% if posts %}
+      <ul class="list-disc space-y-8">
+        {% for post in posts %}
+          <li class="post bg-white shadow-md rounded-md p-4 flex flex-col">
+
+            <div class="flex justify-between">
+              <h2 class="text-2xl font-semibold mb-2">{{ post.title }}</h2>
+              {% if post.author == user %}
+                <form action="{% url 'delete_post' post.pk %}" method="post" class="inline-block">
+                  {% csrf_token %}
+                  <button type="submit" class="px-2 py-1 bg-red-500 text-white rounded-md hover:bg-red-700">Delete</button>
+                </form>
+              {% endif %}
+            </div>
+
+            <p class="text-gray-700">{{ post.description }}</p>
+            <p class="text-sm text-gray-500 mb-2">By: {{ post.author.username }} on {{ post.created_at }}</p>
+
+            {% if post.comments.all %}
+              <h3 class="text-lg font-medium mb-2">Comments</h3>
+              <ul class="list-disc space-y-2">
+                {% for comment in post.comments.all %}
+                  <li class="comment bg-gray-200 p-2 rounded-md flex flex-col">
+                    <div class="flex justify-between">
+                      <p class="text-gray-700">{{ comment.text }}</p>
+                      {% if comment.author == user %}
+                        <form action="{% url 'delete_comment' comment.pk %}" method="post" class="inline-block">
+                          {% csrf_token %}
+                          <button type="submit" class="px-2 py-1 bg-red-500 text-white rounded-md hover:bg-red-700">Delete</button>
+                        </form>
+                      {% endif %}
+                    </div>
+                    <p class="text-sm text-gray-500">By: {{ comment.author.username }} on {{ comment.created_at }}</p>
+                  </li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              <p class="text-sm text-gray-500">No comments yet.</p>
+            {% endif %}
+
+            <form action="{% url 'comment_post' post.pk %}" method="post" class="flex mt-4">
+              {% csrf_token %}
+              <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700">Add Comment</button>
+            </form>
+
+          </li>
         {% endfor %}
       </ul>
-      {% else %}
-      <p>No comments yet.</p>
-      {% endif %}
-  
-      <form action="{% url 'comment_post' post.pk %}" method="post">
-        {% csrf_token %}
-        <button type="submit">Add Comment</button>
-      </form>
-  
-    </li>
-    {% endfor %}
-  </ul>
-  {% else %}
-  <p>There are no posts yet.</p>
-  {% endif %}
+    {% else %}
+      <p class="text-center text-gray-500">There are no posts yet.</p>
+    {% endif %}
+  </div>
+
 </body>
 </html>

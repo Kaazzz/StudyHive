@@ -1,89 +1,236 @@
 {% load static %}
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="{% static 'css/output.css' %}" rel="stylesheet">
+  <meta charset="UTF-8">
+  <title>Posts with Comments</title>
+  <style>
+    ul {
+    /* Remove default list style */
+    list-style-type: none;
+    /* Add some padding for better spacing */
+    padding: 0;
+    }
+
+    h1 {
+    font-size: 2em;
+    margin-bottom: 10px;
+    }
+
+    h2 {
+    font-size: 1.5em;
+    margin-top: 10px;
+    }
+
+
+    button {
+    background-color: #eee;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    }
+
+    button:hover {
+    background-color: #ddd;
+    }
+
+    .post {
+      border: 1px solid #ddd;
+      padding: 10px;
+      margin-bottom: 15px;
+    }
+    .post-title {
+      font-weight: bold;
+    }
+    .comment {
+      margin-left: 20px;
+      padding: 5px;
+      border-left: 1px solid #eee;
+    }
+    .comment-author {
+      font-style: italic;
+    }
+
+    .post {
+    border-color: #ccc;
+    background-color: #fafafa;
+    }
+
+    .comment {
+    border-left-color: #ddd;
+    background-color: #f5f5f5;
+    }
+
+    .post-author, .comment-author {
+    color: #333;
+    font-weight: bold;
+    }
+  </style>
 </head>
 <body>
-  <div class="MessagingApp" style="width: 1440px; height: 1024px; position: relative; background: white">
-    <div class="Rectangle3" style="width: 833px; height: 815px; left: 518px; top: 104px; position: absolute; background: #D9D9D9; border-radius: 50px"></div>
-    <div class="Rectangle13" style="width: 162px; height: 50px; left: 608px; top: 588px; position: absolute; background: #485361; border-radius: 28px"></div>
-    <div class="ShortMsg" style="left: 627px; top: 598px; position: absolute; color: white; font-size: 24px; font-family: Inter; font-weight: 400; word-wrap: break-word">Short msg..</div>
-    <div class="Ellipse8" style="width: 50px; height: 50px; left: 538px; top: 588px; position: absolute; background: #234E8E; border-radius: 9999px"></div>
-    <div class="Ellipse9" style="width: 13.10px; height: 13px; left: 575px; top: 625px; position: absolute; background: #13F25F; border-radius: 9999px"></div>
-    <div class="Rectangle4" style="width: 391px; height: 815px; left: 76px; top: 104px; position: absolute; background: #D9D9D9; border-radius: 50px"></div>
-    <div class="Group4" style="width: 391px; height: 107px; left: 76px; top: 588px; position: absolute">
-      <div class="Rectangle7" style="width: 391px; height: 107px; left: 0px; top: 0px; position: absolute; background: #7E7B7B"></div>
-      <div class="Ellipse1" style="width: 79.61px; height: 80px; left: 14.11px; top: 13px; position: absolute; background: #D9D9D9; border-radius: 9999px"></div>
-      <div class="ItsAName" style="width: 181.39px; height: 32px; left: 103.80px; top: 13px; position: absolute; color: white; font-size: 32px; font-family: Inter; font-weight: 400; word-wrap: break-word">Its a Name</div>
-      <div class="SentYouAMessage" style="width: 154.18px; height: 17px; left: 103.80px; top: 69px; position: absolute; color: white; font-size: 15px; font-family: Inter; font-weight: 400; word-wrap: break-word">Sent you a message</div>
-      <div class="Ellipse2" style="width: 13.10px; height: 13px; left: 67.52px; top: 73px; position: absolute; background: rgba(250.10, 5, 5, 0.80); border-radius: 9999px"></div>
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Launch demo modal
+  </button>
+  
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
     </div>
-    <div class="Rectangle5" style="width: 833px; height: 145px; left: 518px; top: 104px; position: absolute; background: #150B0B; border-top-left-radius: 50px; border-top-right-radius: 50px"></div>
-    <div class="Rectangle6" style="width: 320px; height: 67px; left: 111px; top: 145px; position: absolute; background: linear-gradient(0deg, #150A0A 0%, #150A0A 100%), linear-gradient(0deg, rgba(245.85, 236.83, 236.83, 0.20) 0%, rgba(245.85, 236.83, 236.83, 0.20) 100%); border-radius: 20px"></div>
-    <div class="Group1" style="width: 391px; height: 107px; left: 76px; top: 267px; position: absolute">
-      <div class="Rectangle7" style="width: 391px; height: 107px; left: 0px; top: 0px; position: absolute; background: #7B1414"></div>
-      <div class="Ellipse1" style="width: 79.61px; height: 80px; left: 14.11px; top: 13px; position: absolute; background: #D9D9D9; border-radius: 9999px"></div>
-      <div class="ItsAName" style="width: 181.39px; height: 32px; left: 103.80px; top: 13px; position: absolute; color: white; font-size: 32px; font-family: Inter; font-weight: 400; word-wrap: break-word">Its a Name</div>
-      <div class="IsOnline" style="width: 62.48px; height: 17px; left: 103.80px; top: 69px; position: absolute; color: white; font-size: 15px; font-family: Inter; font-weight: 400; word-wrap: break-word">is online</div>
-      <div class="Ellipse2" style="width: 13.10px; height: 13px; left: 67.52px; top: 73px; position: absolute; background: #13F25F; border-radius: 9999px"></div>
-    </div>
-    <div class="Group2" style="width: 391px; height: 107px; left: 76px; top: 374px; position: absolute">
-      <div class="Rectangle7" style="width: 391px; height: 107px; left: 0px; top: 0px; position: absolute; background: #7E7B7B"></div>
-      <div class="Ellipse1" style="width: 79.61px; height: 80px; left: 15.12px; top: 13px; position: absolute; background: #D9D9D9; border-radius: 9999px"></div>
-      <div class="ItsAName" style="width: 181.39px; height: 32px; left: 104.80px; top: 13px; position: absolute; color: white; font-size: 32px; font-family: Inter; font-weight: 400; word-wrap: break-word">Its a Name</div>
-      <div class="SentYouAMessage" style="width: 154.18px; height: 17px; left: 104.80px; top: 69px; position: absolute; color: white; font-size: 15px; font-family: Inter; font-weight: 400; word-wrap: break-word">Sent you a message</div>
-      <div class="Ellipse2" style="width: 13.10px; height: 13px; left: 68.53px; top: 73px; position: absolute; background: rgba(250.10, 5, 5, 0.80); border-radius: 9999px"></div>
-    </div>
-    <div class="Group3" style="width: 391px; height: 107px; left: 76px; top: 481px; position: absolute">
-      <div class="Rectangle7" style="width: 391px; height: 107px; left: 0px; top: 0px; position: absolute; background: #7E7B7B"></div>
-      <div class="Ellipse1" style="width: 79.61px; height: 80px; left: 14.11px; top: 13px; position: absolute; background: #D9D9D9; border-radius: 9999px"></div>
-      <div class="ItsAName" style="width: 181.39px; height: 32px; left: 103.80px; top: 13px; position: absolute; color: white; font-size: 32px; font-family: Inter; font-weight: 400; word-wrap: break-word">Its a Name</div>
-      <div class="SentYouAMessage" style="width: 154.18px; height: 17px; left: 103.80px; top: 69px; position: absolute; color: white; font-size: 15px; font-family: Inter; font-weight: 400; word-wrap: break-word">Sent you a message</div>
-      <div class="Ellipse2" style="width: 13.10px; height: 13px; left: 67.52px; top: 73px; position: absolute; background: rgba(250.10, 5, 5, 0.80); border-radius: 9999px"></div>
-    </div>
-    <div class="Group6" style="width: 391px; height: 107px; left: 76px; top: 481px; position: absolute">
-      <div class="Rectangle7" style="width: 391px; height: 107px; left: 0px; top: 0px; position: absolute; background: #7E7B7B"></div>
-      <div class="Ellipse1" style="width: 79.61px; height: 80px; left: 14.11px; top: 13px; position: absolute; background: #D9D9D9; border-radius: 9999px"></div>
-      <div class="ItsAName" style="width: 181.39px; height: 32px; left: 103.80px; top: 13px; position: absolute; color: white; font-size: 32px; font-family: Inter; font-weight: 400; word-wrap: break-word">Its a Name</div>
-      <div class="SentYouAMessage" style="width: 154.18px; height: 17px; left: 103.80px; top: 69px; position: absolute; color: white; font-size: 15px; font-family: Inter; font-weight: 400; word-wrap: break-word">Sent you a message</div>
-      <div class="Ellipse2" style="width: 13.10px; height: 13px; left: 67.52px; top: 73px; position: absolute; background: rgba(250.10, 5, 5, 0.80); border-radius: 9999px"></div>
-    </div>
-    <div class="Group5" style="width: 391px; height: 107px; left: 76px; top: 695px; position: absolute">
-      <div class="Rectangle7" style="width: 391px; height: 107px; left: 0px; top: 0px; position: absolute; background: #7E7B7B"></div>
-      <div class="Ellipse1" style="width: 79.61px; height: 80px; left: 14.11px; top: 13px; position: absolute; background: #D9D9D9; border-radius: 9999px"></div>
-      <div class="ItsAName" style="width: 181.39px; height: 32px; left: 103.80px; top: 13px; position: absolute; color: white; font-size: 32px; font-family: Inter; font-weight: 400; word-wrap: break-word">Its a Name</div>
-      <div class="SentYouAMessage" style="width: 154.18px; height: 17px; left: 103.80px; top: 69px; position: absolute; color: white; font-size: 15px; font-family: Inter; font-weight: 400; word-wrap: break-word">Sent you a message</div>
-      <div class="Ellipse2" style="width: 13.10px; height: 13px; left: 67.52px; top: 73px; position: absolute; background: rgba(250.10, 5, 5, 0.80); border-radius: 9999px"></div>
-    </div>
-    <div class="Group7" style="width: 391px; height: 107px; left: 76px; top: 802px; position: absolute">
-      <div class="Rectangle7" style="width: 391px; height: 107px; left: 0px; top: 0px; position: absolute; background: #7E7B7B"></div>
-      <div class="Ellipse1" style="width: 79.61px; height: 80px; left: 14.11px; top: 13px; position: absolute; background: #D9D9D9; border-radius: 9999px"></div>
-      <div class="ItsAName" style="width: 181.39px; height: 32px; left: 103.80px; top: 13px; position: absolute; color: white; font-size: 32px; font-family: Inter; font-weight: 400; word-wrap: break-word">Its a Name</div>
-      <div class="SentYouAMessage" style="width: 154.18px; height: 17px; left: 103.80px; top: 69px; position: absolute; color: white; font-size: 15px; font-family: Inter; font-weight: 400; word-wrap: break-word">Sent you a message</div>
-      <div class="Ellipse2" style="width: 13.10px; height: 13px; left: 67.52px; top: 73px; position: absolute; background: rgba(250.10, 5, 5, 0.80); border-radius: 9999px"></div>
-    </div>
-    <div class="Ellipse3" style="width: 126px; height: 128px; left: 563px; top: 121px; position: absolute; background: #D9D9D9; border-radius: 9999px"></div>
-    <div class="Ellipse2" style="width: 13.10px; height: 13px; left: 657px; top: 212px; position: absolute; background: #13F25F; border-radius: 9999px"></div>
-    <div class="JohnDoe" style="width: 258px; height: 66px; left: 720px; top: 146px; position: absolute; color: white; font-size: 32px; font-family: Inter; font-weight: 400; word-wrap: break-word">John Doe</div>
-    <div class="Rectangle8" style="width: 53px; height: 46px; left: 1093px; top: 148px; position: absolute; background: #D9D9D9"></div>
-    <div class="Rectangle9" style="width: 53px; height: 46px; left: 1162px; top: 148px; position: absolute; background: #D9D9D9"></div>
-    <div class="Group8" style="width: 12px; height: 53px; left: 1311px; top: 145px; position: absolute">
-      <div class="Ellipse6" style="width: 12px; height: 14.45px; left: 0px; top: 38.55px; position: absolute; background: #D9D9D9; border-radius: 9999px"></div>
-      <div class="Ellipse4" style="width: 12px; height: 14.45px; left: 0px; top: 0px; position: absolute; background: #D9D9D9; border-radius: 9999px"></div>
-      <div class="Ellipse5" style="width: 12px; height: 14.45px; left: 0px; top: 19.27px; position: absolute; background: #D9D9D9; border-radius: 9999px"></div>
-    </div>
-    <div class="Rectangle10" style="width: 794px; height: 98px; left: 538px; top: 782px; position: absolute; background: #562828; border-radius: 12px"></div>
-    <div class="Rectangle11" style="width: 53px; height: 46px; left: 1259px; top: 808px; position: absolute; background: #D9D9D9"></div>
-    <div class="TypeAMessage" style="width: 313px; height: 36px; left: 575px; top: 795px; position: absolute; color: white; font-size: 32px; font-family: Inter; font-weight: 400; word-wrap: break-word">Type a message</div>
-    <div class="Ellipse7" style="width: 50px; height: 50px; left: 1273px; top: 671px; position: absolute; background: #234E8E; border-radius: 9999px"></div>
-    <div class="Rectangle12" style="width: 266px; height: 50px; left: 993px; top: 671px; position: absolute; background: #485361; border-radius: 28px"></div>
-    <div class="LongAssMessage" style="left: 1012px; top: 681px; position: absolute; color: white; font-size: 24px; font-family: Inter; font-weight: 400; word-wrap: break-word">Long ass message...</div>
-    <div class="Ellipse10" style="width: 13.10px; height: 13px; left: 1310px; top: 704px; position: absolute; background: rgba(250.10, 5, 5, 0.80); border-radius: 9999px"></div>
   </div>
+
+  <h1>Posts with Comments</h1>
+  <h1>Welcome {{ user.username }}</h1>
+
+  <form action="{% url 'create_post' %}" method="post">
+    {% csrf_token %}
+    <button type="submit">Create A Post</button>
+  </form>
+  
+  {% if posts %}
+  <ul>
+    {% for post in posts %}
+    <li class="post">
+      <h2 class="post-title">{{ post.title }}</h2>
+      <p>{{ post.description }}</p>
+      <p>By: {{ post.author.username }} on {{ post.created_at }}</p>
+      {% if post.comments.all %}
+      <h3>Comments</h3>
+      <ul>
+        {% for comment in post.comments.all %}
+        <li class="comment">
+          <p>{{ comment.text }}</p>
+          <p class="comment-author">By: {{ comment.author.username }} on {{ comment.created_at }}</p>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p>No comments yet.</p>
+      {% endif %}
+  
+      <form action="{% url 'comment_post' post.pk %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Add Comment</button>
+      </form>
+  
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p>There are no posts yet.</p>
+  {% endif %}
+
+
+  <div class="h-screen flex flex-col">
+    <div class="bg-gray-100 p-4 flex items-center">
+        <img src="user.jpg" alt="User Avatar" class="w-12 h-12 rounded-full mr-4">
+        <div>
+            <h2 class="text-lg font-semibold">John Doe</h2>
+            <p class="text-gray-500">Last seen 2 minutes ago</p>
+        </div>
+        <div class="flex-grow"></div>
+        <button class="text-gray-500 hover:text-gray-700 mr-2"><i class="fas fa-video"></i></button>
+        <button class="text-gray-500 hover:text-gray-700"><i class="fas fa-phone"></i></button>
+    </div>
+
+    <div class="flex-grow overflow-y-auto p-4">
+        <div class="flex justify-end">
+            <div class="bg-blue-500 text-white p-3 rounded-tl-none rounded-br rounded-bl-lg">
+                <p>Hi John, how are you?</p>
+                <p class="text-xs text-gray-300">12:34 PM</p>
+            </div>
+        </div>
+
+        <div class="flex justify-start">
+            <div class="bg-gray-200 p-3 rounded-tr-none rounded-bl rounded-br-lg">
+                <p>I'm doing well, thanks! How about you?</p>
+                <p class="text-xs text-gray-300">12:35 PM</p>
+            </div>
+        </div>
+
+        </div>
+
+    <div class="bg-white p-4 border-t border-gray-200 flex">
+        <input type="text" placeholder="Type a message" class="flex-grow border border-gray-300 p-2 rounded-l-lg">
+        <button class="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-r-lg">Send</button>
+    </div>
+</div>
+
+{% if chats %}
+<div class="flex flex-col space-y-4 bg-gray-100 rounded-md p-4 shadow-md">
+  <ul class="overflow-y-auto h-full">
+    {% for chat in chats %}
+      <li class="flex items-center p-2 rounded-md border border-gray-300 hover:bg-gray-200">
+        <div class="flex flex-col flex-grow">
+          <h2 class="text-lg font-bold text-gray-800">{{ chat.title }}</h2>
+          <p class="text-gray-600">{{ chat.description }}</p>
+          <p class="text-sm text-gray-500">
+            By: {{ chat.author.username }} on {{ chat.created_at }}
+          </p>
+
+          {% if chat.comments.all %}
+            <div class="mt-4">
+              <h3 class="text-md font-medium text-gray-800">Messages</h3>
+              <ul class="list-none space-y-2">
+                {% for comment in chat.comments.all %}
+                  <li class="flex items-start p-2 rounded-md border border-gray-300 hover:bg-gray-200">
+                    <img
+                      class="w-8 h-8 rounded-full mr-2"
+                      src="{{ comment.author.avatar_url }}"
+                      alt="{{ comment.author.username }}"
+                    />
+                    <div class="flex flex-col">
+                      <p class="text-gray-800">{{ comment.text }}</p>
+                      <p class="text-sm text-gray-500">
+                        By: {{ comment.author.username }} on {{ comment.created_at }}
+                      </p>
+                    </div>
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+          {% else %}
+            <p class="text-sm text-gray-500 mt-2">No messages yet.</p>
+          {% endif %}
+        </div>
+
+        <form
+          action="{% url 'send_message' chat.pk %}"
+          method="post"
+          class="flex items-center mt-4"
+        >
+          {% csrf_token %}
+          <input
+            type="text"
+            class="w-full px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:border-blue-500 placeholder:text-gray-400"
+            placeholder="Write a message"
+          />
+          <button type="submit" class="ml-2 px-3 py-2 rounded-md bg-blue-500 text-white hover:bg-blue-600">
+            Send Message
+          </button>
+        </form>
+      </li>
+    {% endfor %}
+  </ul>
+</div>
+{% else %}
+<p class="text-gray-600 text-center">There are no chat rooms yet.</p>
+{% endif %}
 
 </body>
 </html>
