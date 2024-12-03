@@ -7,5 +7,5 @@ urlpatterns = [
     path('<int:post_id>/comment/', views.comment_post, name='comment_post'),
     path('TW', views.TW, name='Tailwind'),
     path('delete_post/<int:post_id>/', views.delete_post, name='delete_post'),
-    path('delete_comment/<int:post_id>/', views.delete_comment, name='delete_comment'),
+    path('delete_comment/<int:comment_id>/', views.delete_comment, name='delete_comment'),
 ]

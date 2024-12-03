@@ -14,7 +14,7 @@ class Chat_Room(models.Model):
         return self.title
 
 class Message(models.Model):
-    post = models.ForeignKey(Chat_Room,related_name='comments', on_delete=models.CASCADE)
+    chat_room = models.ForeignKey(Chat_Room,related_name='comments', on_delete=models.CASCADE)
     text = models.TextField()
     author = models.ForeignKey(User, on_delete=models.CASCADE) 
     created_at = models.DateTimeField(auto_now_add=True)

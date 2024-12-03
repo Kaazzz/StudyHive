@@ -25,21 +25,22 @@ def Create_Post(request):
     return render(request, 'create_post.html', {'form': form})
 
 def comment_post(request, post_id):
-    post = get_object_or_404(Post, pk=post_id)
+    post_comment = get_object_or_404(Post, pk=post_id)
+    posts = Post.objects.all()
 
     if request.method == 'POST':
         form = CommentForm(request.POST)
         if form.is_valid():
             comment = form.save(commit=False) 
 
-            comment.post = post  
+            comment.post = post_comment 
             comment.author = request.user  
             comment.save()
             return redirect('post')  
     else:
         form = CommentForm()
 
-    return render(request, 'comment_post.html', {'form': form, 'post': post})
+    return render(request, 'comment_post.html', {'form': form, 'pc': post_comment, 'posts': posts})
 
 
 def TW(request):

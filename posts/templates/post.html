@@ -6,9 +6,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="{% static 'css/output.css' %}" rel="stylesheet">
-</head>
-<body class="bg-gray-100 font-sans">
 
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body class="font-sans bg-cover bg-no-repeat bg-fixed bg-center" style="background-image: url('{% static 'media/studyhive.png' %}');">
   <header class="bg-yellow-300 shadow-md h-20">
     <div class="container mx-auto px-6 py-4 flex items-center justify-between">
         <h1 class="text-2xl font-bold python manage.py collectstatictext-black">StudyHive</h1>
@@ -33,10 +37,34 @@
             <div class="flex justify-between">
               <h2 class="text-2xl font-semibold mb-2">{{ post.title }}</h2>
               {% if post.author == user %}
-                <form action="{% url 'delete_post' post.pk %}" method="post" class="inline-block">
-                  {% csrf_token %}
-                  <button type="submit" class="px-2 py-1 bg-red-500 text-white rounded-md hover:bg-red-700">Delete</button>
-                </form>
+
+              <button type="button" class="btn btn-primary hover:scale-110" data-toggle="modal" data-target="#myModal">&#128465; </button>            
+                <div class="modal" id="myModal">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+
+                      <div class="modal-header">
+                        <h4 class="modal-title">Delete Post?</h4>
+                        <button type="button" class="close hover:scale-110" data-dismiss="modal">&times;</button>
+                      </div>
+
+                      <div class="modal-body">
+                        <p> Are you sure you want to delete the post?</p>
+                      </div>
+
+                      <div class="modal-footer">
+                        <form action="{% url 'delete_post' post.pk %}" method="post" class="inline-block">
+                          {% csrf_token %}
+                          <button type="submit" class="px-2 py-1 bg-red-500 text-white rounded-md hover:bg-red-700 hover:scale-110">Delete</button>
+                        </form>
+                        <button type="button" class="px-2 py-1 bg-gray-500 text-white rounded-md hover:bg-blue-700 hover:scale-110" data-dismiss="modal">Cancel</button>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
+                
               {% endif %}
             </div>
 
@@ -51,10 +79,32 @@
                     <div class="flex justify-between">
                       <p class="text-gray-700">{{ comment.text }}</p>
                       {% if comment.author == user %}
-                        <form action="{% url 'delete_comment' comment.pk %}" method="post" class="inline-block">
-                          {% csrf_token %}
-                          <button type="submit" class="px-2 py-1 bg-red-500 text-white rounded-md hover:bg-red-700">Delete</button>
-                        </form>
+                      <button type="button" class="btn btn-primary hover:scale-110" data-toggle="modal" data-target="#myModal"> &#128465; </button>            
+                      <div class="modal" id="myModal">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+      
+                            <div class="modal-header">
+                              <h4 class="modal-title">Delete Post?</h4>
+                              <button type="button" class="close hover:scale-110" data-dismiss="modal">&times;</button>
+                            </div>
+      
+                            <div class="modal-body">
+                              <p> Are you sure you want to delete the post?</p>
+                            </div>
+      
+                            <div class="modal-footer">
+                              <form action="{% url 'delete_comment' comment.pk %}" method="post" class="inline-block">
+                                {% csrf_token %}
+                                <button type="submit" class="px-2 py-1 bg-red-500 text-white rounded-md hover:bg-red-700 hover:scale-110">Delete</button>
+                              </form>
+                              <button type="button" class="px-2 py-1 bg-gray-500 text-white rounded-md hover:bg-blue-700 hover:scale-110" data-dismiss="modal">Cancel</button>
+                            </div>
+      
+                          </div>
+                        </div>
+                      </div>
+                      
                       {% endif %}
                     </div>
                     <p class="text-sm text-gray-500">By: {{ comment.author.username }} on {{ comment.created_at }}</p>
@@ -64,7 +114,7 @@
             {% else %}
               <p class="text-sm text-gray-500">No comments yet.</p>
             {% endif %}
-
+            
             <form action="{% url 'comment_post' post.pk %}" method="post" class="flex mt-4">
               {% csrf_token %}
               <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700">Add Comment</button>

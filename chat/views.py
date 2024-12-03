@@ -34,20 +34,21 @@ def create_chat(request):
 def send_message(request, post_id):
     """Sends a message to an existing chat room."""
     chat = get_object_or_404(Chat_Room, pk=post_id)
+    message = Chat_Room.objects.all()
 
     if request.method == 'POST':
-        form = MessageForm(request.POST)
+        form = MessageForm(request.POST or None) 
         if form.is_valid():
             comment = form.save(commit=False)  # Prevent initial save
             comment.post = chat
             comment.author = request.user
             comment.save()
             # Consider redirecting to the specific chat room or a list view
-            return redirect('chat') 
+            return redirect('chat_room.html') 
     else:
         form = MessageForm()
 
-    return render(request, 'send_message.html', {'form': form, 'chat': chat})
+    return render(request, 'chat_room.html', {'form': form, 'chat': chat, 'chats': message})
 
 def file_upload(request):
     if request.method == 'POST':
