@@ -40,15 +40,15 @@ def send_message(request, post_id):
         form = MessageForm(request.POST or None) 
         if form.is_valid():
             comment = form.save(commit=False)  # Prevent initial save
-            comment.post = chat
+            comment.chat_room = chat
             comment.author = request.user
             comment.save()
-            # Consider redirecting to the specific chat room or a list view
-            return redirect('chat_room.html') 
+            # needs post_id to go back to the chat_room
+            return redirect('send_message', post_id=post_id)
     else:
         form = MessageForm()
 
-    return render(request, 'chat_room.html', {'form': form, 'chat': chat, 'chats': message})
+    return render(request, 'send_message.html', {'form': form, 'chat': chat, 'chats': message})
 
 def file_upload(request):
     if request.method == 'POST':
