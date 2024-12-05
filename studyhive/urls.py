@@ -25,5 +25,5 @@ urlpatterns = [
     path('', include('groups.urls')),
     path('home/posts/', include('posts.urls')),
     path('home/chat/', include('chat.urls')),
-      
+    path('home/calendar/', include('calendar_scheduler.urls')), 
 ]

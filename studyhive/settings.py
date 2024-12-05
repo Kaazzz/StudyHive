@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'posts',
     'chat',
+    'calendar_scheduler',
 ]
 
 MIDDLEWARE = [
