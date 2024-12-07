@@ -98,7 +98,7 @@ def edit_chat(request, chat_id):
         form = Chat_RoomForm(request.POST, instance=chat_room)
         if form.is_valid():
             form.save()
-            return redirect('post') 
+            return redirect('send_message', chat_id=chat_id)
     else:
         # Pre-populate the form with existing post data
         form = Chat_RoomForm(instance=chat_room)
@@ -106,7 +106,7 @@ def edit_chat(request, chat_id):
     return render(request, 'edit_chat_room.html', {'form': form, 'chat': chat_room})
 
 @login_required
-def edit_message(request, message_id):
+def edit_message(request, message_id, chat_id):
     chat_room = Chat_Room.objects.all()
     message = get_object_or_404(Message, pk=message_id)
 
@@ -119,7 +119,8 @@ def edit_message(request, message_id):
         form = MessageForm(request.POST, instance=message)
         if form.is_valid():
             form.save()
-            return redirect('post')  # Redirect to the post's detail page
+            return redirect('send_message', chat_id)  
+            
     else:
         # Pre-populate the form with existing comment data
         form = MessageForm(instance=message)

@@ -84,9 +84,6 @@ def edit_post(request, post_id):
 
 
 def edit_comment(request, comment_id):
-    """
-    This view allows users to edit their comments.
-    """
     comment = get_object_or_404(Comment, pk=comment_id)
 
     # Check if the user is authorized to edit the comment (e.g., only the author)

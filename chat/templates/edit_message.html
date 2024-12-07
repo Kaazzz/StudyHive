@@ -29,14 +29,14 @@
     <form method="post" class="space-y-4">
       {% csrf_token %}
       <div class="flex flex-col">
-        <label for="id_message">Message</label>
-        {% if form.message.errors %}
-          <div class="text-red-500">{{ form.message.errors }}</div>
+        <label for="id_text">Message</label>
+        {% if form.text.errors %}
+          <div class="text-red-500">{{ form.texterrors }}</div>
         {% endif %}
-        <textarea name="message" id="id_message">{{ message.text }}</textarea>
+        <textarea name="text" id="id_text">{{ message.text }}</textarea>
       </div>
       <div class="flex justify-end mx-4">
-        <a href="{% url 'post' %}" class="bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-2 px-4 rounded mx-4">Cancel</a>
+        <a href="javascript:history.back()" class="bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-2 px-4 rounded mx-4">Cancel</a>
         <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4">Update Message</button>
       </div>
     </form>
