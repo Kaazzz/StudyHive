@@ -3,7 +3,7 @@
 <html>
 <head>
   <link href="{% static 'css/output.css' %}" rel="stylesheet">
-  <title>Edit Post</title>
+  <title>Edit Comment</title>
 </head>
 <body class="bg-gray-100">
   <header class="bg-yellow-300 shadow-md h-20">
@@ -16,27 +16,25 @@
     <h1 class="text-3xl font-bold mb-4">Edit Comment</h1>
 
     {% if form.errors %}
-      <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-        <strong class="font-bold">Error!</strong>
-        <span class="block sm:inline">
-          {% for error in form.errors %}
-            <li>{{ error }}</li>
-          {% endfor %}
-        </span>
-      </div>
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+      <strong class="font-bold">Error!</strong>
+      <span class="block sm:inline">
+        {% for error in form.errors %}
+          <li>{{ error }}</li>
+        {% endfor %}
+      </span>
+    </div>
     {% endif %}
 
     <form method="post" class="space-y-4">
       {% csrf_token %}
-      {% for field in form %}
-        <div class="flex flex-col">
-          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-          {% if field.errors %}
-            <div class="text-red-500">{{ field.errors }}</div>
-          {% endif %}
-          {{ field }}
-        </div>
-      {% endfor %}
+      <div class="flex flex-col">
+        <label for="id_comment">Comment</label>
+        {% if form.comment.errors %}
+          <div class="text-red-500">{{ form.comment.errors }}</div>
+        {% endif %}
+        <textarea name="comment" id="id_comment">{{ comment.text }}</textarea>
+      </div>
       <div class="flex justify-end mx-4">
         <a href="{% url 'post' %}" class="bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-2 px-4 rounded mx-4">Cancel</a>
         <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4">Update Comment</button>

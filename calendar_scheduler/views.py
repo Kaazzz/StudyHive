@@ -32,3 +32,24 @@ def delete_event(request, event_id):
     event.delete()
     return redirect('event_list')  # Replace 'event_list' with your actual URL name
 
+
+@login_required
+def upcoming_event_list(request):
+    events = CalendarEvent.objects.all()
+    today = timezone.now()  # Format the date as needed
+    now = timezone.now()
+    return render(request, 'upcoming_event_list.html', {'events': events,'user': request.user,'today': today} )
+
+@login_required
+def past_event_list(request):
+    events = CalendarEvent.objects.all()
+    today = timezone.now()  # Format the date as needed
+    now = timezone.now()
+    return render(request, 'past_event_list.html', {'events': events,'user': request.user,'today': today} )
+
+@login_required
+def attended_event_list(request):
+    events = CalendarEvent.objects.all()
+    today = timezone.now()  # Format the date as needed
+    now = timezone.now()
+    return render(request, 'completed_event_list.html', {'events': events,'user': request.user,'today': today} )

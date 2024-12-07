@@ -1,0 +1,67 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Event Scheduler</title>
+  <link href="{% static 'css/output.css' %}" rel="stylesheet">
+
+  
+</head>
+<body class="bg-gray-100">
+  <header class="bg-yellow-300 shadow-md h-20">
+    <div class="container mx-auto px-6 py-4 flex items-center justify-between">
+      <h1 class="text-2xl font-bold text-black">StudyHive</h1>
+      <h2 class="text-xl font-medium mb-4">Welcome, {{ user.username }}</h2>
+    </div>
+  </header>
+
+  <div class="container mx-auto px-6 py-4 flex justify-end">
+    <a href="{% url 'create_event' %}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+      Create New Event
+    </a>
+  </div>
+
+  <h1 class="text-3xl font-bold text-center mb-8">Event Scheduler</h1>
+  <div class="container mx-auto px-6 py-4 flex justify-between">
+    
+    <a href="{% url 'attended_event' %}" class="bg-gray-200 hover:bg-blue-400 text-gray-700  font-bold py-2 px-4 rounded">
+      Attended Event
+    </a>
+    <a href="{% url 'past_event' %}" class="bg-blue-400 hover:bg-blue-400 text-gray-700 font-bold py-2 px-4 rounded">
+      Past Events
+    </a>
+    <a href="{% url 'upcoming_event' %}" class="bg-gray-200 hover:bg-blue-400 text-gray-700 font-bold py-2 px-4 rounded">
+      Upcoming Events
+    </a>
+  </div>
+
+  <div class="events-container p-4">  <ul class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+
+    {% for event in events %}
+      {% if event.end_time < today %}
+        <li class="bg-red-500 p-6 rounded-lg shadow-md cursor-pointer" onclick="toggleCard(this)">
+          <h2 class="text-xl font-bold mb-2">{{ event.title }} by {{ event.author }} </h2>
+          <p class="text-red-700 mb-2">
+            <span class="font-bold">Start Time:</span> {{ event.start_time }}
+          </p>
+          <p class="text-red-700 mb-2">
+            <span class="font-bold">End Time:</span> {{ event.end_time }}
+          </p>
+          <div class="hidden p-4">
+            <p class="text-red-700">{{ event.description }}</p>
+          </div>
+        </li>
+      {% endif %}
+    {% endfor %}
+
+  </ul>
+
+  <script>
+    function toggleCard(card) {
+      const backSide = card.querySelector('.hidden');
+      backSide.classList.toggle('hidden');
+    }
+  </script>
+</div>
+</body>
+</html>
