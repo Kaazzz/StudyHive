@@ -62,3 +62,22 @@ def delete_comment(request, comment_id):
         return redirect('post')  # Redirect to the post's detail page or a list of comments
 
     return render(request, 'post.html', {'comment': comment})
+
+def edit_post(request, post_id):
+    post = get_object_or_404(Post, pk=post_id)
+
+    # Check if the user is authorized to edit the post
+    if request.user != post.author:
+        return HttpResponse("You are not authorized to edit this post.")
+
+    if request.method == 'POST':
+        # Update the existing post instance with form data
+        form = PostForm(request.POST, instance=post)
+        if form.is_valid():
+            form.save()
+            return redirect('post')  # Redirect to post detail page
+    else:
+        # Pre-populate the form with existing post data
+        form = PostForm(instance=post)
+
+    return render(request, 'edit_post.html', {'form': form, 'post': post})

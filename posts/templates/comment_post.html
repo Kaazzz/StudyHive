@@ -39,8 +39,8 @@
               <h2 class="text-2xl font-semibold mb-2">{{ post.title }}</h2>
               {% if post.author == user %}
 
-              <button type="button" class="btn btn-primary hover:scale-110" data-toggle="modal" data-target="#myModal">&#128465; </button>            
-                <div class="modal" id="myModal">
+              <button type="button" class="btn btn-primary hover:scale-110" data-toggle="modal" data-target="#postModal">&#128465; </button>            
+                <div class="modal" id="postModal">
                   <div class="modal-dialog">
                     <div class="modal-content">
 
@@ -80,8 +80,8 @@
                     <div class="flex justify-between">
                       <p class="text-gray-700">{{ comment.text }}</p>
                       {% if comment.author == user %}
-                      <button type="button" class="btn btn-primary hover:scale-110" data-toggle="modal" data-target="#myModal"> &#128465; </button>            
-                      <div class="modal" id="myModal">
+                      <button type="button" class="btn btn-primary hover:scale-110" data-toggle="modal" data-target="#commentModal"> &#128465; </button>            
+                      <div class="modal" id="commentModal">
                         <div class="modal-dialog">
                           <div class="modal-content">
       

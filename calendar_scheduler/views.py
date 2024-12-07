@@ -24,3 +24,11 @@ def event_list(request):
     today = timezone.now()  # Format the date as needed
     now = timezone.now()
     return render(request, 'event_list.html', {'events': events,'user': request.user,'today': today} )
+
+
+@login_required
+def delete_event(request, event_id):
+    event = get_object_or_404(CalendarEvent, pk=event_id)
+    event.delete()
+    return redirect('event_list')  # Replace 'event_list' with your actual URL name
+
