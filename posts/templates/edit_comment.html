@@ -13,7 +13,7 @@
     </div>
   </header>
   <div class="container mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold mb-4">Edit Post</h1>
+    <h1 class="text-3xl font-bold mb-4">Edit Comment</h1>
 
     {% if form.errors %}
       <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
@@ -39,7 +39,7 @@
       {% endfor %}
       <div class="flex justify-end mx-4">
         <a href="{% url 'post' %}" class="bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-2 px-4 rounded mx-4">Cancel</a>
-        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4">Update Post</button>
+        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4">Update Comment</button>
       </div>
     </form>
   </div>

@@ -75,9 +75,32 @@ def edit_post(request, post_id):
         form = PostForm(request.POST, instance=post)
         if form.is_valid():
             form.save()
-            return redirect('post')  # Redirect to post detail page
+            return redirect('post') 
     else:
         # Pre-populate the form with existing post data
         form = PostForm(instance=post)
 
     return render(request, 'edit_post.html', {'form': form, 'post': post})
+
+
+def edit_comment(request, comment_id):
+    """
+    This view allows users to edit their comments.
+    """
+    comment = get_object_or_404(Comment, pk=comment_id)
+
+    # Check if the user is authorized to edit the comment (e.g., only the author)
+    if request.user != comment.author:
+        return HttpResponse("You are not authorized to edit this comment.")
+
+    if request.method == 'POST':
+        # Update the existing comment instance with form data
+        form = CommentForm(request.POST, instance=comment)
+        if form.is_valid():
+            form.save()
+            return redirect('post')  # Redirect to the post's detail page
+    else:
+        # Pre-populate the form with existing comment data
+        form = CommentForm(instance=comment)
+
+    return render(request, 'edit_comment.html', {'form': form, 'comment': comment})
