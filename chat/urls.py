@@ -10,6 +10,6 @@ urlpatterns = [
     path('delete/<int:file_id>/', views.delete_file, name='delete_file'),
     path('edit_chat/<int:chat_id>/', views.edit_chat, name='edit_chat'),
     path('edit_message/<int:message_id>/<int:chat_id>', views.edit_message, name='edit_message'),
-    
+    path('delete_message/<int:message_id>/<int:chat_id>', views.delete_message, name='delete_message'),
 ]
 

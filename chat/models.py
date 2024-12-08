@@ -18,9 +18,10 @@ class Message(models.Model):
     text = models.TextField()
     author = models.ForeignKey(User, on_delete=models.CASCADE) 
     created_at = models.DateTimeField(auto_now_add=True)
+    is_sent = models.BooleanField(default=False)
 
     def __str__(self):
-        return f'{self.author} on {self.post.title}'   
+        return f'{self.author} on {self.chat_room.title}'   
 
 class UploadedFile(models.Model):
     file = models.FileField(upload_to='uploads/')
