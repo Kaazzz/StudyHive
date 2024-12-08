@@ -4,7 +4,8 @@
 <head>
   <title>Event Scheduler</title>
   <link href="{% static 'css/output.css' %}" rel="stylesheet">
-
+  <link href="{% static 'css/card_flip.css' %}" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
   
 </head>
 <body class="bg-gray-100">
@@ -36,33 +37,33 @@
     </a>
   </div>
 
-  <div class="events-container p-4">  <ul class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-
-    {% for event in events %}
-      {% if event.end_time > today %}
-        <li class="bg-blue-500 p-6 rounded-lg shadow-md cursor-pointer" onclick="toggleCard(this)">
-          <h2 class="text-xl font-bold mb-2">{{ event.title }} by {{ event.author }}</h2>
-          <p class="text-blue-700 mb-2">
-            <span class="font-bold">Start Time:</span> {{ event.start_time }}
-          </p>
-          <p class="text-blue-700 mb-2">
-            <span class="font-bold">End Time:</span> {{ event.end_time }}
-          </p>
-          <div class="hidden p-4">
-            <p class="text-blue-700">{{ event.description }}</p>
-          </div>
-        </li>
-      {% endif %}
-    {% endfor %}
-
+      <div class="events-container p-4 text-center ">
+        <div class="flex justify-end"> 
+        <ul class="event-list grid grid-cols-3 gap-4 justify-items-center mx-auto">
+          {% for event in events %}
+            {% if event.end_time > today %}
+              <div class="card mb-4"> <div class="card-inner">
+                  <div class="card-front">
+                    <div class="card-content">
+                      <p class="card-title">{{ event.title }} by {{ event.author }}</p>
+                    </div>
+                    <div class="card-time">
+                      <p>{{ event.start_time }} - {{ event.end_time }}</p>
+                    </div>
+                  </div>
+                  <div class="card-back">
+                    <p>{{ event.description }}</p>
+                  </div>
+                </div>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+      </div>
   </ul>
 
-  <script>
-    function toggleCard(card) {
-      const backSide = card.querySelector('.hidden');
-      backSide.classList.toggle('hidden');
-    }
-  </script>
+  <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
 </div>
 </body>
 </html>

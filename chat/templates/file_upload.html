@@ -4,6 +4,7 @@
 <head>
   <title>File Upload</title>
   <link href="{% static 'css/output.css' %}" rel="stylesheet">
+  <link href="{% static 'css/output.css' %}" rel="stylesheet">
 
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -23,10 +24,15 @@
         <h2 class="text-xl font-bold mb-4">File Uploader</h2>
 
         <form method="post" enctype="multipart/form-data" class="mb-4">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-4"> Upload </button>
-        </form>
+          {% csrf_token %}
+      
+          <div class="mb-4">
+              <label for="id_file">File:</label>
+              <input type="file" name="file" id="id_file">
+          </div>
+      
+          <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-4">Upload</button>
+      </form>
 
         <h2 class="text-xl font-bold mb-4">Uploaded Files</h2>
         <ul class="list-disc pl-4 space-y-2">
@@ -37,8 +43,8 @@
                 </a>
                 <div class="flex items-center space-x-2">
                     <span class="text-gray-500 text-sm">Uploaded on {{ file.uploaded_at }}</span>
-                    <button type="button" class="bg-red-500 hover:bg-red-600 hover:scale-110 px-2 py-2" data-toggle="modal" data-target="#myModal">&#128465;</button>    
-                    <div class="modal" id="myModal">
+                    <button type="button" class="bg-red-500 hover:bg-red-600 hover:scale-110 px-2 py-2" data-toggle="modal" data-target="#deleteModal-{{file.id}}">&#128465;</button>    
+                    <div class="modal" id="deleteModal-{{file.id}}">
                       <div class="modal-dialog">
                         <div class="modal-content">
     
