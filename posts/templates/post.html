@@ -50,10 +50,10 @@
                 <div id="postdropdownDots-{{post.pk}}" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
                   <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconButton">
                     <li>
-                      <a href="{% url 'edit_post' post.pk %}" class="block px-4 py-2 hover:bg-red-500 dark:hover:bg-gray-600 dark:hover:text-white">Edit</a>
+                      <a href="{% url 'edit_post' post.pk %}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-blue-500"">Edit</a>
                     </li>
                     <li>
-                      <a href="#" class="block px-4 py-2 hover:bg-red-500 dark:hover:bg-gray-600 dark:hover:text-white" data-toggle="modal" data-target="#postModal-{{ post.pk }}">Delete</a>
+                      <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-red-500" data-toggle="modal" data-target="#postModal-{{ post.pk }}">Delete</a>
                     </li>
                 </div>  
 
@@ -105,10 +105,10 @@
                       <div id="commentdropdownDots-{{comment.pk}}" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
                         <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconButton">
                           <li>
-                            <a href="{% url 'edit_comment' comment.pk %}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</a>
+                            <a href="{% url 'edit_comment' comment.pk %}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-blue-500">Edit</a>
                           </li>
                           <li>
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"  data-toggle="modal" data-target="#commentModal-{{ comment.pk }}">Delete</a>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-red-500"  data-toggle="modal" data-target="#commentModal-{{ comment.pk }}">Delete</a>
                           </li>
                       </div>  
 
@@ -127,7 +127,7 @@
                                 {% csrf_token %}
                                 <button type="submit" class="px-2 py-1 bg-red-500 text-white rounded-md hover:bg-red-700 hover:scale-110">Delete</button>
                               </form>
-                              <button type="button" class="px-2 py-1 bg-gray-500 text-white rounded-md hover:bg-blue-700 hover:scale-110" data-dismiss="modal">Cancel</button>
+                              <button type="button" class="px-2 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-700 hover:scale-110" data-dismiss="modal">Cancel</button>
                             </div>
                           </div>
                         </div>

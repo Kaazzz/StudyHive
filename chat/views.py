@@ -55,6 +55,7 @@ def send_message(request, chat_id):
 
     return render(request, 'send_message.html', context)
 
+
 @login_required
 def file_upload(request):
     if request.method == 'POST':
@@ -127,6 +128,34 @@ def edit_message(request, message_id, chat_id):
         form = MessageForm(instance=message)
 
     return render(request, 'edit_message.html', {'form': form, 'message': message, 'chats':chat_room})
+
+
+@login_required
+def reply_message(request, chat_id, message_id):
+    message = get_object_or_404(Chat_Room, pk=chat_id)
+    chat_room = Chat_Room.objects.all()
+
+    if request.method == 'POST':
+        form = MessageForm(request.POST or None) 
+        if form.is_valid():
+            comment = form.save(commit=False)  # Prevent initial save
+            comment.chat_room = message
+            comment.is_sent = True
+            comment.author = request.user
+            comment.save()
+            # needs post_id to go back to the chat_room
+            return redirect('send_message', chat_id=chat_id)
+    else:
+        form = MessageForm()
+
+    context = {
+        'form': form,
+        'chat': message,  # Pass the specific chat room object
+        'chat_id': chat_id,  # Include the chat_id for template use
+        'chats': chat_room, 
+    }
+
+    return render(request, 'reply_message.html', context)
 
 @login_required
 def delete_message(request, message_id, chat_id):
