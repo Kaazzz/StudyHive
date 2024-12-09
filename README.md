@@ -99,7 +99,7 @@ This [chart](https://docs.google.com/spreadsheets/d/1N-WHbdRff3_XEj8DAm4W29-BmM5
 ![Gantt Chart](ManagementFiles/Gantt.png) 
 ## Entity-Relationship Diagram  
 The detailed ERD for StudyHive is available [here](https://www.figma.com/board/4TaZ16npOXSoP1tR9cJpyf/ERD---STUDY-GROUP-COORDINATION-SYSTEM?node-id=0-1&t=6XaZeVll9kb6N4rC-1).  
-![Entity-Relationship Diagram](ManagementFiles/erd.png)  
+![Entity-Relationship Diagram](ManagementFiles/newERD.png)  
 
 ## UI/UX Design  
 Explore the Figma prototype for the StudyHive interface [here](https://www.figma.com/design/7Z9HEcJVhxUkmXlcbYPjhU/StudyHive?node-id=0-1&node-type=canvas).   
