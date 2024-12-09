@@ -1,0 +1,138 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Event Scheduler</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <link href="{% static 'css/output.css' %}" rel="stylesheet">
+  <link href="{% static 'css/card_flip.css' %}" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
+  
+</head>
+<body class="bg-gray-100">
+  <header class="bg-yellow-300 shadow-md h-20">
+    <div class="container mx-auto px-6 py-4 flex items-center justify-between">
+      <h1 class="text-2xl font-bold text-black">StudyHive</h1>
+      <h2 class="text-xl font-medium mb-4">Welcome, {{ user.username }}</h2>
+    </div>
+  </header>
+
+  <div class="container mx-auto px-6 py-4 flex justify-end">
+    <a href="{% url 'create_event' %}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+      Create New Event
+    </a>
+  </div>
+
+  <h1 class="text-3xl font-bold text-center mb-8">Event Scheduler</h1>
+  <div class="container mx-auto px-6 py-4 flex justify-between">
+
+    <a href="{% url 'attended_event' %}" class="bg-blue-400 hover:bg-blue-400 text-gray-700 font-bold py-2 px-4 rounded">
+      Attended Event
+    </a>
+    <a href="{% url 'calendar_management' %}" class="bg-gray-200 hover:bg-blue-400 text-gray-700 font-bold py-2 px-4 rounded">
+      Past Events
+    </a>
+    <a href="{% url 'upcoming_event' %}" class="bg-gray-200 hover:bg-blue-400 text-gray-700 font-bold py-2 px-4 rounded">
+      Upcoming Events
+    </a>
+  </div>
+
+  <div class="events-container p-4 text-center ">
+    <div class="flex justify-end">
+      <ul class="event-list grid grid-cols-3 gap-16 justify-items-center mx-auto grid-gap: 4rem;">
+        {% for event in events %}
+          {% if event.end_time < today %}
+          <div class="card mb-4">
+            <div class="card-inner">
+              <div class="card-front">
+                <div class="card-content">
+                  <p class="card-title">{{ event.title }} by {{ event.author }}</p>
+                </div>
+                <div class="card-time">
+                  <p>{{ event.start_time }} - {{ event.end_time }}</p>
+                </div>
+              </div>
+              <div class="card-back">
+                <div class="flex flex-col h-full">
+                  <div class="flex-grow overflow-y-auto p-4">
+                    <p>{{ event.description }}</p>
+                  </div>
+                  <div class="absolute top-0 right-0 flex items-center">  
+                    <button id="dropdownMenuIconHorizontalButton" data-dropdown-toggle="dropdownDotsHorizontal-{{event.pk}}" class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600" type="button"> 
+                      <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 3">
+                        <path d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/>
+                      </svg>
+                    </button>
+                  </div>
+                    <div id="dropdownDotsHorizontal-{{event.pk}}" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
+                      <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconHorizontalButton">
+                        <li>
+                          <a href="{% url 'edit_event' event.pk %}" class="block px-4 py-2 hover:bg-blue-100 dark:hover:bg-gray-600 dark:hover:text-blue">Edit</a>
+                        </li>
+                        <li>
+                          <a href="{% url 'delete_event' event.pk %}" class="block px-4 py-2 hover:bg-red-200 dark:hover:bg-red-600 dark:hover:text-red-500">Delete</a>
+                        </li> 
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <div class="events-container p-4 text-center ">
+    <div class="flex justify-end">
+      <ul class="event-list grid grid-cols-3 gap-16 justify-items-center mx-auto grid-gap: 4rem;">
+        {% for event in events %}
+          {% if event.end_time > today %}
+          <div class="card mb-4">
+            <div class="card-inner">
+              <div class="card-front">
+                <div class="card-content">
+                  <p class="card-title">{{ event.title }} by {{ event.author }}</p>
+                </div>
+                <div class="card-time">
+                  <p>{{ event.start_time }} - {{ event.end_time }}</p>
+                </div>
+              </div>
+              <div class="card-back">
+                <div class="flex flex-col h-full">
+                  <div class="flex-grow overflow-y-auto p-4">
+                    <p>{{ event.description }}</p>
+                  </div>
+                  <div class="absolute top-0 right-0 flex items-center">  
+                    <button id="dropdownMenuIconHorizontalButton" data-dropdown-toggle="dropdownDotsHorizontal-{{event.pk}}" class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600" type="button"> 
+                      <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 3">
+                        <path d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/>
+                      </svg>
+                    </button>
+                  </div>
+                    <div id="dropdownDotsHorizontal-{{event.pk}}" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
+                      <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconHorizontalButton">
+                        <li>
+                          <a href="{% url 'edit_event' event.pk %}" class="block px-4 py-2 hover:bg-blue-100 dark:hover:bg-gray-600 dark:hover:text-blue">Edit</a>
+                        </li>
+                        <li>
+                          <a href="{% url 'delete_event' event.pk %}" class="block px-4 py-2 hover:bg-red-200 dark:hover:bg-red-600 dark:hover:text-red-500">Delete</a>
+                        </li> 
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+</div>
+</body>
+</html>

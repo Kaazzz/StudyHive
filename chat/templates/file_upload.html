@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+  <title>File Upload</title>
+  <link href="{% static 'css/output.css' %}" rel="stylesheet">
+  <link href="{% static 'css/output.css' %}" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body class="bg-gray-100">
+  <header class="bg-yellow-300 shadow-md h-20">
+    <div class="container mx-auto px-6 py-4 flex items-center justify-between">
+        <h1 class="text-2xl font-bold python manage.py collectstatictext-black">StudyHive</h1>
+        <h2 class="text-xl font-medium mb-4">Welcome, {{ user.username }}</h2>
+    </div>
+  </header>
+
+  <div class="container mx-auto px-4 py-8 bg-gray-100">
+    <div class="bg-white shadow-md rounded-lg p-6">
+        <h2 class="text-xl font-bold mb-4">File Uploader</h2>
+
+        <form method="post" enctype="multipart/form-data" class="mb-4">
+          {% csrf_token %}
+      
+          <div class="mb-4">
+              <label for="id_file">File:</label>
+              <input type="file" name="file" id="id_file">
+          </div>
+      
+          <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-4">Upload</button>
+      </form>
+
+        <h2 class="text-xl font-bold mb-4">Uploaded Files</h2>
+        <ul class="list-disc pl-4 space-y-2">
+            {% for file in files %}
+            <li class="flex items-center justify-between">
+                <a href="{% url 'download_file' file.id %}" class="text-blue-500 hover:underline">
+                    {{ file.file.name }}
+                </a>
+                <div class="flex items-center space-x-2">
+                    <span class="text-gray-500 text-sm">Uploaded on {{ file.uploaded_at }}</span>
+                    <button type="button" class="bg-red-500 hover:bg-red-600 hover:scale-110 px-2 py-2" data-toggle="modal" data-target="#deleteModal-{{file.id}}">&#128465;</button>    
+                    <div class="modal" id="deleteModal-{{file.id}}">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+    
+                          <div class="modal-header">
+                            <h4 class="modal-title">Delete File?</h4>
+                            <button type="button" class="close hover:scale-110" data-dismiss="modal">&times;</button>
+                          </div>
+    
+                          <div class="modal-body">
+                            <p> Are you sure you want to delete the {{file.file.name}}?</p>
+                          </div>
+    
+                          <div class="modal-footer">
+                            <form action="{% url 'delete_file' file.id %}" method="post" class="inline-block">
+                              {% csrf_token %}
+                              <button type="submit" class="px-2 py-1 bg-red-500 text-white rounded-md hover:bg-red-700 hover:scale-110">Delete</button>
+                            </form>
+                            <button type="button" class="px-2 py-1 bg-gray-500 text-white rounded-md hover:bg-blue-700 hover:scale-110" data-dismiss="modal">Cancel</button>
+                          </div>
+    
+                        </div>
+                      </div>
+                    </div>
+                  
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+</body>
+</html>

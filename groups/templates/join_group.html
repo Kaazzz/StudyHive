@@ -5,38 +5,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/home_styles.css' %}">
     <title>Join a Study Group</title>
+    <link rel="stylesheet" href="{% static 'css/output.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body>
-    <header>
-        <div class="header-content">
-            <h1>StudyHive</h1>
-            <div class="user-info">
-                <span>Welcome, {{ user.username }}!</span>
-                <img src="{% static 'media/profile-pic.svg' %}" alt="Profile Picture" class="profile-pic">
-            </div>
-        </div>
-    </header>
 
-    <div class="sidebar">
-        <ul>
-            <li>My Groups</li>
-            <li>Messages</li>
-            <li>Calendar</li>
-            <li>About Us</li>
-            <li><a href="{% url 'logout' %}">Logout</a></li>
-        </ul>
-    </div>
+<body class = "m-0 p-0 bg-[#f7f7f7]" style="font-family: 'Poppins', sans-serif; transition: background-color 0.5s ease, color 0.5s ease;">
+    {% include 'header.html' %}
 
-    <main>
-        <form method="POST">
+    {% include 'sidebar.html' %}
+
+    <main style="margin-left: 220px; padding: 100px 30px 20px;">
+        <form method="POST" class="yellow-gradient p-6 rounded-lg shadow-md w-full max-w-lg mx-auto" style="margin-left: 220px;">
+            <h2 class="text-3xl font-semibold text-center">Join a Study Group</h2>    
+            <h3 class="text-2 font-semibold mb-6 text-center">via code</h3>        
             {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Join Group</button>
-        </form>
 
-        <p><a href="{% url 'home' %}">Back to Home</a></p>
+            <div class="mb-4">
+                <label for="id_group_code" class="block text-lg font-medium mb-2">Enter Group Code:</label>
+                <input type="text" name="group_code" maxlength="6" required="" id="id_group_code" style="background-color: #ececec;" required class="w-full px-4 py-2 border rounded-md">
+            </div>
+            
+            <button type="submit" class="w-full py-3 rounded-md"
+            onmouseover="this.style.background = 'linear-gradient(to left, #1A1A1B, #353437)'; this.style.color='white';" 
+            onmouseout="this.style.background ='linear-gradient(to right, #FFE03C, #E9B033)'; this.style.color='#1A1A1B';">Join Group</button>
+        
+            <a href="{% url 'home' %}"><button type="button" class="rounded-md"
+            onmouseover="this.style.fontWeight='bold';" 
+            onmouseout="this.style.fontWeight='normal';">Back</button></a>
+        </form>
+        <img src="{% static 'media/dark-mode-design1.svg' %}" id="mode-icon-design1" 
+            style="position: fixed; top: 50%; right: 20px; transform: translateY(-10%) translateX(5%); z-index: 9999; width: 30vw;">
     </main>
 </body>
 </html>

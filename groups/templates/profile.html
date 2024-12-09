@@ -1,0 +1,89 @@
+{% load static %}
+{% load static tailwind_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% comment %} <link href="{% static 'css/output.css' %}" rel="stylesheet"> {% endcomment %}
+    {% tailwind_css %}
+    <title>StudyHive - Profile</title>
+</head>
+<body class="bg-gray-100 font-sans">
+
+    <!-- Header -->
+    <header class="bg-yellow-300 shadow-md h-20">
+        <div class="container mx-auto px-6 py-4 flex items-center justify-between">
+            <h1 class="text-2xl font-bold text-black">StudyHive</h1>
+        </div>
+    </header>
+
+    <!-- Profile Section -->
+    <main class="container mx-auto mt-10">
+        <div class="bg-white shadow-md rounded-lg p-6 md:p-8 max-w-4xl mx-auto">
+            <!-- Profile Overview -->
+            <div class="flex items-center gap-4 mb-6"> <!-- Reduced gap to make it closer -->
+                <img 
+                    src="{% static 'media/profile-pic.svg' %}" 
+                    alt="Profile Picture" 
+                    class="w-12 h-12 rounded-full border-4 border-indigo-600" 
+                >
+                <div>
+                    <h2 class="text-2xl font-semibold">{{ user.username }}</h2>
+                    <p class="text-sm text-gray-600">Member since {{ user.date_joined|date:"F j, Y" }}</p>
+                    <p class="text-gray-600 mt-1">"You don't have a bio"</p>
+                </div>
+            </div>
+    
+            <!-- Profile Details -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Personal Info -->
+                <div class="bg-gray-50 rounded-lg shadow-sm p-4">
+                    <h3 class="text-lg font-medium text-gray-800 mb-3">Personal Information</h3>
+                    <p><strong>Email:</strong> {{ user.email }}</p>
+                    <p><strong>First Name:</strong> {{ user.first_name }}</p>
+                    <p><strong>Last Name:</strong> {{ user.last_name }}</p>
+                    <p><strong>Birthdate:</strong> {{ user.accounts_profile.birthday|date:"F j, Y" }}</p>
+                    <p><strong>Last Login:</strong> {{ user.last_login|date:"F j, Y" }}</p>
+                    <p><strong>Username:</strong> {{ user.username }}</p>
+                    <p class="mt-2 text-blue-600 font-medium hover:underline cursor-pointer">
+                    <a href="{% url 'edit_profile' %}">Edit Personal Info</a>
+                </div>
+    
+                <!-- Account Settings -->
+                <div class="bg-gray-50 rounded-lg shadow-sm p-4">
+                    <h3 class="text-lg font-medium text-gray-800 mb-3">Account Settings</h3>
+                    <p><strong>Password:</strong> ••••••••</p>
+                    <a href="{% url 'change_password' %}" class="mt-2 text-blue-600 font-medium hover:underline">Change Password</a>
+                    
+                </div>
+            </div>
+    
+            <!-- Activity Log -->
+            <div class="mt-8 bg-gray-50 rounded-lg shadow-sm p-4">
+                <h3 class="text-lg font-medium text-gray-800 mb-3">Recent Activity</h3>
+                <ul class="list-disc pl-5 text-gray-700">
+                    <li>Joined a study group: "Data Structures and Algorithms" (Nov 19, 2024)</li>
+                    <li>Posted a message in "Python Enthusiasts" group (Nov 18, 2024)</li>
+                    <li>Updated profile picture (Nov 15, 2024)</li>
+                </ul>
+                <a href="#" class="mt-4 text-blue-600 font-medium hover:underline">View All Activity</a>
+            </div>
+            <br>
+                <a href="{% url 'home' %}" class="inline-block text-blue-600 font-medium mb-4 hover:underline">
+                    ← Back to Home
+                </a>
+        </div>
+        
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-10 bg-gray-800 text-white py-4">
+        <div class="container mx-auto text-center text-sm">
+            © 2024 StudyHive. All rights reserved.
+        </div>
+    </footer>
+
+</body>
+</html>

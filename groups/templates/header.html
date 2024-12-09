@@ -1,0 +1,144 @@
+{% load static %}
+
+<style>
+    /* Custom Gradient Definitions */
+    .yellow-gradient {
+        background: linear-gradient(to right, #FFE03C, #E9B033);
+    }
+    .black-gradient {
+        background: linear-gradient(to left, #1A1A1B, #353437);
+    }
+
+    /* Tooltip base styles */
+    .tooltip-container {
+        position: relative;
+        display: inline-block;
+    }
+
+    .tooltip-text {
+        visibility: hidden; 
+        opacity: 0;
+        background-color: rgba(0, 0, 0, 0.8);
+        color: #fff; 
+        text-align: center;
+        border-radius: 4px;
+        padding: 5px 8px;
+        position: absolute;
+        bottom: -30px; 
+        left: 50%;
+        transform: translateX(-50%);
+        white-space: nowrap;
+        font-size: 0.75rem; 
+        z-index: 100;
+        transition: opacity 0.3s ease;
+    }
+
+    .tooltip-container:hover .tooltip-text {
+        visibility: visible;
+        opacity: 1;
+    }
+
+    .dark .searchButton,
+    .dark .filterSelect {
+        background-color: #f2d638;
+    }
+
+    .dark .tooltip-container:hover {
+        box-shadow: 0 4px 10px rgba(255, 0, 0, 0.3);
+    }
+</style>
+
+<header 
+    id="header"
+    class="yellow-gradient dark:bg-black-gradient h-20 p-[20px] fixed top-0 left-0 right-0 z-[1000] shadow-md transition-colors duration-300">
+    <div class="flex justify-between items-center h-full">
+        <div class="logo flex items-center gap-2 text-4xl font-bold text-gray-800 dark:text-white">
+            <img 
+                id="mode-icon-logo"
+                src="{% static 'media/logo.svg' %}" 
+                alt="StudyHive Logo" 
+                class="w-16 h-16 rounded-full object-cover">
+            <h1>StudyHive</h1>
+        </div>
+        
+        <div id="searchBar" class="flex items-center gap-2">
+            {% include 'search.html' %}
+        </div>
+        
+        <div class="flex items-center gap-x-6">
+            <div id="switchModeHome" class="tooltip-container flex cursor-pointer">
+                <img 
+                    id="mode-icon-home"
+                    src="{% static 'media/dark-mode-home.svg' %}" 
+                    class="w-12 h-12 rounded-full object-cover"
+                    style="transition: box-shadow 0.3s ease;" 
+                    onmouseover="this.style.boxShadow='0 4px 10px rgba(0, 0, 0, 0.2)';" 
+                    onmouseout="this.style.boxShadow='none';">
+                <span class="tooltip-text">Home</span>
+            </div>
+
+            <div id="switchModeMessage" class="tooltip-container flex cursor-pointer">
+                <img 
+                    id="mode-icon-message"
+                    src="{% static 'media/dark-mode-message.svg' %}" 
+                    class="w-12 h-12 rounded-full object-cover"
+                    style="transition: box-shadow 0.3s ease;" 
+                    onmouseover="this.style.boxShadow='0 4px 10px rgba(0, 0, 0, 0.2)';" 
+                    onmouseout="this.style.boxShadow='none';">
+                <span class="tooltip-text">Messages</span>
+            </div>
+
+            <div id="switchModeNotif" class="tooltip-container flex cursor-pointer">
+                <img 
+                    id="mode-icon-notif"
+                    src="{% static 'media/dark-mode-notif.svg' %}" 
+                    class="w-12 h-12 rounded-full object-cover"
+                    style="transition: box-shadow 0.3s ease;" 
+                    onmouseover="this.style.boxShadow='0 4px 10px rgba(0, 0, 0, 0.2)';" 
+                    onmouseout="this.style.boxShadow='none';">
+                <span class="tooltip-text">Notifications</span>    
+            </div>
+
+            <div id="switchMode" class="tooltip-container flex cursor-pointer">
+                <img 
+                    id="mode-icon-switch"
+                    src="{% static 'media/dark-mode-logo.svg' %}" 
+                    class="w-12 h-12 rounded-full object-cover"
+                    style="transition: box-shadow 0.3s ease;" 
+                    onmouseover="this.style.boxShadow='0 4px 10px rgba(0, 0, 0, 0.2)';" 
+                    onmouseout="this.style.boxShadow='none';">
+                <span class="tooltip-text">Dark Mode</span>
+            </div>
+            
+            <div class="tooltip-container flex cursor-pointer">
+                <img 
+                    src="{% static 'media/profile-pic.svg' %}" 
+                    alt="Profile Picture" 
+                    class="w-12 h-12 rounded-full object-cover cursor-pointer"
+                    onclick="window.location.href = '{% url 'profile' %}'">
+                <span class="tooltip-text">Profile</span>
+            </div>
+        </div>
+    </div>
+</header>
+
+<script>
+    const staticUrls = {
+        lightModeLogo: "{% static 'media/light-mode-logo.svg' %}",
+        lightModeHome: "{% static 'media/light-mode-home.svg' %}",
+        lightModeMessage: "{% static 'media/light-mode-message.svg' %}",
+        lightModeNotif: "{% static 'media/light-mode-notif.svg' %}",
+        logo: "{% static 'media/studyhive.png' %}",
+        darkModeLogo: "{% static 'media/dark-mode-logo.svg' %}",
+        darkModeHome: "{% static 'media/dark-mode-home.svg' %}",
+        darkModeMessage: "{% static 'media/dark-mode-message.svg' %}",
+        darkModeNotif: "{% static 'media/dark-mode-notif.svg' %}",
+        darkLogo: "{% static 'media/logo.svg' %}"
+    };
+</script>
+
+<script src="{% static 'scripts/scripts.js' %}"></script>
+
+{% comment %} <span class="mr-2 font-bold text-gray-800 dark:text-white text-base">
+    Welcome, {{ user.first_name }}!
+</span> {% endcomment %}

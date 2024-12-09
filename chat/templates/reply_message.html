@@ -1,0 +1,275 @@
+{% load static %}
+{% load custom_filters %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- <meta http-equiv="refresh" content="5"> --> <!-- refresh the website --> 
+  
+  <link href="{% static 'css/output.css' %}" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  
+</head>
+<body class="h-screen flex flex-col">
+  <header class="bg-yellow-300 shadow-md h-20">
+    <div class="container mx-auto px-6 py-4 flex items-center justify-between">
+        <h1 class="text-2xl font-bold python manage.py collectstatictext-black">StudyHive</h1>
+        <h2 class="text-xl font-medium mb-4">Welcome, {{ user.username }}</h2>
+    </div>
+  </header>
+  
+  <!-- <form action="{% url 'create_chat' %}" method="post" class="flex justify-end mr-4">
+    {% csrf_token %}
+    <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Create Chat Room</button>
+  </form> -->
+
+  {% if chats %}
+    <ul>
+      {% for chat in chats %}
+        {% if chat_id == chat.pk %}
+          <li>
+            <div class="h-grow first-letter:flex flex-col bg-gray-100">
+              <header class="p-4 flex items-center bg-white border-b border-gray-200">
+                  <div class="flex items-center flex-grow">
+                      <img src="user.jpg" alt="User Avatar" class="w-12 h-12 rounded-full mr-4">
+                      <div class="flex flex-col">
+                          <h2 class="text-lg font-semibold">
+                              {{ chat.title }}
+                          </h2>
+                      </div>
+                  </div>
+                  {% if chat.author == user %}
+                  <div class="flex justify-end">
+                    <a href="{% url 'edit_chat' chat.id %}" class="px-3 py-2 bg-green-500 text-white rounded hover:bg-green-700 focus:outline-none">Edit Chat_Room</a>
+                  </div>
+                  {% endif %}
+              </header>
+          </div>
+                  
+                    
+                {% if chat.comments.all %}
+                  <div class="flex flex-col max-h-[70%]">
+                    <div class="chat-container flex flex-col h-[62vh]">
+                      <ul class="chat-messages flex-grow overflow-y-auto p-4 h-70vh">
+                                     
+                        <script>
+                          function scrollToBottom() {
+                            const chatMessages = document.querySelector('.chat-messages');
+                            chatMessages.scrollTop = chatMessages.scrollHeight;
+                          }
+                          window.onload = scrollToBottom;
+                        </script>
+                            {% for comment in chat.comments.all %}
+                              <li>
+                                {% if comment.author == user %}
+                                  {% if comment.is_sent == True %}
+
+                                    <div class="flex-1 overflow-y-auto p-4 justify-start">
+                                      <div class="flex justify-end mb-4 relative">
+
+                                        <div class="flex justify-end mt-2">
+                                          <button id="dropdownMenuIconButton" data-dropdown-toggle="commentdropdownDots-{{comment.pk}}" class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600" type="button">
+                                            <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
+                                            <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/>
+                                            </svg>
+                                          </button>
+                                        </div>
+
+                                        {% if comment.is_reply == True %}
+                                        <div>
+                                          <div class="bg-gray-500 text-white p-3  rounded-3xl max-w-[500px] flex flex-col">
+                                            <div class="order-first">
+                                              <p>{{ comment.reply }}</p>
+                                              <p class="text-xs text-white">{{ comment.author.username }} on {{ comment.created_at }}</p>
+                                            </div>
+                                          </div>
+                                          <div class="bg-blue-500 text-white p-3 rounded-3xl max-w-[500px] flex flex-col">
+                                            <div class="order-first">
+                                              <p>{{ comment.text }}</p>
+                                              <p class="text-xs text-white">{{ comment.author.username }} on {{ comment.created_at }}</p>
+                                            </div>
+                                          </div>
+                                        </div>
+                                        {% else %}
+                                        <div class="bg-blue-500 text-white p-3 rounded-xl max-w-[500px] flex flex-col">
+                                          <div class="order-first">
+                                            <p>{{ comment.text }}</p>
+                                            <p class="text-xs text-white">{{ comment.author.username }} on {{ comment.created_at }}</p>
+                                          </div>
+                                        </div>
+                                        {% endif %}
+
+                                      </div>    
+                                      <div id="commentdropdownDots-{{comment.pk}}" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
+ 
+                                        <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconButton">
+                                          {% if now < comment.created_at %}
+                                          <li>
+                                            <a href="{% url 'edit_message' comment.pk chat.id %}" class="block px-4 py-2 hover:text-blue-500">Edit</a>       
+                                          </li>
+                                          {% endif %}
+                                          <li>
+                                            <a href="#" class="block px-4 py-2 hover:text-red-500"  data-toggle="modal" data-target="#messageModal-{{ comment.pk }}" data-chat-id="{{ chat.pk }}">Delete</a>
+                                          </li>
+                                          <li>
+                                            <a href="{% url 'reply_message' chat.id comment.pk %}" class="block px-4 py-2 hover:text-blue-500">Reply</a>
+                                          </li>
+                                        </ul>  
+                                      </div>
+                                    </div>  
+
+                                    <div class="modal" id="messageModal-{{ comment.pk }}">
+                                      <div class="modal-dialog">
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <h4 class="modal-title">Delete Comment?</h4>
+                                            <button type="button" class="close hover:scale-110" data-dismiss="modal">&times;</button>
+                                          </div>
+                                          <div class="modal-body">
+                                            <p> Are you sure you want to delete the comment?</p>
+                                            <p> {{comment.text}} </p>
+                                          </div>
+                                          <div class="modal-footer">
+                                            <form action="{% url 'delete_message' comment.pk chat.pk %}" method="post" class="inline-block">
+                                              {% csrf_token %}
+                                              <button type="submit" class="px-2 py-1 bg-red-500 text-white rounded-md hover:bg-red-700 hover:scale-110">Delete</button>
+                                            </form>
+                                            <button type="button" class="px-2 py-1 bg-gray-500 text-white rounded-md hover:bg-blue-700 hover:scale-110" data-dismiss="modal">Cancel</button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  {% else %}       
+                                    <div class="flex-1 overflow-y-auto p-4 justify-start">
+                                      <div class="flex justify-end mb-4 relative">
+                                        <div class="bg-blue-500 text-white  p-3 rounded-tr-none rounded-bl rounded-br-lg max-w-[500px] ">
+                                            <p class="italic">Unsent Message</p> 
+                                        </div>
+                                      </div>
+                                    </div>
+                                  {% endif %}
+
+                                {% else %}
+                                  {% if comment.is_sent == True %}
+                                    <div class="flex-1 overflow-y-auto p-4 justify-start">  
+                                      <div class="flex justify-start mb-4">
+
+  
+                                        {% if comment.is_reply == True %}
+                                        <div>
+                                          <div class="bg-gray-500 text-black p-3 rounded-3xl max-w-[500px]">
+                                            <p>{{ comment.reply }}</p>
+                                          </div>
+                                          <div class="bg-gray-300 text-black p-3 rounded-3xl  max-w-[500px] ">
+                                            <p>{{ comment.text }}</p>
+                                            <p class="text-xs text-gray-500">{{ comment.author.username }} on {{ comment.created_at }}</p>
+                                          </div>
+                                        </div>
+                                        {% else %}
+                                        <div class="bg-gray-300 text-black p-3 rounded-3xl  max-w-[500px] ">
+                                          <p>{{ comment.text }}</p>
+                                          <p class="text-xs text-gray-500">{{ comment.author.username }} on {{ comment.created_at }}</p>
+                                        </div>
+
+                                        {% endif %}
+
+
+                                        <div class="flex justify-end mt-2 ml-2">
+                                          <button id="dropdownMenuIconButton" data-dropdown-toggle="commentdropdownDots-{{comment.pk}}" class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600" type="button">
+                                            <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
+                                            <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/>
+                                            </svg>
+                                          </button>
+                                        </div>
+                                        <div id="commentdropdownDots-{{comment.pk}}" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
+                                          <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconButton">
+                                            
+                                            {% if comment.author == user %}
+                                            <li>
+                                              <a href="{% url 'edit_message' comment.pk chat.id %}" class="block px-4 py-2 hover:text-blue-500">Edit</a>
+                                            </li>
+                                            <li>
+                                              <a href="#" class="block px-4 py-2 hover:text-red-500"  data-toggle="modal" data-target="#messageModal-{{ comment.pk }}" data-chat-id="{{ chat.pk }}">Delete</a>
+                                            </li>
+                                            
+                                            {% endif %}
+                                              
+                                            <li>
+                                              <a href="{% url 'reply_message' chat.id comment.pk %}" class="block px-4 py-2 hover:text-blue-500">Reply</a>
+                                            </li>
+                                          </ul>  
+                                        </div>
+                                      </div>
+                                    </div>
+                                  {% else %}
+                                  <div class="flex-1 overflow-y-auto p-4 justify-start">  
+                                    <div class="flex justify-start mb-4">
+                                    <div>
+                                      <div class="bg-gray-300 text-gray p-3 rounded-xl max-w-[500px]">
+                                        <p class="italic">Unsent Message</p>                  
+                                      </div>
+                                    </div>
+                                    </div>
+                                  </div>
+                                  {% endif %}
+                                {% endif %}
+                                
+                              </li>
+                            {% endfor %}
+                          </ul>
+                        {% else %}
+                          <p class="text-sm text-gray-500 mt-2">No messages yet.</p>
+                        {% endif %}
+                  </div>
+
+                  <div class="h-14 w-w-90%">
+                    <form method="post">
+                    {% csrf_token %}
+                    <footer class="fixed bottom-0 w-full bg-white p-4 border-t border-gray-200 flex flex-col">
+                      <div class="flex justify-between">
+                        <div class="flex items-center mb-4">
+                          <p class="text-gray-700 dark:text-gray-300">Replied message to: {{reply.text}} </p>
+                        </div>
+                        <div class="flex items-center mb-4">
+                          <a href="{% url 'send_message' chat.pk %}" class="block px-4 py-2 hover:text-blue-500" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="false">Cancel</a>
+                        </div>
+                      </div>
+                      <div class="flex">
+                        <textarea id="id_text" name="text" name="text" placeholder="Type a message" rows="1" class="flex-grow border-gray-300 p-2 rounded-l-lg"></textarea>
+                        <button class="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-r-lg">Send</button>
+                      </div>
+                    </footer>
+                  </form> 
+              </div>
+            </div>
+
+          </li>
+        {% endif %}    
+      {% endfor %}
+    </ul>
+  {% else %}
+  <div class="flex justify-center items-center h-screen">
+  <form action="{% url 'create_chat' %}" method="post" class="flex justify-end mr-4">
+    {% csrf_token %}
+    <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Create Chat Room</button>
+  </form>
+    <p class="text-center text-gray-500 font-medium">Error: No Chats Found</p>
+  </div>
+  {% endif %}
+
+
+  
+</body>
+
+
+<script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+
+</html>

@@ -1,0 +1,253 @@
+{% comment %} {% extends 'base.html' %}
+
+{% block content %}
+    <h1>Join Requests for {{ group.group_name }}</h1>
+    <p>Description: {{ group.description }}</p>
+
+    <h2>Pending Join Requests</h2>
+    <ul>
+        {% for request in requests %}
+            <li>
+                <strong>{{ request.user.username }}</strong> 
+                has requested to join the group. 
+                <!-- Add additional information here, such as request date -->
+                <span>{{ request.date }}</span>
+                <a href="{% url 'accept_request' request.id %}">Accept</a>
+                <a href="{% url 'reject_request' request.id %}">Reject</a>
+            </li>
+        {% empty %}
+            <li>No pending requests.</li>
+        {% endfor %}
+    </ul>
+{% endblock %} {% endcomment %}
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ group.group_name }} - Requests</title>
+    <link rel="stylesheet" href="{% static 'css/output.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .thread-container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .post-header .name {
+            font-weight: bold;
+            color: #333;
+        }
+        .post-header .date {
+            font-size: 0.9em;
+            color: #666;
+        }
+        .post-content h3 {
+            margin: 0 0 10px 0;
+            color: #0056b3;
+        }
+        .post-content p {
+            margin: 0 0 15px 0;
+            color: #555;
+        }
+        .comment-section {
+            margin-top: 20px;
+        }
+        .comment-section h4 {
+            margin: 0 0 10px 0;
+            color: #333;
+        }
+        .comment-section textarea {
+            width: 100%;
+            height: 80px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            resize: none;
+        }
+        .comment-section button {
+            padding: 10px 15px;
+            background-color: #0056b3;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .comment-section button:hover {
+            background-color: #003f7f;
+        }
+    </style>
+</head>
+
+<body class = "m-0 p-0 bg-[#f7f7f7]" style="font-family: 'Poppins', sans-serif; transition: background-color 0.5s ease, color 0.5s ease;">
+    {% include 'header.html' %}
+
+    {% include 'sidebar.html' %}
+
+    <main style="margin-left: 220px; padding: 100px 30px 20px;">
+        {% include 'group_navbar.html' %}
+
+        <section class="requests">
+            <h1>Join Requests for {{ group.group_name }}</h1>
+
+            <!-- Pending Requests -->
+            <h2>Pending Join Requests</h2>
+            <ul id="join-requests-list">
+                {% for request in pending_requests %}
+                    <li id="request-{{ request.id }}">
+                        <strong>{{ request.user.username }}</strong> 
+                        has requested to join the group.
+                        <span>Requested on {{ request.date }}</span>
+                        <a href="#" 
+                            class="action-link" 
+                            data-url="{% url 'accept_request' group.unique_id request.join_request_id %}" 
+                            data-id="{{ request.id }}" 
+                            data-action="accept"><button id="btnRefresh">Accept</button></a>
+                        <a href="#" 
+                            class="action-link" 
+                            data-url="{% url 'reject_request' group.unique_id request.join_request_id %}" 
+                            data-id="{{ request.id }}" 
+                            data-action="reject"><button id="btnRefresh">Reject</button></a>
+                    </li>
+                {% empty %}
+                    <li>No pending requests.</li>
+                {% endfor %}
+                {% comment %} {% for request in pending_requests %}
+                    <li id="request-{{ request.id }}">
+                        <strong>{{ request.user.username }}</strong>
+                        has requested to join the group.
+                        <span>Requested on {{ request.date }}</span>
+
+                        <!-- Accept form -->
+                        <form action="{% url 'accept_request' group.unique_id request.join_request_id %}" method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit">Accept</button>
+                        </form>
+
+                        <!-- Reject form -->
+                        <form action="{% url 'reject_request' group.unique_id request.join_request_id %}" method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit">Reject</button>
+                        </form>
+                    </li>
+                {% empty %}
+                    <li>No pending requests.</li>
+                {% endfor %} {% endcomment %}
+            </ul>
+
+            <!-- Processed Requests -->
+            <h2>Join History</h2>
+            <ul>
+                {% for request in processed_requests %}
+                    <li>
+                        <strong>{{ request.user.first_name }} {{ request.user.last_name }}</strong> 
+                        {% if request.status == 'accepted' %}
+                            was <span style="color: green;">accepted</span>
+                        {% elif request.status == 'rejected' %}
+                            was <span style="color: red;">rejected</span>
+                        {% endif %}
+                        by {{ request.processed_by.first_name }} {{ request.processed_by.last_name }}
+                        on {{ request.processed_at|date:"F j, Y, g:i a" }}.
+                    </li>
+                {% empty %}
+                    <li>No processed requests yet.</li>
+                {% endfor %}
+            </ul>
+        </section>
+        
+
+
+    </main>
+</body>
+</html>
+
+<script>
+    const refreshBtn = document.getElementById("btnRefresh");
+
+    function handleClick() {
+    window.location.reload();
+    }
+
+    refreshBtn.addEventListener("click", handleClick);
+
+
+    // Handle click events on Accept/Reject links
+    document.addEventListener('DOMContentLoaded', function () {
+        const joinRequestsList = document.getElementById('join-requests-list');
+        
+        joinRequestsList.addEventListener('click', function (event) {
+            event.preventDefault();
+
+            // Check if the clicked element is an action link
+            const actionLink = event.target.closest('.action-link');
+            if (!actionLink) return;
+
+            const requestId = actionLink.dataset.id; // Get the join request ID
+            const actionUrl = actionLink.dataset.url; // Get the API endpoint
+            const actionType = actionLink.dataset.action; // Get the action (accept/reject)
+
+            // Send AJAX POST request
+            fetch(actionUrl, {
+                method: 'POST',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRFToken': getCookie('csrftoken') // CSRF token for Django
+                },
+                body: JSON.stringify({ action: actionType })
+            })
+            .then(response => {
+                // Log the raw response for debugging
+                console.log('Raw Response:', response);
+
+                if (!response.ok) {
+                    // Handle non-2xx status codes
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                return response.json(); // Parse JSON if response is OK
+            })
+            .then(data => {
+                console.log('Parsed Data:', data); // Debug the parsed JSON response
+
+                // Update the UI based on the response
+                const listItem = document.getElementById(`request-${requestId}`);
+                listItem.remove();
+                alert(data.message);
+            })
+            .catch(error => {
+                console.error('Error:', error); // Log detailed errors
+                alert(`Something went wrong: ${error.message}`);
+            });
+        });
+    });
+
+    // Helper function to get the CSRF token from cookies
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+</script>

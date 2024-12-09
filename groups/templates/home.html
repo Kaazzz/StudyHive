@@ -1,89 +1,68 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/home_styles.css' %}">
     <title>StudyHive - Study Groups</title>
-    <style>
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.5);
-        }
-
-        .modal-content {
-            background-color: white;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 60%;
-        }
-
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-        .close:hover, .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-    </style>
+    <link rel="stylesheet" href="{% static 'css/output.css' %}">
+    <link rel="stylesheet" href="/static/css/general.css?">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">    
 </head>
-<body>
-    <header>
-        <div class="header-content">
-            <h1>StudyHive</h1>
-            <div class="user-info">
-                <span>Welcome, {{ user.username }}!</span>
-                <img 
-                    src="{% static 'media/profile-pic.svg' %}" 
-                     alt="Profile Picture" 
-                    class="profile-pic w-10 h-10 rounded-full cursor-pointer"
-                    onclick="window.location.href='{% url 'profile' %}'">
+
+<body class = "m-0 p-0 bg-[#f7f7f7]" style="font-family: 'Poppins', sans-serif; transition: background-color 0.5s ease, color 0.5s ease;">
+    {% include 'header.html' %}
+
+    {% include 'sidebar.html' %}
+
+    <main style="margin-left: 220px; padding: 100px 30px 20px;">
+        <div class="join-or-create-container flex flex-col items-end relative space-y-2" style="position: relative; width: 240px; margin-left: auto;">
+            <!-- Dropdown Button -->
+            <button 
+                id="dropDownButton" 
+                class="rounded px-3 py-2 shadow yellow-gradient" 
+                style="width: 100%; color: #1A1A1B; text-align: center;"
+                onclick="toggleDropdown()"
+                onmouseover="this.style.background = 'linear-gradient(to left, #1A1A1B, #353437)'; this.style.color='white';" 
+                onmouseout="this.style.background ='linear-gradient(to right, #FFE03C, #E9B033)'; this.style.color='#1A1A1B';">
+                Join or create study group
+            </button>
+            <!-- Dropdown Menu -->
+            <div 
+                id="dropdownMenu" 
+                class="hidden absolute top-full shadow z-10 yellow-gradient"
+                style="width: inherit; color: #1A1A1B; display: none; right: 0; border-radius: 5px;">
+                <button 
+                    class="text-center transition rounded yellow-gradient" 
+                    onclick="window.location.href='{% url 'create_group' %}'"
+                    style="width: 100%; padding: 8px; border: none; text-align: center; right: 0; color: #1A1A1B;"
+                    onmouseover="this.style.background = 'linear-gradient(to left, #1A1A1B, #353437)'; this.style.color='white';" 
+                    onmouseout="this.style.background ='linear-gradient(to right, #FFE03C, #E9B033)'; this.style.color='#1A1A1B';">
+                    Create study group
+                </button>
+                <button 
+                    class="text-center transition rounded yellow-gradient" 
+                    onclick="window.location.href='{% url 'join_group' %}'"
+                    style="width: 100%; padding: 8px; border: none; text-align: center; right: 0; color: #1A1A1B;"
+                    onmouseover="this.style.background = 'linear-gradient(to left, #1A1A1B, #353437)'; this.style.color='white';" 
+                    onmouseout="this.style.background ='linear-gradient(to right, #FFE03C, #E9B033)'; this.style.color='#1A1A1B';">
+                    Join study group
+                </button>
             </div>
         </div>
-    </header>
 
-    {% comment %} Note: Might use a hyperlink for other pages of our web app {% endcomment %}
-    <div class="sidebar">
-        <ul>
-            <li>My Groups</li>
-            <li>Messages</li>
-            <li>Calendar</li>
-            <li>About Us</li>
-            <li><a href="{% url 'logout' %}">Logout</a></li>
-        </ul>
-    </div>
+        <!-- Results Section -->
+        {% comment %} <section class="group-grid mt-5">
+            <div id="resultsContainer" class="results-container"></div>
+        </section> {% endcomment %}
 
-    <main>
-        <div class="main-header">
-            <div class="user-menu">
-                <button class="dropdown-button" id="dropDownButton">Join or create study group</button>
-                <div class="dropdown-content" id="dropdownMenu">
-                    <button class="create-button" onclick="window.location.href='{% url 'create_group' %}'">Create study group</button>
-                    <button class="join-button" onclick="window.location.href='{% url 'join_group' %}'">Join study group</button>
-                </div>
-            </div>
-        </div>
+        <h2 class="text-2xl font-semibold mb-4">Study Groups</h2>
 
-        <h2>Study Groups</h2>
-        <section class="group-grid">
-            <h3>Your Created Groups</h3>
+        <section class="group-grid mb-8">
+            <h3 class="text-xl font-medium mb-4">Your Created Groups</h3>
             <div class="group-cards created-groups">
                 {% for group in created_groups %}
-                    <div class="group-card" 
+                    <div class="group-card bg-gray-100" 
                         data-id="{{ group.unique_id }}" 
                         data-name="{{ group.group_name }}" 
                         data-description="{{ group.description }}" 
@@ -92,9 +71,12 @@
                         data-members="{{ group.members.count }}" 
                         data-private="{{ group.is_private|yesno:'Yes,No' }}"
                         data-code="{{ group.unique_id }}">
-                        <h3>{{ group.group_name }}</h3>
-                        <p>Members: {{ group.members.count }}</p>
-                        <button class="enter-group-button">Enter</button>
+                        <h3 class="text-lg font-semibold mb-2 truncate">{{ group.group_name }}</h3>
+                        <p class="text-base truncate">Subject: {{ group.subject }}</p>
+                        <p class="text-sm">Members: {{ group.members.count }}</p>
+                        <p class="text-sm mb-2">Private: {{ group.is_private|yesno:'Yes,No' }}</p>
+                        <button class="enter-group-button border-none px-3 py-1 cursor-pointer rounded-md flex justify-center items-center mx-auto"
+                        onclick="redirectToGroupDashboard('{{ group.unique_id }}')">Enter</button>
                     </div>
                 {% empty %}
                     <p>No groups created yet. Why not create your own?</p>
@@ -102,11 +84,11 @@
             </div>
         </section>
 
-        <section class="group-grid">
-            <h3>Your Joined Groups</h3>
+        <section class="group-grid mb-8">
+            <h3 class="text-xl font-medium mb-4">Your Joined Groups</h3>
             <div class="group-cards joined-groups">
                 {% for group in joined_groups %}
-                    <div class="group-card" 
+                    <div class="group-card bg-gray-100" 
                         data-id="{{ group.unique_id }}" 
                         data-name="{{ group.group_name }}" 
                         data-description="{{ group.description }}" 
@@ -115,9 +97,13 @@
                         data-members="{{ group.members.count }}" 
                         data-private="{{ group.is_private|yesno:'Yes,No' }}"
                         data-code="{{ group.unique_id }}">
-                        <h3>{{ group.group_name }}</h3>
-                        <p>Members: {{ group.members.count }}</p>
-                        <button class="enter-group-button">Enter</button>
+                         <h3 class="text-lg font-semibold mb-2 truncate">{{ group.group_name }}</h3>
+                        <p class="text-base truncate">Subject: {{ group.subject }}</p>
+                        <p class="text-base truncate">Owner: {{ group.user.first_name }} {{ group.user.last_name }}</p>
+                        <p class="text-sm">Members: {{ group.members.count }}</p>
+                        <p class="text-sm mb-2">Private: {{ group.is_private|yesno:'Yes,No' }}</p>
+                        <button class="enter-group-button border-none px-3 py-1 cursor-pointer rounded-md flex justify-center items-center mx-auto"
+                        onclick="redirectToGroupDashboard('{{ group.unique_id }}')">Enter</button>
                     </div>
                 {% empty %}
                     <p>You haven't joined any groups yet.</p>
@@ -128,7 +114,7 @@
     </main>
 
     <!-- Modal Structure -->
-    <div id="groupModal" class="modal" style="display: none;">
+    {% comment %} <div id="groupModal" class="modal" style="display: none;">
         <div class="modal-content">
             <span class="close">&times;</span>
             <h2>Group Name: <span id="modalGroupName"></span></h2>
@@ -140,10 +126,11 @@
             <p>Code: <span id="modalCode"></span></p>
             <button id="enterGroupButton" onclick="enterGroup()">Enter Group</button>
         </div>
-    </div>
+    </div> {% endcomment %}
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Para sa dropdown sa join or create
             const joinGroupButton = document.getElementById('dropDownButton');
             const dropdownMenu = document.getElementById('dropdownMenu');
 
@@ -181,46 +168,18 @@
                 document.getElementById("modalCode").textContent = groupData.code;
                 modal.style.display = "block"; // Show the modal
             }
-
-            closeModal.onclick = function() {
-                modal.style.display = "none"; // Hide the modal
-            }
-
-            window.onclick = function(event) {
-                if (event.target == modal) {
-                    modal.style.display = "none"; // Hide the modal
-                }
-            }
-
-            const groupCards = document.querySelectorAll('.group-card');
-            groupCards.forEach(card => {
-                const enterButton = card.querySelector('.enter-group-button');
-                enterButton.addEventListener('click', function(event) {
-                    const groupData = {
-                        name: card.getAttribute('data-name'),
-                        description: card.getAttribute('data-description'),
-                        subject: card.getAttribute('data-subject'),
-                        creator: card.getAttribute('data-creator'),
-                        members: card.getAttribute('data-members'),
-                        private: card.getAttribute('data-private'),
-                        code: card.getAttribute('data-code'),
-                    };
-                    openModal(groupData);
-                    event.stopPropagation();
-                });
-            });
         });
 
-        const enterGroupButton = document.getElementById('enterGroupButton');
-            enterGroupButton.addEventListener('click', function() {
-                console.log("Enter Group button clicked!");
-            });
-
-        function enterGroup() {
-            const groupCode = document.getElementById('modalCode').textContent;
-            console.log("Group Code:", groupCode);
-            window.location.href = '/groups/' + encodeURIComponent(groupCode) + '/';
+        function redirectToGroupDashboard(groupCode) {
+            // Encode the groupCode to ensure it is URL-safe
+            const encodedGroupCode = encodeURIComponent(groupCode);
+            
+            // Generate the URL and redirect
+            window.location.href = `{% url 'group_dashboard' 'GROUP_CODE' %}`.replace('GROUP_CODE', encodedGroupCode);
         }
     </script>
 </body>
 </html>
+
+{% comment %} console.log("Group Code:", groupCode);
+window.location.href = '/groups/' + encodeURIComponent(groupCode) + '/'; {% endcomment %}

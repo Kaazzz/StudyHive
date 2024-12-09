@@ -1,0 +1,251 @@
+{% load static %}
+{% load static tailwind_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyHive - Study Groups</title>
+    {% comment %} <link rel="stylesheet" href="{% static 'css/home_styles.css' %}"> {% endcomment %}
+    {% comment %} <link rel="stylesheet" href="/static/css/home_styles.css?{% now "U" %}"/> {% endcomment %}
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">    
+    {% tailwind_css %}
+</head>
+
+<style>
+    .group-grid {
+        display: grid;
+        margin: 20px 0;
+        gap: 20px;  
+    }
+
+    .group-cards {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: flex-start;
+    }
+
+    .group-card {
+        flex: 1 1 250px;
+        max-width: 280px;
+        background-color: white;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        transition: transform 0.2s;
+        margin-bottom: 15px;
+    }
+
+    .group-card:hover {
+        transform: scale(1.05);
+        background-color: #fff1ab;
+    }
+
+    .group-card:hover .enter-group-button {
+        background-color: #ff9900; /* Color when hovering over the card */
+        color: #ffffff;
+    }
+</style>
+
+<body class = "m-0 p-0 bg-[#f7f7f7]" style="font-family: 'Poppins', sans-serif; transition: background-color 0.5s ease, color 0.5s ease;">
+    {% include 'header.html' %}
+
+    {% include 'sidebar.html' %}
+
+    <main style="margin-left: 220px; padding: 100px 30px 20px;">
+        <div class="join-or-create-container flex flex-col items-end relative space-y-2" style="position: relative; width: 240px; margin-left: auto;">
+            <!-- Dropdown Button -->
+            <button 
+                id="dropDownButton" 
+                class="rounded px-3 py-2 shadow" 
+                style="width: 100%; background-color: #E9B033; color: #1A1A1B; text-align: center;"
+                onclick="toggleDropdown()">
+                Join or create study group
+            </button>
+            <!-- Dropdown Menu -->
+            <div 
+                id="dropdownMenu" 
+                class="hidden absolute top-full shadow z-10"
+                style="width: inherit; background-color: #E9B033; color: #1A1A1B; display: none; right: 0; border-radius: 5px;">
+                <button 
+                    class="text-center transition rounded" 
+                    onclick="window.location.href='{% url 'create_group' %}'"
+                    style="width: 100%; background-color: #E9B033; padding: 8px; border: none; text-align: center; right: 0; color: #1A1A1B;"
+                    onmouseover="this.style.backgroundColor='#010600'; this.style.color='white';" 
+                    onmouseout="this.style.backgroundColor='#E9B033'; this.style.color='#1A1A1B';">
+                    Create study group
+                </button>
+                <button 
+                    class="text-center transition rounded" 
+                    onclick="window.location.href='{% url 'join_group' %}'"
+                    style="width: 100%; background-color: #E9B033; padding: 8px; border: none; text-align: center; right: 0; color: #1A1A1B;"
+                    onmouseover="this.style.backgroundColor='#010600'; this.style.color='white';" 
+                    onmouseout="this.style.backgroundColor='#E9B033'; this.style.color='#1A1A1B';">
+                    Join study group
+                </button>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        {% comment %} <section class="group-grid mt-5">
+            <div id="resultsContainer" class="results-container"></div>
+        </section> {% endcomment %}
+
+        <h2 class="text-2xl font-semibold mb-4">Study Groups</h2>
+
+        <section class="group-grid mb-8">
+            <h3 class="text-xl font-medium mb-4">Your Created Groups</h3>
+            <div class="group-cards created-groups">
+                {% for group in created_groups %}
+                    <div class="group-card" 
+                        data-id="{{ group.unique_id }}" 
+                        data-name="{{ group.group_name }}" 
+                        data-description="{{ group.description }}" 
+                        data-subject="{{ group.subject }}" 
+                        data-creator="{{ group.user.username }}" 
+                        data-members="{{ group.members.count }}" 
+                        data-private="{{ group.is_private|yesno:'Yes,No' }}"
+                        data-code="{{ group.unique_id }}">
+                        <h3 class="text-lg font-semibold mb-2 truncate">{{ group.group_name }}</h3>
+                        <p class="text-base truncate">Subject: {{ group.subject }}</p>
+                        <p class="text-sm mb-2">Members: {{ group.members.count }}</p>
+                        <button class="enter-group-button border-none px-3 py-1 cursor-pointer rounded-md flex justify-center items-center mx-auto">Enter</button>
+                    </div>
+                {% empty %}
+                    <p>No groups created yet. Why not create your own?</p>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="group-grid mb-8">
+            <h3 class="text-xl font-medium mb-4">Your Joined Groups</h3>
+            <div class="group-cards joined-groups">
+                {% for group in joined_groups %}
+                    <div class="group-card" 
+                        data-id="{{ group.unique_id }}" 
+                        data-name="{{ group.group_name }}" 
+                        data-description="{{ group.description }}" 
+                        data-subject="{{ group.subject }}" 
+                        data-creator="{{ group.user.username }}" 
+                        data-members="{{ group.members.count }}" 
+                        data-private="{{ group.is_private|yesno:'Yes,No' }}"
+                        data-code="{{ group.unique_id }}">
+                         <h3 class="text-lg font-semibold mb-2 truncate">{{ group.group_name }}</h3>
+                        <p class="text-base truncate">Subject: {{ group.subject }}</p>
+                        <p class="text-base truncate">Owner: {{ group.user.first_name }} {{ group.user.last_name }}</p>
+                        <p class="text-sm mb-2">Members: {{ group.members.count }}</p>
+                        <button class="enter-group-button border-none px-3 py-1 cursor-pointer rounded-md flex justify-center items-center mx-auto">Enter</button>
+                    </div>
+                {% empty %}
+                    <p>You haven't joined any groups yet.</p>
+                {% endfor %}
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modal Structure -->
+    {% comment %} <div id="groupModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Group Name: <span id="modalGroupName"></span></h2>
+            <p>Description: <span id="modalDescription"></span></p>
+            <p>Subject: <span id="modalSubject"></span></p>
+            <p>Creator: <span id="modalCreator"></span></p>
+            <p>Members: <span id="modalMembers"></span></p>
+            <p>Private: <span id="modalPrivate"></span></p>
+            <p>Code: <span id="modalCode"></span></p>
+            <button id="enterGroupButton" onclick="enterGroup()">Enter Group</button>
+        </div>
+    </div> {% endcomment %}
+
+    <script src="{% static 'scripts/scripts.js' %}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Para sa dropdown sa join or create
+            const joinGroupButton = document.getElementById('dropDownButton');
+            const dropdownMenu = document.getElementById('dropdownMenu');
+
+            joinGroupButton.addEventListener('click', (event) => {
+                console.log("Join Group Button clicked"); // Log when the button is clicked
+                dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+                event.stopPropagation();
+            });
+
+            // Hide dropdown when clicking outside of the dropdown or button
+            document.addEventListener('click', (event) => {
+                if (!dropdownMenu.contains(event.target) && !joinGroupButton.contains(event.target)) {
+                    console.log("Click detected outside of dropdown, hiding dropdown"); // Log when clicking outside
+                    dropdownMenu.style.display = 'none';
+                }
+            });
+
+            window.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape' && modal.style.display === 'block') {
+                    modal.style.display = "none"; // Hide the modal
+                }
+            });
+            
+            // Modal functionality for group cards
+            
+            const modal = document.getElementById("groupModal");
+            const closeModal = document.getElementsByClassName("close")[0];
+
+            function openModal(groupData) {
+                document.getElementById("modalGroupName").textContent = groupData.name;
+                document.getElementById("modalDescription").textContent = groupData.description;
+                document.getElementById("modalSubject").textContent = groupData.subject;
+                document.getElementById("modalCreator").textContent = groupData.creator;
+                document.getElementById("modalMembers").textContent = groupData.members;
+                document.getElementById("modalPrivate").textContent = groupData.private;
+                document.getElementById("modalCode").textContent = groupData.code;
+                modal.style.display = "block"; // Show the modal
+            }
+
+            closeModal.onclick = function() {
+                modal.style.display = "none"; // Hide the modal
+            }
+
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none"; // Hide the modal
+                }
+            }
+
+            const groupCards = document.querySelectorAll('.group-card');
+            groupCards.forEach(card => {
+                const enterButton = card.querySelector('.enter-group-button');
+                enterButton.addEventListener('click', function(event) {
+                    const groupData = {
+                        name: card.getAttribute('data-name'),
+                        description: card.getAttribute('data-description'),
+                        subject: card.getAttribute('data-subject'),
+                        creator: card.getAttribute('data-creator'),
+                        members: card.getAttribute('data-members'),
+                        private: card.getAttribute('data-private'),
+                        code: card.getAttribute('data-code'),
+                    };
+                    openModal(groupData);
+                    event.stopPropagation();
+                });
+            });
+        });
+
+        const enterGroupButton = document.getElementById('enterGroupButton');
+            enterGroupButton.addEventListener('click', function() {
+                console.log("Enter Group button clicked!");
+            });
+
+        function enterGroup() {
+            const groupCode = document.getElementById('modalCode').textContent;
+            window.location.href = `{% url 'group_dashboard' 'GROUP_CODE' %}`.replace('GROUP_CODE', encodeURIComponent(groupCode));
+        }
+    </script>
+</body>
+</html>
+
+{% comment %} console.log("Group Code:", groupCode);
+window.location.href = '/groups/' + encodeURIComponent(groupCode) + '/'; {% endcomment %}

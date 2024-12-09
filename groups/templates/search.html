@@ -1,0 +1,31 @@
+{% load static %}
+
+<div id="search-container" class="flex items-center rounded-md px-2" style="background-color: #ececec;">
+    <input 
+        type="text" 
+        id="searchInput" 
+        class="p-2 text-base border-none rounded-md flex-1 outline-none mr-2 focus:outline-none focus:ring-0 focus:border-none"
+        style="outline: none; box-shadow: none; background-color: transparent;"
+        placeholder="Search Groups" 
+    />
+    <select 
+        id="filterSelect"
+        class="px-3 py-1 text-sm border border-gray-300 rounded-md black-gradient text-white ml-4 focus:outline-none focus:ring-0 focus:border-none"
+        style="outline: none; box-shadow: none;" 
+    >
+        <option value="all">All</option>
+        <option value="group">Group</option>
+        <option value="member">Member</option>
+        <option value="subject">Subject</option>
+    </select>
+</div>
+
+<button 
+    class="px-3 py-1 ml-2 text-base black-gradient text-white border-none rounded-md cursor-pointer"
+    id="searchButton">
+    Search
+</button>
+
+<div id="resultsContainer" class="results-container"></div>
+
+<script src="{% static 'scripts/search_groups.js' %}"></script>

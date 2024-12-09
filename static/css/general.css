@@ -1,0 +1,80 @@
+.yellow-gradient {
+    background: linear-gradient(to right, #FFE03C, #E9B033);
+}
+
+.black-gradient {
+    background: linear-gradient(to left, #1A1A1B, #353437);
+}
+
+.group-grid {
+    display: grid;
+    margin: 20px 0;
+    gap: 20px;  
+}
+
+.group-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: flex-start;
+}
+
+.group-card {
+    flex: 1 1 250px;
+    max-width: 280px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+    margin-bottom: 15px;
+}
+
+.group-card:hover {
+    transform: scale(1.05);
+    background: linear-gradient(to right, #FFE03C, #E9B033);
+}
+
+.group-card:hover .enter-group-button {
+    background: linear-gradient(to left, #1A1A1B, #353437);
+    color: #ffffff;
+}
+
+/* Tooltip base styles */
+.tooltip-container {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip-text {
+    visibility: hidden; 
+    opacity: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff; 
+    text-align: center;
+    border-radius: 4px;
+    padding: 5px 8px;
+    position: absolute;
+    bottom: -30px; 
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    font-size: 0.75rem; 
+    z-index: 100;
+    transition: opacity 0.3s ease;
+}
+
+.tooltip-container:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
+.dark .searchButton,
+.dark .filterSelect {
+    background-color: #f2d638;
+}
+
+.dark .tooltip-container:hover {
+    box-shadow: 0 4px 10px rgba(255, 0, 0, 0.3);
+}

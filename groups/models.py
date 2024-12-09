@@ -4,7 +4,8 @@ import random
 import string
 
 class StudyGroup(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, related_name='created_groups') # accept sag null kay daghan arte
+    group_id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, related_name='created_groups') # creator_id
     group_name = models.CharField(max_length=100)
     subject = models.CharField(max_length=100, default="General")  # Default subject
     description = models.TextField()
@@ -28,10 +29,43 @@ class StudyGroup(models.Model):
     def __str__(self):
         return self.group_name
     
-
     class Profile(models.Model):
         user = models.OneToOneField(User, on_delete=models.CASCADE)
         birthday = models.DateField(null=True, blank=True)
 
     def __str__(self):
         return f"{self.user.username}'s Profile"
+
+class JoinRequest(models.Model):
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('accepted', 'Accepted'),
+        ('rejected', 'Rejected'),
+    ]
+
+    join_request_id = models.AutoField(primary_key=True)  # Auto-incrementing ID for the request
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='join_requests')  # The user requesting to join
+    group = models.ForeignKey(StudyGroup, on_delete=models.CASCADE, related_name='join_requests')  # The group being joined
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')  # Status of the request
+    processed_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, related_name='processed_requests')  # Admin who processed the request
+    processed_at = models.DateTimeField(null=True, blank=True)
+
+    def __str__(self):
+        return f"Request {self.join_request_id} - {self.user.username} to {self.group.group_name}"
+    
+class DiscussionThread(models.Model):
+    discussion_id = models.AutoField(primary_key=True)
+    group_id = models.ForeignKey(StudyGroup, on_delete=models.CASCADE, related_name='discussion_thread')
+    session_date = models.DateTimeField(null=True, blank=True)
+    topic = models.CharField(max_length=100, default="General")
+    description = models.TextField(null=True)
+
+class Comment(models.Model):
+    comment_id = models.AutoField(primary_key=True)
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comment')
+    discussion_id = models.ForeignKey(DiscussionThread, on_delete=models.CASCADE, related_name='comment')
+    topic = models.CharField(max_length=100, default="General")
+    description = models.TextField(null=True)
+    timestamp = models.DateTimeField(null=True)
+
+

@@ -1,0 +1,219 @@
+{% load static %}
+{% load static tailwind_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyHive - Study Groups</title>
+    {% comment %} <link href="{% static 'css/output.css' %}" rel="stylesheet"> {% endcomment %}
+    {% comment %} <link rel="stylesheet" href="{% static 'css/home_styles.css' %}"> {% endcomment %}
+    {% comment %} <link rel="stylesheet" href="/static/css/home_styles.css?{% now "U" %}"/> {% endcomment %}
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">    
+    {% tailwind_css %}
+</head>
+
+<script src="{% static 'scripts/scripts.js' %}"></script>
+
+<body class = "m-0 p-0 bg-[#f7f7f7] dark:bg-black" style="font-family: 'Poppins', sans-serif;">
+    {% include 'header.html' %}
+
+    {% include 'sidebar.html' %}
+
+    <main>
+        <div class="main-header">
+            <div class="join-or-create-container">
+                <button class="dropdown-button" id="dropDownButton">Join or create study group</button>
+                <div class="dropdown-content" id="dropdownMenu">
+                    <button class="create-button" onclick="window.location.href='{% url 'create_group' %}'">Create study group</button>
+                    <button class="join-button" onclick="window.location.href='{% url 'join_group' %}'">Join study group</button>
+                </div>
+            </div>
+            {% comment %} search bar {% endcomment %}
+            {% include 'search.html' %}
+            {% comment %} <div class="search-container">
+                <h2>Group Discovery</h2>
+                <input type="text" id="searchInput" placeholder="Search..." />
+                <select id="filterSelect">
+                    <option value="all">All</option>
+                    <option value="group">Group</option>
+                    <option value="member">Member</option>
+                    <option value="subject">Subject</option>
+                </select>
+                <button id="searchButton">Search</button>
+            </div> {% endcomment %}
+            {% comment %} Results {% endcomment %}
+            {% comment %} <div id="resultsContainer" class="results-container">
+                {% if query %}
+                    <h2>Results for "{{ query }}"</h2>
+                {% else %}
+                    <h2>Search for a group</h2>
+                {% endif %}
+                
+                {% if results %}
+                    {% for group in results %}
+                        <div class="result-item">
+                            <h3>{{ group.group_name }}</h3>
+                            <p>Subject: {{ group.subject }}</p>
+                            <p>Members: {{ group.members.count }}</p>
+                            <button onclick="window.location.href='{% url 'group_dashboard' group.unique_id %}'">View Group</button>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>No results found.</p>
+                {% endif %}
+            </div> {% endcomment %}
+            <section class="group-grid">
+                <div id="resultsContainer" class="results-container"></div>
+            </section>
+        </div>
+
+        <h2>Study Groups</h2>
+        <section class="group-grid">
+            <h3>Your Created Groups</h3>
+            <div class="group-cards created-groups">
+                {% for group in created_groups %}
+                    <div class="group-card" 
+                        data-id="{{ group.unique_id }}" 
+                        data-name="{{ group.group_name }}" 
+                        data-description="{{ group.description }}" 
+                        data-subject="{{ group.subject }}" 
+                        data-creator="{{ group.user.username }}" 
+                        data-members="{{ group.members.count }}" 
+                        data-private="{{ group.is_private|yesno:'Yes,No' }}"
+                        data-code="{{ group.unique_id }}">
+                        <h3>{{ group.group_name }}</h3>
+                        <p>Members: {{ group.members.count }}</p>
+                        <button class="enter-group-button">Enter</button>
+                    </div>
+                {% empty %}
+                    <p>No groups created yet. Why not create your own?</p>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="group-grid">
+            <h3>Your Joined Groups</h3>
+            <div class="group-cards joined-groups">
+                {% for group in joined_groups %}
+                    <div class="group-card" 
+                        data-id="{{ group.unique_id }}" 
+                        data-name="{{ group.group_name }}" 
+                        data-description="{{ group.description }}" 
+                        data-subject="{{ group.subject }}" 
+                        data-creator="{{ group.user.username }}" 
+                        data-members="{{ group.members.count }}" 
+                        data-private="{{ group.is_private|yesno:'Yes,No' }}"
+                        data-code="{{ group.unique_id }}">
+                        <h3>{{ group.group_name }}</h3>
+                        <p>Members: {{ group.members.count }}</p>
+                        <button class="enter-group-button">Enter</button>
+                    </div>
+                {% empty %}
+                    <p>You haven't joined any groups yet.</p>
+                {% endfor %}
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modal Structure -->
+    <div id="groupModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Group Name: <span id="modalGroupName"></span></h2>
+            <p>Description: <span id="modalDescription"></span></p>
+            <p>Subject: <span id="modalSubject"></span></p>
+            <p>Creator: <span id="modalCreator"></span></p>
+            <p>Members: <span id="modalMembers"></span></p>
+            <p>Private: <span id="modalPrivate"></span></p>
+            <p>Code: <span id="modalCode"></span></p>
+            <button id="enterGroupButton" onclick="enterGroup()">Enter Group</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const joinGroupButton = document.getElementById('dropDownButton');
+            const dropdownMenu = document.getElementById('dropdownMenu');
+
+            joinGroupButton.addEventListener('click', (event) => {
+                console.log("Join Group Button clicked"); // Log when the button is clicked
+                dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+                event.stopPropagation();
+            });
+
+            // Hide dropdown when clicking outside of the dropdown or button
+            document.addEventListener('click', (event) => {
+                if (!dropdownMenu.contains(event.target) && !joinGroupButton.contains(event.target)) {
+                    console.log("Click detected outside of dropdown, hiding dropdown"); // Log when clicking outside
+                    dropdownMenu.style.display = 'none';
+                }
+            });
+
+            window.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape' && modal.style.display === 'block') {
+                    modal.style.display = "none"; // Hide the modal
+                }
+            });
+
+            // Modal functionality for group cards
+            const modal = document.getElementById("groupModal");
+            const closeModal = document.getElementsByClassName("close")[0];
+
+            function openModal(groupData) {
+                document.getElementById("modalGroupName").textContent = groupData.name;
+                document.getElementById("modalDescription").textContent = groupData.description;
+                document.getElementById("modalSubject").textContent = groupData.subject;
+                document.getElementById("modalCreator").textContent = groupData.creator;
+                document.getElementById("modalMembers").textContent = groupData.members;
+                document.getElementById("modalPrivate").textContent = groupData.private;
+                document.getElementById("modalCode").textContent = groupData.code;
+                modal.style.display = "block"; // Show the modal
+            }
+
+            closeModal.onclick = function() {
+                modal.style.display = "none"; // Hide the modal
+            }
+
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none"; // Hide the modal
+                }
+            }
+
+            const groupCards = document.querySelectorAll('.group-card');
+            groupCards.forEach(card => {
+                const enterButton = card.querySelector('.enter-group-button');
+                enterButton.addEventListener('click', function(event) {
+                    const groupData = {
+                        name: card.getAttribute('data-name'),
+                        description: card.getAttribute('data-description'),
+                        subject: card.getAttribute('data-subject'),
+                        creator: card.getAttribute('data-creator'),
+                        members: card.getAttribute('data-members'),
+                        private: card.getAttribute('data-private'),
+                        code: card.getAttribute('data-code'),
+                    };
+                    openModal(groupData);
+                    event.stopPropagation();
+                });
+            });
+        });
+
+        const enterGroupButton = document.getElementById('enterGroupButton');
+            enterGroupButton.addEventListener('click', function() {
+                console.log("Enter Group button clicked!");
+            });
+
+        function enterGroup() {
+            const groupCode = document.getElementById('modalCode').textContent;
+            window.location.href = `{% url 'group_dashboard' 'GROUP_CODE' %}`.replace('GROUP_CODE', encodeURIComponent(groupCode));
+        }
+    </script>
+</body>
+</html>
+
+{% comment %} console.log("Group Code:", groupCode);
+window.location.href = '/groups/' + encodeURIComponent(groupCode) + '/'; {% endcomment %}

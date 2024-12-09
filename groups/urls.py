@@ -9,4 +9,11 @@ urlpatterns = [
     path('groups/<str:unique_id>/', views.group_dashboard, name='group_dashboard'),
     path('profile/', profile_view, name='profile'),
     
+    path('search_groups/', views.search_groups, name='search_groups'),
+    path('request-join/', views.request_join, name='request_join'),
+    path('group/<str:unique_id>/requests/', views.group_requests, name='group_requests'),
+    path('group/<str:unique_id>/accept_request/<int:join_request_id>/', views.accept_request, name='accept_request'),
+    path('group/<str:unique_id>/reject_request/<int:join_request_id>/', views.reject_request, name='reject_request'),
+    path('group/<str:unique_id>/create_thread/', views.create_discussion_thread, name='create_discussion_thread'),
+    path('thread/<int:thread_id>/add_comment/', views.add_comment, name='add_comment'),
 ]
