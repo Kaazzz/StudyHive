@@ -4,8 +4,8 @@ A web app designed to help students find, form, and manage study groups.
 ## Acknowledgement  
 This project is developed by:  
 - Zak Floreta (https://github.com/kaazzz)  
-- Francis Benedict Chavez (https://github.com/member1)  
-- Kent Virgil Espia (https://github.com/member2)  
+- Francis Benedict Chavez (https://github.com/FBChavez)  
+- Kent Virgil Espia (https://github.com/Aipse-bot)  
 
 ---
 
