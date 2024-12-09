@@ -21,39 +21,43 @@ This platform is designed to address the challenges of coordination and communic
 
 StudyHive simplifies study group management by offering a range of features to facilitate group formation, communication, and academic collaboration.  
 
-### Core Features:  
-1. **User Registration & Login:**  
-   - Easy sign-up process with email and password.  
-   - Secure user authentication to access group coordination features.  
+## Core Features  
 
-2. **Study Group Creation & Joining:**  
-   - Users can create study groups and invite others or search for existing groups to join based on topics, courses, or interests.  
+StudyHive offers a robust set of features to streamline group collaboration and enhance the learning experience:  
 
-3. **Group Management Tools:**  
-   - Organize and schedule group study sessions.  
-   - Share study materials and set group goals.  
+1. **User Registration & Authentication:**  
+   Secure account creation and management with email verification for password recovery.  
 
-4. **Messaging System:**  
-   - Dedicated group chats for seamless communication among members.  
+2. **Study Group Formation & Management:**  
+   Easily create and manage study groups, invite members, and control group privacy settings.  
 
-5. **Calendar Integration:**  
-   - Schedule and track study sessions directly within the platform.  
+3. **Integrated Scheduling & Calendar Tools:**  
+   Plan study sessions, view group calendars, and sync schedules with external calendars.  
 
-6. **Member Progress Tracking:**  
-   - Track individual and group milestones, fostering accountability and motivation.  
+4. **Real-Time Communication:**  
+   Engage in group discussions with an integrated chat system, threaded discussions, and file sharing.  
+
+5. **Resource Sharing:**  
+   Upload, categorize, and search for study materials within a shared group repository.  
+
+6. **Group Discovery:**  
+   Search for and join public or private groups based on subject, course, or interests.  
+
+7. **Notifications System:**  
+   Stay updated with notifications for upcoming sessions, group updates, and messages.  
 
 ---
 
 ## III. Functional Requirements  
 
-### 2.1 User Registration and Authentication  
+### 3.1 User Registration and Authentication  
 
 - Users can create an account by providing their name, email address, and password.  
 - Users can log in to the system using their registered email and password.  
 - Users can reset their password if forgotten via email verification.  
 - The system must validate the uniqueness of the email address during registration.  
 
-### 2.2 Group Formation and Management  
+### 3.2 Group Formation and Management  
 
 - Users can create a new study group by providing a group name, subject, and description.  
 - Users can invite other registered users to join their study group.  
@@ -61,28 +65,28 @@ StudyHive simplifies study group management by offering a range of features to f
 - Group creators can remove members from the study group.  
 - The system should provide an option to set the study group as public or private.  
 
-### 2.3 Scheduling and Calendar Integration  
+### 3.3 Scheduling and Calendar Integration  
 
 - Users can propose study session times that are visible to all group members.  
 - Users can view a calendar displaying all upcoming study sessions.  
 - Users can synchronize scheduled study sessions with their personal calendars (e.g., Google Calendar).  
 - Group members receive notifications about upcoming study sessions.  
 
-### 2.4 Communication Tools  
+### 3.4 Communication Tools  
 
 - Users can send messages within their study group through an integrated chat system.  
 - Users can create discussion threads on specific topics within the group.  
 - Users receive notifications for new messages and discussion updates.  
 - The chat system must support file sharing (e.g., PDFs, images).  
 
-### 2.5 Resource Sharing  
+### 3.5 Resource Sharing  
 
 - Users can upload and share files such as notes, presentations, and links within their study group.  
 - Users can organize shared files into folders or categories.  
 - Users can search for specific files within the group's shared resources.  
 - Users can download shared resources for offline use.  
 
-### 2.6 Study Group Discovery  
+### 3.6 Study Group Discovery  
 
 - Users can search for study groups by subject, course, or keywords.  
 - Users can view detailed information about a study group, including the list of members and upcoming sessions.  
