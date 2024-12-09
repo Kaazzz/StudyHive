@@ -41,7 +41,7 @@ def upcoming_event_list(request):
     return render(request, 'upcoming_event_list.html', {'events': events,'user': request.user,'today': today} )
 
 @login_required
-def past_event_list(request):
+def calendar_management(request):
     events = CalendarEvent.objects.all()
     today = timezone.now()  # Format the date as needed
     now = timezone.now()
@@ -53,11 +53,11 @@ def past_event_list(request):
             event.author = request.user
             event.save()
             # Handle successful form submission, e.g., redirect
-            return redirect('attended_event')
+            return redirect('calendar_management')
     else:
         form = CalendarEventForm()
 
-    return render(request, 'past_event_list.html', {'form': form, 'events': events,'user': request.user,'today': today} )
+    return render(request, 'calendar_management.html', {'form': form, 'events': events,'user': request.user,'today': today} )
 
 @login_required
 def attended_event_list(request):
