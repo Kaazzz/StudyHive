@@ -1,0 +1,37 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <link href="{% static 'css/output.css' %}" rel="stylesheet">
+  <title>Create Post</title>
+</head>
+<body class="bg-gray-100 font-sans">
+  <header class="bg-yellow-300 shadow-md h-20">
+    <div class="container mx-auto px-6 py-4 flex items-center justify-between">
+        <h1 class="text-2xl font-bold python manage.py collectstatictext-black">StudyHive</h1>
+        <h2 class="text-xl font-medium mb-4">Welcome, {{ user.username }}</h2>
+    </div>
+  </header>
+  <div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold text-center mb-8">Create a New Post</h1>
+
+    <form method="post" class="bg-white shadow-md rounded-md p-8">
+      {% csrf_token %}
+      <div class="mb-4">
+        <label for="id_title" class="block text-sm font-medium text-gray-700">Title</label>
+        <input type="text" id="id_title" name="title" class="mt-1 block w-full border border-gray-300 rounded-md bg-gray-50 p-2 focus:border-indigo-500 focus:ring-indigo-500">
+      </div>
+
+      <div class="mb-4">
+        <label for="id_description" class="block text-sm font-medium text-gray-700">Description</label>
+        <textarea id="id_description" name="description" rows="4" class="mt-1 block w-full border border-gray-300 rounded-md bg-gray-50 p-2 focus:border-indigo-500 focus:ring-indigo-500"></textarea>
+      </div>
+      <button type="button" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400" onclick="window.history.back()">Cancel</button>
+      <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700">Create Post</button>
+    </form>
+  </div>
+</body>
+</html>

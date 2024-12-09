@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .forms import StudyGroupForm, JoinGroupForm
 from .models import StudyGroup
-
+from chat.models import Chat_Room
 
 @login_required
 def home(request):
@@ -64,3 +64,8 @@ def group_dashboard(request, unique_id):
 @login_required
 def profile_view(request):
     return render(request, 'groups/profile.html', {'user': request.user})
+
+@login_required
+def chat(request):
+    chats = Chat_Room.objects.all()
+    return render(request, 'chat_room.html', {'chats': chats})  # Use plural 'chats'
