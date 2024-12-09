@@ -45,7 +45,19 @@ def past_event_list(request):
     events = CalendarEvent.objects.all()
     today = timezone.now()  # Format the date as needed
     now = timezone.now()
-    return render(request, 'past_event_list.html', {'events': events,'user': request.user,'today': today} )
+
+    if request.method == 'POST':
+        form = CalendarEventForm(request.POST)
+        if form.is_valid():
+            event = form.save(commit=False)
+            event.author = request.user
+            event.save()
+            # Handle successful form submission, e.g., redirect
+            return redirect('attended_event')
+    else:
+        form = CalendarEventForm()
+
+    return render(request, 'past_event_list.html', {'form': form, 'events': events,'user': request.user,'today': today} )
 
 @login_required
 def attended_event_list(request):
