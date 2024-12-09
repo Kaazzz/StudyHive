@@ -12,7 +12,7 @@ def create_event(request):
             event.author = request.user
             event.save()
             # Handle successful form submission, e.g., redirect
-            return redirect('event_list')
+            return redirect('attended_event')
     else:
         form = CalendarEventForm()
 
@@ -53,3 +53,28 @@ def attended_event_list(request):
     today = timezone.now()  # Format the date as needed
     now = timezone.now()
     return render(request, 'completed_event_list.html', {'events': events,'user': request.user,'today': today} )
+
+@login_required
+def edit_event(request, event_id):
+
+    event = get_object_or_404(CalendarEvent, pk=event_id)
+
+    if request.method == 'POST':
+        form = CalendarEventForm(request.POST, instance=event)  # Pre-populate the form
+        if form.is_valid():
+            form.save()
+            return redirect('upcoming_event')  # Redirect to your event list URL
+        else:
+            # Handle form validation errors (optional: display them in the template)
+            return render(request, 'edit_event.html', {'form': form, 'event': event})
+
+    else:
+        form = CalendarEventForm(instance=event)  # Create form with existing data
+
+    return render(request, 'edit_event.html', {'form': form, 'event': event})
+
+@login_required
+def delete_event(request, event_id):
+    event = get_object_or_404(CalendarEvent, pk=event_id)
+    event.delete()
+    return redirect('upcoming_event')
