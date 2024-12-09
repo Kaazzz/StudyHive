@@ -21,7 +21,7 @@
 <body class="h-screen flex flex-col">
   <header class="bg-yellow-300 shadow-md h-20">
     <div class="container mx-auto px-6 py-4 flex items-center justify-between">
-        <h1 class="text-2xl font-bold python manage.py collectstatictext-black">StudyHive</h1>
+        <h1 class="text-2xl font-bold python manage.py collectstatictext-black">StudyHive Current Time: {{ now }} </h1>
         <h2 class="text-xl font-medium mb-4">Welcome, {{ user.username }}</h2>
     </div>
   </header>
@@ -109,10 +109,13 @@
 
                                       </div>    
                                       <div id="commentdropdownDots-{{comment.pk}}" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
+ 
                                         <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconButton">
+                                          {% if now < comment.created_at %}
                                           <li>
-                                            <a href="{% url 'edit_message' comment.pk chat.id %}" class="block px-4 py-2 hover:text-blue-500">Edit</a>
+                                            <a href="{% url 'edit_message' comment.pk chat.id %}" class="block px-4 py-2 hover:text-blue-500">Edit</a>       
                                           </li>
+                                          {% endif %}
                                           <li>
                                             <a href="#" class="block px-4 py-2 hover:text-red-500"  data-toggle="modal" data-target="#messageModal-{{ comment.pk }}" data-chat-id="{{ chat.pk }}">Delete</a>
                                           </li>

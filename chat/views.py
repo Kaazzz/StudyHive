@@ -3,6 +3,8 @@ from .models import Chat_Room, Message, UploadedFile
 from .forms import Chat_RoomForm, MessageForm, FileUploadForm
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
+from django.utils import timezone
+from datetime import timedelta
 
 # Create your views here.
 
@@ -32,6 +34,7 @@ def create_chat(request):
 def send_message(request, chat_id):
     chatroom = get_object_or_404(Chat_Room, pk=chat_id)
     chat_room = Chat_Room.objects.all()
+    now = timezone.now() - timedelta(minutes=5) 
 
     if request.method == 'POST':
         form = MessageForm(request.POST or None) 
@@ -52,6 +55,7 @@ def send_message(request, chat_id):
         'chat': chatroom,  # Pass the specific chat room object
         'chat_id': chat_id,  # Include the chat_id for template use
         'chats': chat_room, 
+        'now':now,
     }
 
     return render(request, 'send_message.html', context)
