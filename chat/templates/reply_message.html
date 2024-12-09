@@ -18,10 +18,10 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   
 </head>
-<body class="h-screen">
+<body class="h-screen flex flex-col">
   <header class="bg-yellow-300 shadow-md h-20">
     <div class="container mx-auto px-6 py-4 flex items-center justify-between">
-        <h1 class="text-2xl font-bold python manage.py collectstatictext-black">StudyHive Chat ID: {{ chat_id }}</h1>
+        <h1 class="text-2xl font-bold python manage.py collectstatictext-black">StudyHive</h1>
         <h2 class="text-xl font-medium mb-4">Welcome, {{ user.username }}</h2>
     </div>
   </header>
@@ -44,7 +44,6 @@
                           <h2 class="text-lg font-semibold">
                               {{ chat.title }}
                           </h2>
-                          <p class="text-gray-500 text-sm">{{ chat.created_at }}</p>
                       </div>
                   </div>
                   {% if chat.author == user %}
@@ -53,13 +52,13 @@
                   </div>
                   {% endif %}
               </header>
-            </div>
+          </div>
                   
                     
-            {% if chat.comments.all %}
-            <div class="flex flex-col max-h-[70%]">
-                <div class="chat-container flex flex-col h-[60vh]">
-                  <ul class="chat-messages flex-grow overflow-y-auto p-4 h-70vh">
+                {% if chat.comments.all %}
+                  <div class="flex flex-col max-h-[70%]">
+                    <div class="chat-container flex flex-col h-[65vh]">
+                      <ul class="chat-messages flex-grow overflow-y-auto p-4 h-70vh">
                                      
                         <script>
                           function scrollToBottom() {
@@ -84,13 +83,33 @@
                                           </button>
                                         </div>
 
-                                        <div class="bg-blue-500 text-white p-3 rounded-tl-none rounded-br rounded-bl-lg max-w-[500px]">
-                                          <p>{{ comment.text }}</p>
-                                          <p class="text-xs text-white">{{ comment.author.username }} on {{ comment.created_at }}</p>
+                                        {% if comment.is_reply == True %}
+                                        <div>
+                                          <div class="bg-gray-500 text-white p-3 rounded-tl-none rounded-br rounded-bl-lg max-w-[500px] flex flex-col">
+                                            <div class="order-first">
+                                              <p>{{ comment.reply }}</p>
+                                              <p class="text-xs text-white">{{ comment.author.username }} on {{ comment.created_at }}</p>
+                                            </div>
+                                          </div>
+                                          <div class="bg-blue-500 text-white p-3 rounded-tl-none rounded-br rounded-bl-lg max-w-[500px] flex flex-col">
+                                            <div class="order-first">
+                                              <p>{{ comment.text }}</p>
+                                              <p class="text-xs text-white">{{ comment.author.username }} on {{ comment.created_at }}</p>
+                                            </div>
+                                          </div>
                                         </div>
+                                        {% else %}
+                                        <div class="bg-blue-500 text-white p-3 rounded-tl-none rounded-br rounded-bl-lg max-w-[500px] flex flex-col">
+                                          <div class="order-first">
+                                            <p>{{ comment.text }}</p>
+                                            <p class="text-xs text-white">{{ comment.author.username }} on {{ comment.created_at }}</p>
+                                          </div>
+                                        </div>
+                                        {% endif %}
+
                                       </div>    
                                       <div id="commentdropdownDots-{{comment.pk}}" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
-                                        <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconButton" id="default-tab" data-tabs-toggle="#default-tab-content" role="tablist">
+                                        <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconButton">
                                           <li>
                                             <a href="{% url 'edit_message' comment.pk chat.id %}" class="block px-4 py-2 hover:text-blue-500">Edit</a>
                                           </li>
@@ -98,10 +117,7 @@
                                             <a href="#" class="block px-4 py-2 hover:text-red-500"  data-toggle="modal" data-target="#messageModal-{{ comment.pk }}" data-chat-id="{{ chat.pk }}">Delete</a>
                                           </li>
                                           <li>
-                                            <a href="#" class="block px-4 py-2 hover:text-blue-500" id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Reply</a>
-                                          </li>
-                                          <li>
-                                            <a href="#" class="block px-4 py-2 hover:text-blue-500" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="false">Back</a>
+                                            <a href="{% url 'reply_message' chat.id comment.pk %}" class="block px-4 py-2 hover:text-blue-500">Reply</a>
                                           </li>
                                         </ul>  
                                       </div>
@@ -143,10 +159,27 @@
                                   {% if comment.is_sent == True %}
                                     <div class="flex-1 overflow-y-auto p-4 justify-start">  
                                       <div class="flex justify-start mb-4">
+
+                                        {% if comment.is_reply == True %}
+                                        <div>
+                                          <div class="bg-gray-500 text-black p-3 rounded-tr-none rounded-bl rounded-br-lg max-w-[500px] ">
+                                            <p>{{ comment.reply }}</p>
+                                            <p class="text-xs text-gray-500">{{ comment.author.username }} on {{ comment.created_at }}</p>
+                                          </div>
+                                          <div class="bg-gray-300 text-black p-3 rounded-tr-none rounded-bl rounded-br-lg max-w-[500px] ">
+                                            <p>{{ comment.text }}</p>
+                                            <p class="text-xs text-gray-500">{{ comment.author.username }} on {{ comment.created_at }}</p>
+                                          </div>
+                                        </div>
+                                        {% else %}
                                         <div class="bg-gray-300 text-black p-3 rounded-tr-none rounded-bl rounded-br-lg max-w-[500px] ">
                                           <p>{{ comment.text }}</p>
                                           <p class="text-xs text-gray-500">{{ comment.author.username }} on {{ comment.created_at }}</p>
                                         </div>
+
+                                        {% endif %}
+
+
                                         <div class="flex justify-end mt-2 ml-2">
                                           <button id="dropdownMenuIconButton" data-dropdown-toggle="commentdropdownDots-{{comment.pk}}" class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600" type="button">
                                             <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
@@ -161,10 +194,14 @@
                                             <li>
                                               <a href="{% url 'edit_message' comment.pk chat.id %}" class="block px-4 py-2 hover:text-blue-500">Edit</a>
                                             </li>
-                                            {% endif %}
-
                                             <li>
                                               <a href="#" class="block px-4 py-2 hover:text-red-500"  data-toggle="modal" data-target="#messageModal-{{ comment.pk }}" data-chat-id="{{ chat.pk }}">Delete</a>
+                                            </li>
+                                            
+                                            {% endif %}
+                                              
+                                            <li>
+                                              <a href="{% url 'reply_message' chat.id comment.pk %}" class="block px-4 py-2 hover:text-blue-500">Reply</a>
                                             </li>
                                           </ul>  
                                         </div>
@@ -188,28 +225,29 @@
                         {% else %}
                           <p class="text-sm text-gray-500 mt-2">No messages yet.</p>
                         {% endif %}
-                    </div>
-
-                  <div class="h-14 w-w-90%">
-                        <form method="post">
-                        {% csrf_token %}
-                        <footer class="fixed bottom-0 w-full bg-white p-4 border-t border-gray-200 flex flex-col">
-                          <div class="flex justify-between">
-                            <div class="flex items-center mb-4">
-                              <p class="text-gray-700 dark:text-gray-300">Replied message to: {{comment.text}} </p>
-                            </div>
-                            <div class="flex items-center mb-4">
-                              <a href="{% url 'send_message' chat.pk %}" class="block px-4 py-2 hover:text-blue-500" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="false">Cancel</a>
-                            </div>
-                          </div>
-                          <div class="flex">
-                            <textarea id="id_text" name="text" name="text" placeholder="Type a message" rows="1" class="flex-grow border-gray-300 p-2 rounded-l-lg"></textarea>
-                            <button class="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-r-lg">Send</button>
-                          </div>
-                        </footer>
-                      </form> 
                   </div>
-                </div>
+        
+                  <div class="h-14 w-w-90%">
+                    <form method="post">
+                    {% csrf_token %}
+                    <footer class="fixed bottom-0 w-full bg-white p-4 border-t border-gray-200 flex flex-col">
+                      <div class="flex justify-between">
+                        <div class="flex items-center mb-4">
+                          <p class="text-gray-700 dark:text-gray-300">Replied message to: {{reply.text}} </p>
+                        </div>
+                        <div class="flex items-center mb-4">
+                          <a href="{% url 'send_message' chat.pk %}" class="block px-4 py-2 hover:text-blue-500" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="false">Cancel</a>
+                        </div>
+                      </div>
+                      <div class="flex">
+                        <textarea id="id_text" name="text" name="text" placeholder="Type a message" rows="1" class="flex-grow border-gray-300 p-2 rounded-l-lg"></textarea>
+                        <button class="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-r-lg">Send</button>
+                      </div>
+                    </footer>
+                  </form> 
+              </div>
+            </div>
+
           </li>
         {% endif %}    
       {% endfor %}
@@ -223,7 +261,12 @@
     <p class="text-center text-gray-500 font-medium">Error: No Chats Found</p>
   </div>
   {% endif %}
+
+
+  
 </body>
+
+
 <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
 
 </html>

@@ -30,15 +30,16 @@ def create_chat(request):
 
 @login_required
 def send_message(request, chat_id):
-    message = get_object_or_404(Chat_Room, pk=chat_id)
+    chatroom = get_object_or_404(Chat_Room, pk=chat_id)
     chat_room = Chat_Room.objects.all()
 
     if request.method == 'POST':
         form = MessageForm(request.POST or None) 
         if form.is_valid():
             comment = form.save(commit=False)  # Prevent initial save
-            comment.chat_room = message
+            comment.chat_room = chatroom
             comment.is_sent = True
+            comment.is_reply = False
             comment.author = request.user
             comment.save()
             # needs post_id to go back to the chat_room
@@ -48,7 +49,7 @@ def send_message(request, chat_id):
 
     context = {
         'form': form,
-        'chat': message,  # Pass the specific chat room object
+        'chat': chatroom,  # Pass the specific chat room object
         'chat_id': chat_id,  # Include the chat_id for template use
         'chats': chat_room, 
     }
@@ -109,7 +110,7 @@ def edit_chat(request, chat_id):
 
 @login_required
 def edit_message(request, message_id, chat_id):
-    chat_room = Chat_Room.objects.all()
+    chat_rooms = Chat_Room.objects.all()
     message = get_object_or_404(Message, pk=message_id)
 
     # Check if the user is authorized to edit the comment (e.g., only the author)
@@ -127,20 +128,23 @@ def edit_message(request, message_id, chat_id):
         # Pre-populate the form with existing comment data
         form = MessageForm(instance=message)
 
-    return render(request, 'edit_message.html', {'form': form, 'message': message, 'chats':chat_room})
+    return render(request, 'edit_message.html', {'form': form, 'message': message, 'chats':chat_rooms})
 
 
 @login_required
 def reply_message(request, chat_id, message_id):
-    message = get_object_or_404(Chat_Room, pk=chat_id)
-    chat_room = Chat_Room.objects.all()
+    chatroom = get_object_or_404(Chat_Room, pk=chat_id)
+    chat_rooms = Chat_Room.objects.all()
+    reply = get_object_or_404(Message, pk=message_id)
 
     if request.method == 'POST':
         form = MessageForm(request.POST or None) 
         if form.is_valid():
             comment = form.save(commit=False)  # Prevent initial save
-            comment.chat_room = message
+            comment.chat_room = chatroom
             comment.is_sent = True
+            comment.reply = reply.text
+            comment.is_reply = True
             comment.author = request.user
             comment.save()
             # needs post_id to go back to the chat_room
@@ -150,9 +154,10 @@ def reply_message(request, chat_id, message_id):
 
     context = {
         'form': form,
-        'chat': message,  # Pass the specific chat room object
+        'chat': chatroom,  # Pass the specific chat room object
         'chat_id': chat_id,  # Include the chat_id for template use
-        'chats': chat_room, 
+        'chats': chat_rooms, 
+        'reply':reply,
     }
 
     return render(request, 'reply_message.html', context)

@@ -20,6 +20,7 @@ class Message(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     is_sent = models.BooleanField(default=False)
     reply = models.TextField(blank=True)
+    is_reply = models.BooleanField(default=False)
 
     def __str__(self):
         return f'{self.author} on {self.chat_room.title}'   
