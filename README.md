@@ -95,14 +95,14 @@ StudyHive offers a robust set of features to streamline group collaboration and 
 ---
 
 ## Gantt Chart  
-This [chart]([https://example.com](https://docs.google.com/spreadsheets/d/1N-WHbdRff3_XEj8DAm4W29-BmM5y81USY1xoHS-dNaU/edit?fbclid=IwY2xjawFY8FZleHRuA2FlbQIxMAABHe7LMOuun2_iUoyeoWwRcuwtUhRs42pmQHXDXUjFnNlzD0sJNmHMXiv15A_aem_ww9pwBZXeCJaA2p6AFry2g&pli=1&gid=0#gid=0)) outlines the project timeline and milestones.  
-
+This [chart](https://docs.google.com/spreadsheets/d/1N-WHbdRff3_XEj8DAm4W29-BmM5y81USY1xoHS-dNaU/edit?usp=sharing) outlines the project timeline and milestones.  
+![Gantt Chart](readme-images/UIUX_StudyHive.png) 
 ## Entity-Relationship Diagram  
-The detailed ERD for StudyHive is available [here]([https://example.com](https://www.figma.com/board/4TaZ16npOXSoP1tR9cJpyf/ERD---STUDY-GROUP-COORDINATION-SYSTEM?node-id=0-1&node-type=canvas)).  
+The detailed ERD for StudyHive is available [here](https://www.figma.com/board/4TaZ16npOXSoP1tR9cJpyf/ERD---STUDY-GROUP-COORDINATION-SYSTEM?node-id=0-1&t=6XaZeVll9kb6N4rC-1).  
 ![Entity-Relationship Diagram](readme-images/ERD_StudyHive.png)  
 
 ## UI/UX Design  
-Explore the Figma prototype for the StudyHive interface [here]([https://figma.com/project](https://www.figma.com/design/7Z9HEcJVhxUkmXlcbYPjhU/StudyHive?node-id=0-1&node-type=canvas)).  
+Explore the Figma prototype for the StudyHive interface [here](https://www.figma.com/design/7Z9HEcJVhxUkmXlcbYPjhU/StudyHive?node-id=0-1&node-type=canvas).  
 ![UI/UX Design](readme-images/UIUX_StudyHive.png)  
 
 ---
