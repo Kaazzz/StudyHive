@@ -5,12 +5,13 @@
   <title>Event Scheduler</title>
 
   <link href="{% static 'css/output.css' %}" rel="stylesheet">
+  <link href="{% static 'css/card_flip.css' %}" rel="stylesheet">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet"/>
-  <link href="{% static 'css/card_flip.css' %}" rel="stylesheet">
+
   
 </head>
 <body class="bg-gray-100">
@@ -29,10 +30,10 @@
             <button class="inline-block p-4 border-b-2 rounded-t-lg" id="Upcoming-tab" data-tabs-target="#Upcoming" type="button" role="tab" aria-controls="Upcoming" aria-selected="false">Upcoming Events</button>
         </li>
         <li class="me-2" role="presentation">
-            <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="Past-tab" data-tabs-target="#Past" type="button" role="tab" aria-controls="Past" aria-selected="false">Past Events</button>
+            <button class="inline-block p-4 border-b-2 rounded-t-lg " id="Past-tab" data-tabs-target="#Past" type="button" role="tab" aria-controls="Past" aria-selected="false">Past Events</button>
         </li>
         <li class="me-2" role="presentation">
-            <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="CreateEvent-tab" data-tabs-target="#CreateEvent" type="button" role="tab" aria-controls="CreateEvent" aria-selected="false">Create Events</button>
+            <button class="inline-block p-4 border-b-2 rounded-t-lg " id="CreateEvent-tab" data-tabs-target="#CreateEvent" type="button" role="tab" aria-controls="CreateEvent" aria-selected="false">Create Events</button>
         </li>
     </ul>
   </div>

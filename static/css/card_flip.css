@@ -25,13 +25,13 @@
   }
   
   .card-front {
-    background-color: #f54251;
+    background-color: #FFD700;
     color: #fff;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    border: 10px solid #f54251;
+    border: 10px solid #FFD700;
     border-radius: 10px;
     transform: rotateY(0deg);
   }
