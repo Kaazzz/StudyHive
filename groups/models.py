@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
+
 import random
 import string
 
@@ -28,6 +30,18 @@ class StudyGroup(models.Model):
 
     def __str__(self):
         return self.group_name
+    
+    def get_dashboard_url(self):
+        return reverse('group_dashboard', args=[self.unique_id])
+
+    def get_members_url(self):
+        return reverse('group_members', args=[self.unique_id])
+
+    def get_requests_url(self):
+        return reverse('group_requests', args=[self.unique_id])
+
+    def get_files_url(self):
+        return reverse('group_files', args=[self.unique_id])
     
     class Profile(models.Model):
         user = models.OneToOneField(User, on_delete=models.CASCADE)

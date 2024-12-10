@@ -1,0 +1,268 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ group.group_name }} - Dashboard</title>
+    <link rel="stylesheet" href="{% static 'css/output.css' %}">
+    <link rel="stylesheet" href="/static/css/general.css?">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">    
+    
+    {% comment %} <style>
+        .thread-container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .post-header .name {
+            font-weight: bold;
+            color: #333;
+        }
+        .post-header .date {
+            font-size: 0.9em;
+            color: #666;
+        }
+        .post-content h3 {
+            margin: 0 0 10px 0;
+            color: #0056b3;
+        }
+        .post-content p {
+            margin: 0 0 15px 0;
+            color: #555;
+        }
+        .comment-section {
+            margin-top: 20px;
+        }
+        .comment-section h4 {
+            margin: 0 0 10px 0;
+            color: #333;
+        }
+        .comment-section textarea {
+            width: 100%;
+            height: 80px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            resize: none;
+        }
+        .comment-section button {
+            padding: 10px 15px;
+            background-color: #0056b3;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .comment-section button:hover {
+            background-color: #003f7f;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            border: 1px solid #ddd;
+            padding: 10px 0;
+            background-color: rgb(243 244 246 / var(--tw-bg-opacity)) /* #f3f4f6 */;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 14px 20px;
+            font-size: 16px;
+            text-align: center;
+        }
+        .navbar a:hover {
+            background-color: #003f7f;
+            border-radius: 5px;
+        }
+        .navbar a.active {
+            background-color: #003f7f;
+            border-radius: 5px;
+        }
+
+    </style> {% endcomment %}
+</head>
+
+<body class = "m-0 p-0 bg-[#f7f7f7]" style="font-family: 'Poppins', sans-serif; transition: background-color 0.5s ease, color 0.5s ease;">
+    {% include 'header.html' %}
+
+    {% include 'sidebar.html' %}
+
+    <main style="margin-left: 220px; padding: 100px 30px 20px;">
+        {% include 'group_navbar.html' %}
+
+        <div class="group-dashboard-container bg-gray-100 dark:bg-gray-900 p-6 rounded-lg shadow-md">
+            <h1 class="dashboard-title yellow-gradient p-4 text-4xl font-bold text-gray-800 dark:text-white mb-4">
+                Welcome to <span>{{ group.group_name }}</span>'s Group Dashboard: 
+            </h1>
+            <div class="dashboard-content space-y-3">
+                <p class="dashboard-description text-lg text-gray-700 dark:text-gray-300">
+                    <strong>Description:</strong> {{ group.description }}
+                </p>
+                <p class="dashboard-subject text-lg text-gray-700 dark:text-gray-300">
+                    <strong>Subject:</strong> {{ group.subject }}
+                </p>
+                <p class="dashboard-members text-lg text-gray-700 dark:text-gray-300">
+                    <strong>Members:</strong> {{ group.members.count }}
+                </p>
+            </div>
+            
+            <div class="dashboard-actions mt-6">
+                <button 
+                    class="action-btn yellow-gradient hover:bg-yellow-600 text-black py-2 px-4 rounded shadow-md transition-all duration-300"
+                    style="--tw-bg-opacity: 1;">
+                    Edit Group Details
+                </button>
+                <button 
+                    class="action-btn hover:bg-red-600 text-white py-2 px-4 rounded shadow-md transition-all duration-300"
+                    style="--tw-bg-opacity: 1; background-color: rgb(239 68 68 / var(--tw-bg-opacity)) /* #ef4444 */;">
+                    Delete Group
+                </button>
+            </div>
+        </div>
+
+        
+        <!-- Display all members -->
+        <h2>Group Members:</h2>
+        <ul>
+            {% for member in group.members.all %}
+                <li>{{ member.first_name }} {{ member.last_name }}</li> <!-- Adjust this if you have a different field for display -->
+            {% empty %}
+                <li>No members in this group yet.</li>
+            {% endfor %}
+        </ul>
+
+        {% comment %} <h1>Create a New Discussion Thread</h1>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Create Thread</button>
+        </form>
+        <a href="{% url 'group_dashboard' group.unique_id %}">Back to Dashboard</a> {% endcomment %}
+
+        <!-- Future Discussion threads implementation here -->
+        {% comment %} <h2>Discussion Threads:</h2>
+            {% for thread in threads %}
+            <div class="thread-container">
+                <div class="post-header">
+                    <span class="name">{{ thread.topic }}</span>
+                    <span class="date">{{ thread.session_date|date:"F j, Y" }}</span>
+                </div>
+                <div class="post-content">
+                    <p>{{ thread.description }}</p>
+                </div>
+                <div class="comment-section">
+                    <h4>Comments:</h4>
+                    {% for comment in thread.comment.all %}
+                        <div>
+                            <p><strong>{{ comment.user_id.username }}</strong>: {{ comment.description }}</p>
+                            <p><small>{{ comment.timestamp|date:"F j, Y, g:i a" }}</small></p>
+                        </div>
+                    {% empty %}
+                        <p>No comments yet.</p>
+                    {% endfor %}
+                    <form method="POST" action="{% url 'add_comment' thread.discussion_id %}">
+                        {% csrf_token %}
+                        <textarea name="description" placeholder="Add a comment..."></textarea>
+                        <button type="submit">Add Comment</button>
+                    </form>
+                </div>
+            </div>
+            {% empty %}
+                <p>No discussion threads yet.</p>
+            {% endfor %}
+            <a href="{% url 'create_discussion_thread' group.group_id %}">Create a New Thread</a> {% endcomment %}
+        {% comment %} <h2>Discussion Threads:</h2>
+        {% for thread in threads %}
+        <div class="thread-container">
+            <div class="post-header">
+                <span class="name">{{ thread.topic }}</span>
+                <span class="date">{{ thread.session_date|date:"F j, Y, g:i a" }}</span>
+            </div>
+            <div class="post-content">
+                <p>{{ thread.description }}</p>
+            </div>
+            <div class="comment-section">
+                <h4>Comments:</h4>
+                {% for comment in thread.comment.all %}
+                    <div>
+                        <p><strong>{{ comment.user_id.username }}</strong>: {{ comment.description }}</p>
+                        <p><small>{{ comment.timestamp|date:"F j, Y, g:i a" }}</small></p>
+                    </div>
+                {% empty %}
+                    <p>No comments yet.</p>
+                {% endfor %}
+                <form method="POST" action="{% url 'add_comment' thread.discussion_id %}">
+                    {% csrf_token %}
+                    <textarea name="description" placeholder="Add a comment..."></textarea>
+                    <button type="submit">Add Comment</button>
+                </form>
+            </div>
+        </div>
+        {% empty %}
+        <p>No discussion threads yet.</p>
+        {% endfor %}
+        <a href="{% url 'create_discussion_thread' group.unique_id %}">Create a New Thread</a> {% endcomment %}
+
+        
+        {% comment %} <section class="group-threads">
+            <div class="thread-container">
+                <div class="post-header">
+                    <span class="name">John Doe</span>
+                    <span class="date">November 21, 2024</span>
+                </div>
+                <div class="post-content">
+                    <h3>Meeting Recap</h3>
+                    <p>Here is a summary of the points discussed during our last meeting:</p>
+                    <ul>
+                        <li>Project timelines and deadlines</li>
+                        <li>Roles and responsibilities</li>
+                        <li>Next steps for each team member</li>
+                    </ul>
+                </div>
+                <div class="comment-section">
+                    <h4>Comments</h4>
+                    <textarea placeholder="Add a comment..."></textarea>
+                    <button>Add Comment</button>
+                </div>
+            </div>
+            <div class="thread-container">
+                <div class="post-header">
+                    <span class="name">Jane Doe</span>
+                    <span class="date">November 19, 2024</span>
+                </div>
+                <div class="post-content">
+                    <h3>Meeting Recap</h3>
+                    <p>Here is a summary of the points discussed during our last meeting:</p>
+                    <ul>
+                        <li>Project timelines and deadlines</li>
+                        <li>Roles and responsibilities</li>
+                        <li>Next steps for each team member</li>
+                    </ul>
+                </div>
+                <div class="comment-section">
+                    <h4>Comments</h4>
+                    <textarea placeholder="Add a comment..."></textarea>
+                    <button>Add Comment</button>
+                </div>
+            </div>
+
+        </section>
+         {% endcomment %}
+
+
+    </main>
+</body>
+</html>

@@ -5,7 +5,7 @@
         border-radius: 0.5rem;
         margin: 1rem auto;
         padding: 1rem;
-        max-width: 1000px;
+        max-width: 100%;
     }
 
     .navbar {
@@ -70,9 +70,13 @@
 
 <div class="navbar-container">
     <nav class="navbar">
-        <a href="{% url 'group_dashboard' group.unique_id %}" class="navbar-link active">Dashboard</a>
-        <a href="#members" class="navbar-link">Members</a>
-        <a href="{% url 'group_requests' group.unique_id %}" class="navbar-link">Requests</a>
-        <a href="#files" class="navbar-link">Files</a>
+        <a href="{% url 'group_dashboard' group.unique_id %}" 
+           class="navbar-link {% if request.path == group.get_dashboard_url %}active{% endif %}">Dashboard</a>
+        <a href="{% url 'group_members' group.unique_id %}" 
+           class="navbar-link {% if request.path == group.get_members_url %}active{% endif %}">Members</a>
+        <a href="{% url 'group_requests' group.unique_id %}" 
+           class="navbar-link {% if request.path == group.get_requests_url %}active{% endif %}">Requests</a>
+        <a href="{% url 'group_files' group.unique_id %}" 
+           class="navbar-link {% if request.path == group.get_files_url %}active{% endif %}">Files</a>
     </nav>
 </div>

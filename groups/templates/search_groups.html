@@ -1,0 +1,265 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyHive - Study Groups</title>
+    <link rel="stylesheet" href="{% static 'css/output.css' %}">
+    <link rel="stylesheet" href="/static/css/general.css?">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">    
+
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            margin: 10% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 50%;
+            border-radius: 10px;
+        }
+
+        .close {
+            color: #353437;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body class = "m-0 p-0 bg-[#f7f7f7]" style="font-family: 'Poppins', sans-serif; transition: background-color 0.5s ease, color 0.5s ease;">
+    {% include 'header.html' %}
+
+    {% include 'sidebar.html' %}
+
+    <main style="margin-left: 220px; padding: 100px 30px 20px;">
+        <h2 class="text-2xl font-semibold mb-4 mt-8">Search Results</h2>
+        <section class="group-grid mb-8">
+            <div class="group-cards created-groups">
+                {% if results %}
+                    {% for group_data in groups_data %}
+                        <div class="group-card bg-gray-100">
+                            <h3 class="text-lg font-semibold mb-2 truncate">{{ group_data.group.group_name }}</h3>
+                            <p class="text-base mb-4 truncate">Subject: {{ group_data.group.subject }}</p>
+                            <p class="text-sm">Members: {{ group_data.group.members.count }}</p>
+                            <p class="text-sm">Private: {{ group_data.group.is_private|yesno:'Yes,No' }}</p>
+                            <p class="text-sm">Is Member: {{ group_data.is_member|yesno:'Yes,No' }}</p>
+                            <p class="text-sm mb-2">Is Owner: {{ group_data.is_owner|yesno:'Yes,No' }}</p>
+                            {% comment %} <button 
+                                class="group-action-button {{ group.button_class }}" 
+                                data-group-id="{{ group.unique_id }}"
+                                onclick="handleGroupAction('{{ group.unique_id }}', '{{ group.button_class }}')">
+                                {{ group.button_text }}
+                            </button> {% endcomment %}
+                            <button 
+                                class="view-group-button border-none px-3 py-1 cursor-pointer rounded-md flex justify-center items-center mx-auto"
+                                data-name="{{ group_data.group.group_name }}"
+                                data-description="{{ group_data.group.description }}"
+                                data-subject="{{ group_data.group.subject }}"
+                                data-creator="{{ group_data.group.user.username }}"
+                                data-members="{{ group_data.group.members.count }}"
+                                data-private="{{ group_data.group.is_private|yesno }}"
+                                data-code="{{ group_data.group.unique_id }}"
+                                data-isOwner="{{ group_data.is_owner|yesno }}"
+                                data-isMember="{{ group_data.is_member|yesno }}"
+                                onclick="openGroupModal(this)"
+                                onmouseover="this.style.background = 'linear-gradient(to left, #1A1A1B, #353437)'; this.style.color='white';" 
+                                onmouseout="this.style.background ='none'; this.style.color='#1A1A1B';">
+                                View Group
+                            </button>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-lg mb-2">No results found.</p>
+                {% endif %}
+            </div>
+        </section>
+
+        <!-- Modal Structure -->
+        <div id="groupModal" class="modal" style="display: none;">
+            <div class="modal-content bg-gray-100" style="border-color: #E9B033; border-width: medium; padding: 20px;">
+                <span class="close text-sm mb-2 rounded-sm" style="align-self: flex-end;">&times;</span>
+                <h3 class="text-lg font-semibold mb-2">Group Name: <span id="modalGroupName"></span></h3>
+                <p class="text-base">Description: <span id="modalDescription"></span></p>
+                <p class="text-base mb-2">Subject: <span id="modalSubject"></span></p>
+                <p class="text-sm mb-2 ">Creator: <span id="modalCreator"></span></p>
+                <p class="text-sm">Members: <span id="modalMembers"></span></p>
+                <p class="text-sm">Is Private: <span id="modalPrivate"></span></p>
+                <p class="text-sm">Is Member: <span id="modalIsMember"></span></p>
+                <p class="text-sm mb-2">Is Owner: <span id="modalIsOwner"></span></p>
+
+                <!-- Centered button -->
+                <div style="display: flex; justify-content: center; width: 100%;">
+                    <button id="enterGroupButton" class="border-none px-3 py-1 cursor-pointer rounded-md"
+                        onclick="handleGroupAction()"
+                        style="border-radius: 5px; padding: 5px; width: 150px; height: 40px;"
+                        onmouseover="this.style.background = 'linear-gradient(to left, #1A1A1B, #353437)'; this.style.color='white';" 
+                        onmouseout="this.style.background ='none'; this.style.color='#1A1A1B';">
+                        <!-- Button text will be set dynamically via JS -->
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="{% static 'scripts/search_groups.js' %}"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const modal = document.getElementById('groupModal');
+            const closeModal = document.querySelector('.close');
+            const enterGroupButton = document.getElementById('enterGroupButton');
+
+            window.openGroupModal = function (button) {
+                const groupName = button.getAttribute('data-name');
+                const description = button.getAttribute('data-description');
+                const subject = button.getAttribute('data-subject');
+                const creator = button.getAttribute('data-creator');
+                const members = button.getAttribute('data-members');
+                const isPrivate = button.getAttribute('data-private');
+                const groupCode = button.getAttribute('data-code');
+                const isMember = button.getAttribute('data-isMember');  // Ensure correct comparison
+                const isOwner = button.getAttribute('data-isOwner');  // Ensure correct comparison
+
+                document.getElementById('modalGroupName').textContent = groupName;
+                document.getElementById('modalDescription').textContent = description;
+                document.getElementById('modalSubject').textContent = subject;
+                document.getElementById('modalCreator').textContent = creator;
+                document.getElementById('modalMembers').textContent = members;
+                document.getElementById('modalPrivate').textContent = isPrivate === 'yes' ? 'Yes' : 'No';
+                document.getElementById('modalIsMember').textContent = isMember === 'yes' ? 'Yes' : 'No';  // Add this element to your modal HTML
+                document.getElementById('modalIsOwner').textContent = isOwner === 'yes' ? 'Yes' : 'No';  // Add this element to your modal HTML  
+
+                console.log(isPrivate);
+                console.log(groupCode);
+
+
+                // Remove any previous button classes
+                enterGroupButton.classList.remove('enter-button', 'join-button', 'request-button');
+                
+                // Set button text, class, and action
+                if (isMember == 'yes' || isOwner == 'yes') {
+                    enterGroupButton.textContent = 'Enter';
+                    enterGroupButton.classList.add('enter-button');
+                    enterGroupButton.onclick = () => handleGroupAction(groupCode, 'enter-button');
+                } else if (isPrivate == 'no') {
+                    enterGroupButton.textContent = 'Join';
+                    enterGroupButton.classList.add('join-button');
+                    enterGroupButton.onclick = () => handleGroupAction(groupCode, 'join-button');
+                } else {
+                    enterGroupButton.textContent = 'Request';
+                    enterGroupButton.classList.add('request-button');
+                    enterGroupButton.onclick = () => handleGroupAction(groupCode, 'request-button');
+                }
+                modal.style.display = 'block'; // Show the modal 
+            };
+
+            // Close the modal
+            closeModal.onclick = function () {
+                modal.style.display = 'none'; // Hide the modal
+            };
+
+            // Close the modal if clicked outside
+            window.onclick = function (event) {
+                if (event.target == modal) {
+                    modal.style.display = 'none'; // Hide the modal
+                }
+            };
+
+            function handleGroupAction(groupId, actionType) {
+                if (actionType === 'join-button') {
+                    // Handle joining the group via AJAX
+                    fetch('/join/', {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': getCookie('csrftoken'), // Include CSRF token
+                            'Content-Type': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        body: JSON.stringify({ group_code: groupId }) // Sending the unique_id as the group code
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        alert(data.message); // Show the success/error message
+                        if (data.redirect_url) {
+                            window.location.href = data.redirect_url; // Redirect to the dashboard
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('There was an error joining the group.');
+                    });
+                } else if (actionType === 'enter-button') {
+                    // Redirect to the group detail page
+                    window.location.href = `/groups/${groupId}/`; 
+                } else if (actionType === 'request-button') {
+                    // Handle request to join a private group
+                    console.log(`Requesting to join private group with ID: ${groupId}`);
+                    fetch('/request_join/', { // Use the endpoint you provided for requesting a join
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': getCookie('csrftoken'), // Include CSRF token
+                            'Content-Type': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        body: JSON.stringify({ group_id: groupId }) // Sending the group ID to the backend
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        alert(data.message); // Show the success/error message
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Already sent the join request.');
+                    });
+                }
+            }
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+        });
+
+    </script>
+
+</body>
+

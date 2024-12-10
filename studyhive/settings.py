@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'groups',
     'accounts',
     'widget_tweaks',
+    'django_extensions',
+    'calendar_scheduler',
     # 'django_browser_reload',
 ]
 

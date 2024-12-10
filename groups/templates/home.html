@@ -76,7 +76,10 @@
                         <p class="text-sm">Members: {{ group.members.count }}</p>
                         <p class="text-sm mb-2">Private: {{ group.is_private|yesno:'Yes,No' }}</p>
                         <button class="enter-group-button border-none px-3 py-1 cursor-pointer rounded-md flex justify-center items-center mx-auto"
-                        onclick="redirectToGroupDashboard('{{ group.unique_id }}')">Enter</button>
+                        onclick="redirectToGroupDashboard('{{ group.unique_id }}')"
+                        onmouseover="this.style.background = 'linear-gradient(to left, #1A1A1B, #353437)'; this.style.color='white';" 
+                        onmouseout="this.style.background ='none'; this.style.color='#1A1A1B';">
+                        Enter</button>
                     </div>
                 {% empty %}
                     <p>No groups created yet. Why not create your own?</p>
@@ -97,13 +100,16 @@
                         data-members="{{ group.members.count }}" 
                         data-private="{{ group.is_private|yesno:'Yes,No' }}"
                         data-code="{{ group.unique_id }}">
-                         <h3 class="text-lg font-semibold mb-2 truncate">{{ group.group_name }}</h3>
+                        <h3 class="text-lg font-semibold mb-2 truncate">{{ group.group_name }}</h3>
                         <p class="text-base truncate">Subject: {{ group.subject }}</p>
                         <p class="text-base truncate">Owner: {{ group.user.first_name }} {{ group.user.last_name }}</p>
                         <p class="text-sm">Members: {{ group.members.count }}</p>
                         <p class="text-sm mb-2">Private: {{ group.is_private|yesno:'Yes,No' }}</p>
                         <button class="enter-group-button border-none px-3 py-1 cursor-pointer rounded-md flex justify-center items-center mx-auto"
-                        onclick="redirectToGroupDashboard('{{ group.unique_id }}')">Enter</button>
+                        onclick="redirectToGroupDashboard('{{ group.unique_id }}')"
+                        onmouseover="this.style.background = 'linear-gradient(to left, #1A1A1B, #353437)'; this.style.color='white';" 
+                        onmouseout="this.style.background ='none'; this.style.color='#1A1A1B';">
+                        Enter</button>
                     </div>
                 {% empty %}
                     <p>You haven't joined any groups yet.</p>
@@ -128,6 +134,8 @@
         </div>
     </div> {% endcomment %}
 
+
+    
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Para sa dropdown sa join or create
@@ -180,6 +188,5 @@
     </script>
 </body>
 </html>
-
 {% comment %} console.log("Group Code:", groupCode);
 window.location.href = '/groups/' + encodeURIComponent(groupCode) + '/'; {% endcomment %}

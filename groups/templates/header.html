@@ -58,7 +58,7 @@
                 src="{% static 'media/logo.svg' %}" 
                 alt="StudyHive Logo" 
                 class="w-16 h-16 rounded-full object-cover">
-            <h1>StudyHive</h1>
+            <h1 id="appName" class="text-gray-800">StudyHive</h1>
         </div>
         
         <div id="searchBar" class="flex items-center gap-2">
@@ -66,6 +66,7 @@
         </div>
         
         <div class="flex items-center gap-x-6">
+
             <div id="switchModeHome" class="tooltip-container flex cursor-pointer">
                 <img 
                     id="mode-icon-home"
@@ -73,7 +74,8 @@
                     class="w-12 h-12 rounded-full object-cover"
                     style="transition: box-shadow 0.3s ease;" 
                     onmouseover="this.style.boxShadow='0 4px 10px rgba(0, 0, 0, 0.2)';" 
-                    onmouseout="this.style.boxShadow='none';">
+                    onmouseout="this.style.boxShadow='none';"
+                    onclick="window.location.href = '{% url 'home_page' %}'">
                 <span class="tooltip-text">Home</span>
             </div>
 

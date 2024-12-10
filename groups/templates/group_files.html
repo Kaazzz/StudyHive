@@ -5,12 +5,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ group.group_name }} - Dashboard</title>
+    <title>{{ group.group_name }} - Files</title>
     <link rel="stylesheet" href="{% static 'css/output.css' %}">
     <link rel="stylesheet" href="/static/css/general.css?">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">    
 </head>
-
 <body class = "m-0 p-0 bg-[#f7f7f7]" style="font-family: 'Poppins', sans-serif; transition: background-color 0.5s ease, color 0.5s ease;">
     {% include 'header.html' %}
 
@@ -19,6 +18,7 @@
     <main style="margin-left: 220px; padding: 100px 30px 20px;">
         {% include 'group_navbar.html' %}
 
+        Group Files
         <div class="group-dashboard-container bg-gray-100 dark:bg-gray-900 p-6 rounded-lg shadow-md">
             <h1 class="dashboard-title yellow-gradient p-4 text-4xl font-bold text-gray-800 dark:text-white mb-4">
                 Welcome to <span>{{ group.group_name }}</span>'s Group Dashboard: 

@@ -36,10 +36,10 @@
     background: linear-gradient(to right, #FFE03C, #E9B033);
 }
 
-.group-card:hover .enter-group-button {
+/* .group-card:hover .enter-group-button {
     background: linear-gradient(to left, #1A1A1B, #353437);
     color: #ffffff;
-}
+} */
 
 /* Tooltip base styles */
 .tooltip-container {

@@ -20,6 +20,11 @@ document.addEventListener("DOMContentLoaded", function() {
     const darkModeSelectColor = '#f2d638';
     const darkModeTextColor = '#000000';
 
+    const gray = '#1f2937';
+    const white = '#ffffff';
+
+    const appName = document.getElementById("appName");
+
     // Check if dark mode is enabled by default
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
         document.body.classList.add("dark");
@@ -60,6 +65,8 @@ document.addEventListener("DOMContentLoaded", function() {
             filterSelect.style.backgroundColor = darkModeSelectColor;
             filterSelect.style.color = darkModeTextColor;
 
+            appName.style.color = white;
+
         } else {
             header.classList.remove("black-gradient");
             header.classList.add("yellow-gradient");
@@ -79,6 +86,8 @@ document.addEventListener("DOMContentLoaded", function() {
             searchButton.style.color = lightModeTextColor;
             filterSelect.style.backgroundColor = lightModeSelectColor
             filterSelect.style.color = lightModeTextColor; 
+
+            appName.style.color = gray;
         }
     });
 });

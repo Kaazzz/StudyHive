@@ -1,14 +1,17 @@
 {% comment %} Note: Might use a hyperlink for other pages of our web app {% endcomment %}
 {% load static %}
 
-<style>
-    .gray-gradient {
-        background: linear-gradient(to left, #D3D3D3, #eaeaea);
-    }
-</style>
+<head>
+    <link rel="stylesheet" href="/static/css/general.css?">
+    <style>
+        .gray-gradient {
+            background: linear-gradient(to left, #BDBDBD, #eaeaea);
+        }
+    </style>
+</head>
 <div 
-    class="gray-gradient sidebar fixed top-10 left-0 h-screen flex flex-col items-center justify-center p-4 shadow-md" 
-    style="width: 110px;">
+    class="gray-gradient sidebar fixed top-2 left-0 h-screen flex flex-col items-center justify-center p-4 shadow-md" 
+    style="width: 125px;">
     
     <a href="{% url 'home' %}" class="mt-2 text-sm text-center">
         <div id="switchModeMygroups" class="tooltip-container flex cursor-pointer flex-col items-center">
@@ -25,7 +28,7 @@
         </div>
     </a>
 
-    <a href="{% url 'home' %}" class="mt-2 text-sm text-center">
+    <a href="{% url 'calendar_management' %}" class="mt-2 text-sm text-center">
         <div id="switchModeCalendar" class="tooltip-container flex cursor-pointer flex-col items-center">
             <img 
                 id="mode-icon-calendar"

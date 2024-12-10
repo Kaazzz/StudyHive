@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .forms import StudyGroupForm, JoinGroupForm, DiscussionThreadForm, CommentForm
 from .models import StudyGroup, JoinRequest, DiscussionThread
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.http import require_GET
@@ -32,13 +32,6 @@ def group_dashboard(request, unique_id):
     # If it's a GET request, just render the dashboard
     return render(request, 'group_dashboard.html', {'group': group, 'threads': threads})
 
-# @login_required
-# def group_dashboard(request, unique_id):
-#     group = get_object_or_404(StudyGroup, unique_id = unique_id)
-#     threads = group.discussion_thread.all()
-#     return render(request, 'group_dashboard.html', {'group': group, 'threads': threads})
-
-# for DiscussionThreads and Comments
 def create_discussion_thread(request, unique_id):
     group = get_object_or_404(StudyGroup, unique_id=unique_id)  # Get group using unique_id
     if request.method == "POST":
@@ -71,6 +64,10 @@ def add_comment(request, thread_id):
 @login_required
 def profile_view(request):
     return render(request, 'groups/profile.html', {'user': request.user})
+
+@login_required
+def home_page(request):
+    return render(request, 'home_page.html', {'user': request.user})
 
 # JoinRequest Private
 @login_required
@@ -154,6 +151,28 @@ def group_requests(request, unique_id):
     }
     return render(request, 'group_requests.html', context)
 
+@login_required
+def group_members(request, unique_id):
+    group = get_object_or_404(StudyGroup, unique_id=unique_id)
+
+    context = {
+        'group': group,
+    }
+
+    # Add any necessary logic for displaying group members here
+    return render(request, 'group_members.html', context)
+
+@login_required
+def group_files(request, unique_id):
+    group = get_object_or_404(StudyGroup, unique_id=unique_id)
+
+    context = {
+        'group': group,
+    }
+
+    # Add any necessary logic for managing group files here
+    return render(request, 'group_files.html', context)
+
 def request_join(request):
     if request.method == 'POST':
         try:
@@ -189,8 +208,6 @@ def request_join(request):
             return JsonResponse({'message': 'Invalid JSON data'}, status=400)
 
     return JsonResponse({'message': 'Invalid request method'}, status=405)
-
-
 
 @login_required
 def home(request):
@@ -233,7 +250,7 @@ def join_group(request):
                     study_group.save()
                     return JsonResponse({
                         'message': 'Successfully joined the group!',
-                        'redirect_url': f'/group/{study_group.unique_id}/'
+                        'redirect_url': f'/groups/{study_group.unique_id}/'
                     }, status=200)
                 else:
                     return JsonResponse({'message': 'You are already a member of this group.'}, status=400)
@@ -267,14 +284,44 @@ def join_group(request):
 
     return render(request, 'join_group.html', {'form': form})
 
+# @login_required
+# def search_groups(request):
+#     query = request.GET.get('query', '').strip()
+#     filter_option = request.GET.get('filter', 'all')
+
+#     results = StudyGroup.objects.none()  # Start with no results
+
+#     # Search according to the selected filter
+#     if query:
+#         if filter_option == 'group':
+#             results = StudyGroup.objects.filter(group_name__icontains=query)
+#         elif filter_option == 'member':
+#             results = StudyGroup.objects.filter(members__username__icontains=query)
+#         elif filter_option == 'subject':
+#             results = StudyGroup.objects.filter(subject__icontains=query)
+#         elif filter_option == 'all':
+#             results = StudyGroup.objects.filter(
+#                 Q(group_name__icontains=query) |
+#                 Q(subject__icontains=query) |
+#                 Q(members__username__icontains=query)
+#             ).distinct()
+
+#     # Annotate results with the member count
+#     results = results.annotate(members_count=Count('members'))
+
+#     context = {
+#         'results': results,  # Pass results to the template
+#     }
+
+#     return render(request, 'search_groups.html', context)
+
 @login_required
 def search_groups(request):
     query = request.GET.get('query', '').strip()
     filter_option = request.GET.get('filter', 'all')
-    
+
     results = StudyGroup.objects.none()  # Start with no results
 
-    # Search according to the selected filter
     if query:
         if filter_option == 'group':
             results = StudyGroup.objects.filter(group_name__icontains=query)
@@ -288,26 +335,35 @@ def search_groups(request):
                 Q(subject__icontains=query) |
                 Q(members__username__icontains=query)
             ).distinct()
-    
-    # Prepare response data
-    user = request.user
-    response_data = {
-        'results': [
-            {
-                'group_name': group.group_name,
-                'subject': group.subject,
-                'members_count': group.members.count(),
-                'unique_id': group.unique_id,
-                'is_member': group.members.filter(id=user.id).exists(),
-                'is_creator': group.user == user,
-                'is_private': getattr(group, 'is_private', False),  # Assuming `is_private` exists
-            }
-            for group in results
-        ]
+    else:  # If there's no query, return all groups for 'all' filter
+        if filter_option == 'all':
+            results = StudyGroup.objects.all()  # Get all groups
+
+    results = results.annotate(members_count=Count('members'))
+
+    groups_data = []
+    for group in results:
+        # Check if the user is the owner
+        is_owner = group.user == request.user
+
+        # Check if the user is a member
+        is_member = request.user in group.members.all()
+
+        # Debugging output to ensure correctness
+        print(f"Group: {group.group_name}, Is Owner: {is_owner}, Is Member: {is_member}")
+
+        groups_data.append({
+            'group': group,
+            'is_owner': is_owner,
+            'is_member': is_member,
+        })
+
+    context = {
+        'groups_data': groups_data,
+        'user': request.user,
+        'results': results,
     }
-    
-    # Send JSON response for AJAX requests; render `home.html` otherwise
-    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-        return JsonResponse(response_data)
-    else:
-        return render(request, 'home.html', {'query': query, 'results': response_data['results']})
+
+    return render(request, 'search_groups.html', context)
+
+
