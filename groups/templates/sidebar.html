@@ -11,9 +11,9 @@
 </head>
 <div 
     class="gray-gradient sidebar fixed top-2 left-0 h-screen flex flex-col items-center justify-center p-4 shadow-md" 
-    style="width: 125px;">
+    style="width: 100px;">
     
-    <a href="{% url 'home' %}" class="mt-2 text-sm text-center">
+    <a href="{% url 'home' %}" class="mt-2 text-xs text-center">
         <div id="switchModeMygroups" class="tooltip-container flex cursor-pointer flex-col items-center">
             <img 
                 id="mode-icon-mygroups"
@@ -28,7 +28,7 @@
         </div>
     </a>
 
-    <a href="{% url 'calendar_management' %}" class="mt-2 text-sm text-center">
+    <a href="{% url 'calendar_management' %}" class="mt-2 text-xs text-center">
         <div id="switchModeCalendar" class="tooltip-container flex cursor-pointer flex-col items-center">
             <img 
                 id="mode-icon-calendar"
@@ -58,7 +58,7 @@
         </div>
     </a> {% endcomment %}
 
-    <a href="{% url 'logout' %}" class="mt-2 text-sm text-center">
+    <a href="{% url 'logout' %}" class="mt-2 text-xs text-center">
         <div id="switchModeLogout" class="tooltip-container flex cursor-pointer flex-col items-center">
             <img 
                 id="mode-icon-logout"

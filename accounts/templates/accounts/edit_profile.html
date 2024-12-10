@@ -5,20 +5,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="{% static 'css/output.css' %}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">    
+
+
     <title>Edit Profile</title>
 </head>
-<body class="bg-gray-100 font-sans">
+<body class = "m-0 p-0 bg-[#f7f7f7]" style="font-family: 'Poppins', sans-serif; transition: background-color 0.5s ease, color 0.5s ease;">
+    {% include 'header.html' %}
+
+    {% include 'sidebar.html' %}
 
     <!-- Header -->
-    <header class="bg-yellow-300 shadow-md h-20">
+    {% comment %} <header class="bg-yellow-300 shadow-md h-20">
         <div class="container mx-auto px-6 py-4 flex items-center justify-between">
             <h1 class="text-2xl font-bold text-black">StudyHive</h1>
         </div>
-    </header>
+    </header> {% endcomment %}
 
 
     <!-- Edit Profile Section -->
-    <main class="container mx-auto mt-10">
+    <main style="margin-left: 220px; padding: 100px 30px 20px;">
         <div class="bg-white shadow-md rounded-lg p-6 md:p-8 max-w-4xl mx-auto">
             <h2 class="text-2xl font-semibold mb-6">Edit Personal Information</h2>
 
