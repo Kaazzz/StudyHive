@@ -15,8 +15,8 @@
 </head>
 <body class="bg-gray-100">
     <header class="bg-yellow-300 shadow-md h-20 flex items-center justify-between px-6">
-      <h1 class="text-2xl font-bold text-white">StudyHive</h1>
-      <h2 class="text-xl font-medium text-white">Welcome, {{ user.username }}</h2>
+      <h1 class="text-2xl font-bold text-black">StudyHive</h1>
+      <h2 class="text-xl font-medium text-black">Welcome, {{ user.username }}</h2>
     </header>
   
     <h1 class="text-3xl font-bold mb-4 text-center mt-4">Edit Event</h1>
@@ -35,22 +35,22 @@
       {% csrf_token %}
   
       <div class="mb-4">
-        <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
+        <label for="title" class="block text-lg font-medium text-gray-700 ">Title</label>
         <input type="text" id="title" name="title" class="border border-gray-300 rounded-md p-2 w-full" value="{{ event.title }}">
       </div>
   
       <div class="mb-4">
-        <label for="start_time" class="block text-sm font-medium text-gray-700">Start Time</label>
+        <label for="start_time" class="block text-lg font-medium text-gray-700">Start Time</label>
         <input type="datetime-local" id="start_time" name="start_time" class="border border-gray-300 rounded-md p-2 w-full"  value="{{ event.start_time|date:'Y-m-d\TH:i:s' }}">
       </div>
   
       <div class="mb-4">
-        <label for="end_time" class="block text-sm font-medium text-gray-700">End Time</label>
+        <label for="end_time" class="block text-lg font-medium text-gray-700">End Time</label>
         <input type="datetime-local" id="end_time" name="end_time" class="border border-gray-300 rounded-md p-2 w-full"  value="{{ event.end_time|date:'Y-m-d\TH:i:s' }}">
       </div>
   
       <div class="mb-4">
-        <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+        <label for="description" class="block text-lg font-medium text-gray-700">Description</label>
         <textarea id="description" name="description" class="border border-gray-300 rounded-md p-2 w-full">{{ event.description }}</textarea>
       </div>
   

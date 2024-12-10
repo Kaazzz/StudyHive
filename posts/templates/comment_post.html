@@ -5,21 +5,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="{% static 'css/output.css' %}" rel="stylesheet">
-
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</head>
-<body class="font-sans bg-cover bg-no-repeat bg-fixed bg-center" style="background-image: url('{% static 'media/studyhive.png' %}');">
+  <link href="{% static 'css/output.css' %}" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
 
-  <header class="bg-yellow-300 shadow-md h-20">
-    <div class="container mx-auto px-6 py-4 flex items-center justify-between">
-        <h1 class="text-2xl font-bold python manage.py collectstatictext-black">StudyHive</h1>
-        <h2 class="text-xl font-medium mb-4">Welcome, {{ user.username }}</h2>
-    </div>
+</head>
+<body class="bg-gray-100">
+
+  <header class="bg-yellow-300 shadow-md h-20 flex items-center justify-between px-6">
+    <h1 class="text-2xl font-bold text-black">StudyHive</h1>
+    <h2 class="text-xl font-medium text-black">Welcome, {{ user.username }}</h2>
   </header>
+  <div class="container mx-auto px-4 py-8">
 
   <div class="container mx-auto px-4 py-8">
 

@@ -25,31 +25,32 @@
   }
   
   .card-front {
-    background-color: #6A2C70;
+    background-color: #e0a104;
     color: #fff;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    border: 10px solid #6A2C70;
+    border: 10px solid #e0a104;
     border-radius: 10px;
     transform: rotateY(0deg);
   }
   
   .card-back {
-    background-color: #F08A5D;
+    background-color: #c1a24f;
     color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 10px solid #F08A5D;
+    border: 10px solid #c1a24f;
     border-radius: 10px;
     transform: rotateY(180deg);
   }
-  
+
   .card-title {
     font-size: 24px;
     text-align: center;
+    color: #00264d; 
   }
   
   .card-time {
@@ -57,4 +58,5 @@
     bottom: 10px;
     left: 10px;
     font-size: 12px;
+    color: #00264d; 
   }
