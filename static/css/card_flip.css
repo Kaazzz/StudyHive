@@ -25,24 +25,24 @@
   }
   
   .card-front {
-    background-color: #e0a104;
+    background-color: #f54251;
     color: #fff;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    border: 10px solid #e0a104;
+    border: 10px solid #f54251;
     border-radius: 10px;
     transform: rotateY(0deg);
   }
   
   .card-back {
-    background-color: #c1a24f;
+    background-color: #e04653;
     color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 10px solid #c1a24f;
+    border: 10px solid #e04653;
     border-radius: 10px;
     transform: rotateY(180deg);
   }
