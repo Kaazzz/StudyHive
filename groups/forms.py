@@ -22,6 +22,14 @@ class DiscussionThreadForm(forms.ModelForm):
         model = DiscussionThread
         fields = ['topic', 'description', 'session_date']
 
+class StudyGroupEditForm(forms.ModelForm):
+    class Meta:
+        model = StudyGroup
+        fields = ['group_name', 'subject', 'description', 'is_private']  # Fields to include in the form
+        widgets = {
+            'description': forms.Textarea(attrs={'rows': 4, 'cols': 15}),
+        }
+
 # class CommentForm(forms.ModelForm):
 #     class Meta:
 #         model = Comment

@@ -11,11 +11,19 @@ urlpatterns = [
     
     path('search_groups/', views.search_groups, name='search_groups'),
     path('request_join/', views.request_join, name='request_join'),
+   
+    path('group/<str:unique_id>/members/', views.group_members, name='group_members'),
+    path('group/<str:unique_id>/remove/<int:member_id>/', views.remove_member, name='remove_member'),
 
     path('groups/<str:unique_id>/', views.group_dashboard, name='group_dashboard'),
     path('group/<str:unique_id>/requests/', views.group_requests, name='group_requests'),
-    path('group/<str:unique_id>/members/', views.group_members, name='group_members'),
+    
+    
+    
     path('group/<str:unique_id>/files/', views.group_files, name='group_files'),
+
+    path('group/<str:unique_id>/edit/', views.edit_group_details, name='edit_group'),
+    path('group/<str:unique_id>/delete/', views.delete_group, name='delete_group'),
 
     path('group/<str:unique_id>/accept_request/<int:join_request_id>/', views.accept_request, name='accept_request'),
     path('group/<str:unique_id>/reject_request/<int:join_request_id>/', views.reject_request, name='reject_request'),

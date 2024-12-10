@@ -2,7 +2,7 @@ from datetime import datetime
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .forms import StudyGroupForm, JoinGroupForm, DiscussionThreadForm
+from .forms import StudyGroupForm, JoinGroupForm, DiscussionThreadForm, StudyGroupEditForm
 # from .forms import CommentForm
 from .models import StudyGroup, JoinRequest, DiscussionThread
 from django.db.models import Q, Count
@@ -32,6 +32,31 @@ def group_dashboard(request, unique_id):
 
     # If it's a GET request, just render the dashboard
     return render(request, 'group_dashboard.html', {'group': group, 'threads': threads})
+
+def edit_group_details(request, unique_id):
+    group = get_object_or_404(StudyGroup, unique_id=unique_id)  # Get the group by unique_id
+    
+    if request.method == 'POST':
+        form = StudyGroupEditForm(request.POST, instance=group)
+        if form.is_valid():
+            form.save()  # Save changes to the database
+            messages.success(request, 'Group details updated successfully!')
+            return redirect('group_dashboard', unique_id=group.unique_id)  # Redirect back to the dashboard
+    else:
+        form = StudyGroupEditForm(instance=group)  # Pre-fill the form with existing group data
+
+    return render(request, 'edit_group.html', {'form': form, 'group': group})
+
+def delete_group(request, unique_id):
+    group = get_object_or_404(StudyGroup, unique_id=unique_id)
+
+    if request.method == "POST":
+        group_name = group.group_name
+        group.delete()
+        messages.success(request, f'Group "{group_name}" has been deleted successfully!')
+        return redirect('home')
+
+    return render(request, 'confirm_delete_group.html', {'group': group})
 
 def create_discussion_thread(request, unique_id):
     group = get_object_or_404(StudyGroup, unique_id=unique_id)  # Get group using unique_id
@@ -162,6 +187,23 @@ def group_members(request, unique_id):
 
     # Add any necessary logic for displaying group members here
     return render(request, 'group_members.html', context)
+
+@login_required
+def remove_member(request, unique_id, member_id):
+    group = get_object_or_404(StudyGroup, unique_id=unique_id)
+    
+    if request.user != group.user:  # Ensure only the creator can remove members
+        messages.error(request, "You don't have permission to remove members.")
+        return redirect('group_members', unique_id=unique_id)
+
+    member = get_object_or_404(User, id=member_id)
+    if member == group.user:
+        messages.error(request, "You cannot remove the group creator.")
+        return redirect('group_members', unique_id=unique_id)
+
+    group.members.remove(member)
+    messages.success(request, f"{member.first_name} {member.last_name} has been removed.")
+    return redirect('group_members', unique_id=unique_id)
 
 @login_required
 def group_files(request, unique_id):

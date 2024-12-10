@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="/static/css/general.css?">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">    
 </head>
-<body class = "m-0 p-0 bg-[#f7f7f7]" style="font-family: 'Poppins', sans-serif; transition: background-color 0.5s ease, color 0.5s ease;">
+<body class="m-0 p-0 bg-[#f7f7f7]" style="font-family: 'Poppins', sans-serif; transition: background-color 0.5s ease, color 0.5s ease;">
     {% include 'header.html' %}
 
     {% include 'sidebar.html' %}
@@ -18,46 +18,47 @@
     <main style="margin-left: 220px; padding: 100px 30px 20px;">
         {% include 'group_navbar.html' %}
 
-        Group Members
         <div class="group-dashboard-container bg-gray-100 dark:bg-gray-900 p-6 rounded-lg shadow-md">
-            <h1 class="dashboard-title yellow-gradient p-4 text-4xl font-bold text-gray-800 dark:text-white mb-4">
-                Welcome to <span>{{ group.group_name }}</span>'s Group Dashboard: 
-            </h1>
-            <div class="dashboard-content space-y-3">
-                <p class="dashboard-description text-lg text-gray-700 dark:text-gray-300">
-                    <strong>Description:</strong> {{ group.description }}
-                </p>
-                <p class="dashboard-subject text-lg text-gray-700 dark:text-gray-300">
-                    <strong>Subject:</strong> {{ group.subject }}
-                </p>
-                <p class="dashboard-members text-lg text-gray-700 dark:text-gray-300">
-                    <strong>Members:</strong> {{ group.members.count }}
-                </p>
-            </div>
-            
-            <div class="dashboard-actions mt-6">
-                <button 
-                    class="action-btn yellow-gradient hover:bg-yellow-600 text-black py-2 px-4 rounded shadow-md transition-all duration-300"
-                    style="--tw-bg-opacity: 1;">
-                    Edit Group Details
-                </button>
-                <button 
-                    class="action-btn hover:bg-red-600 text-white py-2 px-4 rounded shadow-md transition-all duration-300"
-                    style="--tw-bg-opacity: 1; background-color: rgb(239 68 68 / var(--tw-bg-opacity)) /* #ef4444 */;">
-                    Delete Group
-                </button>
+            <h1 class="text-2xl font-bold mb-6 yellow-gradient p-4 text-4xl font-bold text-gray-800 dark:text-white mb-4 rounded-md">{{ group.group_name }} - Members</h1>
+
+            <!-- Members List -->
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
+                <h2 class="text-xl font-semibold mb-4">Group Members</h2>
+                
+                <ul class="divide-y divide-gray-300 dark:divide-gray-700">
+                    {% for member in group.members.all %}
+                        <li class="flex justify-between items-center py-3">
+                            <div class="flex items-center space-x-4">
+                                <div class="mr-2 bg-gray-200 dark:bg-gray-600 rounded-full w-12 h-12 flex items-center justify-center text-gray-800 dark:text-gray-200 font-bold">
+                                    {{ member.first_name|slice:":1" }}{{ member.last_name|slice:":1" }}
+                                </div>
+                                <div>
+                                    <p class="text-lg font-medium">
+                                        {{ member.first_name }} {{ member.last_name }}
+                                        {% if group.user == member %}
+                                            <span class="text-sm font-light text-gray-600 dark:text-gray-400">(Creator)</span>
+                                        {% endif %}
+                                    </p>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">{{ member.email }}</p>
+                                </div>
+                            </div>
+
+                            <!-- Remove Button (Visible Only to Creator) -->
+                            {% if group.user == request.user and group.user != member %}
+                                <form method="POST" action="{% url 'remove_member' group.unique_id member.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="text-red-600 hover:text-red-800 transition-all">
+                                        Remove
+                                    </button>
+                                </form>
+                            {% endif %}
+                        </li>
+                    {% empty %}
+                        <li class="py-3 text-center text-gray-500 dark:text-gray-400">No members in this group yet.</li>
+                    {% endfor %}
+                </ul>
             </div>
         </div>
-
-        <!-- Display all members -->
-        <h2>Group Members:</h2>
-        <ul>
-            {% for member in group.members.all %}
-                <li>{{ member.first_name }} {{ member.last_name }}</li> <!-- Adjust this if you have a different field for display -->
-            {% empty %}
-                <li>No members in this group yet.</li>
-            {% endfor %}
-        </ul>
     </main>
 </body>
 </html>

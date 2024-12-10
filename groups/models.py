@@ -7,7 +7,7 @@ import string
 
 class StudyGroup(models.Model):
     group_id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, related_name='created_groups') # creator_id
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, related_name='created_groups') # creator
     group_name = models.CharField(max_length=100)
     subject = models.CharField(max_length=100, default="General")  # Default subject
     description = models.TextField()
