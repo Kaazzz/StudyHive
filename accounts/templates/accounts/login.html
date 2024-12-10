@@ -105,12 +105,13 @@
                 }, 5000); // 5 seconds
             }
 
-            // Redirect to home page after successful login
-            {% if success %)}
+                    // Redirect to home page after successful login
+                    {% if success %}
             setTimeout(() => {
-                window.location.href = "{% url 'home' %}"; // Update 'home' with your actual home URL name
-            }, 3000); // Redirect after 3 seconds
-            {% endif %}
+                window.location.href = "{% url 'home' %}"; 
+            }, 3000); 
+        {% endif %}
+
         });
     </script>
 </body>

@@ -37,12 +37,12 @@
 }
 
 .card-back {
-  background-color: #e04653;
+  background-color: #ff5b5b;
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 10px solid #e04653;
+  border: 10px solid #ff5b5b;
   border-radius: 10px;
   transform: rotateY(180deg);
 }
