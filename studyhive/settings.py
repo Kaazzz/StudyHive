@@ -39,9 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'groups',
     'accounts',
+    'calendar_scheduler',
+    'chat',
+    'posts',
     'widget_tweaks',
     'django_extensions',
-    'calendar_scheduler',
     # 'django_browser_reload',
 ]
 

@@ -1,5 +1,7 @@
 from django import forms
-from .models import StudyGroup, DiscussionThread, Comment
+from .models import StudyGroup, DiscussionThread
+# from .models import Comment
+
 
 class StudyGroupForm(forms.ModelForm):
     class Meta:
@@ -20,7 +22,7 @@ class DiscussionThreadForm(forms.ModelForm):
         model = DiscussionThread
         fields = ['topic', 'description', 'session_date']
 
-class CommentForm(forms.ModelForm):
-    class Meta:
-        model = Comment
-        fields = ['description']
+# class CommentForm(forms.ModelForm):
+#     class Meta:
+#         model = Comment
+#         fields = ['description']

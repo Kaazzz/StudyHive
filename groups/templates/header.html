@@ -86,7 +86,8 @@
                     class="w-12 h-12 rounded-full object-cover"
                     style="transition: box-shadow 0.3s ease;" 
                     onmouseover="this.style.boxShadow='0 4px 10px rgba(0, 0, 0, 0.2)';" 
-                    onmouseout="this.style.boxShadow='none';">
+                    onmouseout="this.style.boxShadow='none';"
+                    onclick="window.location.href = '{% url 'chat' %}'">
                 <span class="tooltip-text">Messages</span>
             </div>
 

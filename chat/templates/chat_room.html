@@ -1,0 +1,50 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="{% static 'css/output.css' %}" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/general.css?">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">    
+  <meta http-equiv="refresh" content="5">
+</head>
+<body class = "m-0 p-0 bg-[#f7f7f7]" style="font-family: 'Poppins', sans-serif; transition: background-color 0.5s ease, color 0.5s ease;">
+  {% comment %} <header class="bg-yellow-300 shadow-md h-20">
+    <div class="container mx-auto px-6 py-4 flex items-center justify-between">
+        <h1 class="text-2xl font-bold python manage.py collectstatictext-black">StudyHive  </h1>
+        <h2 class="text-xl font-medium mb-4">Welcome meaw, {{ user.username }}</h2>
+    </div>
+  </header> {% endcomment %}
+
+  {% include 'header.html' %}
+
+  {% include 'sidebar.html' %}
+
+  <main style="margin-left: 220px; padding: 100px 30px 20px;">
+    <form action="{% url 'create_chat' %}" method="post" class="flex justify-end mr-4">
+      {% csrf_token %}
+      <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Create Chat Room</button>
+    </form>
+    <div class="container mx-auto px-4 py-8">
+      <div class="flex justify-center h-screen">
+        {% if chats %}
+          <ul class="list-none space-y-2 max-w-md">
+            {% for chat in chats %}
+              <li class="flex items-center px-4 py-2 bg-white rounded-lg shadow-md hover:bg-gray-100">
+                <div class="flex-grow">
+                  <a href="{% url 'send_message' chat.pk %}" class="text-lg font-medium text-gray-800 hover:text-blue-500">{{ chat.title }}</a>
+                  <p class="text-sm text-gray-500">{{ chat.author }}</p>
+                </div>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="text-center text-gray-500 font-medium">No chats found.</p>
+        {% endif %}
+      </div>
+    </div>
+  </main>
+</body>
+</html>

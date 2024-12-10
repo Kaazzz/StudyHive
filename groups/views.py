@@ -2,7 +2,8 @@ from datetime import datetime
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .forms import StudyGroupForm, JoinGroupForm, DiscussionThreadForm, CommentForm
+from .forms import StudyGroupForm, JoinGroupForm, DiscussionThreadForm
+# from .forms import CommentForm
 from .models import StudyGroup, JoinRequest, DiscussionThread
 from django.db.models import Q, Count
 from django.http import JsonResponse
@@ -46,20 +47,20 @@ def create_discussion_thread(request, unique_id):
         form = DiscussionThreadForm()
     return render(request, 'create_thread.html', {'form': form, 'group': group})
 
-@login_required
-def add_comment(request, thread_id):
-    thread = get_object_or_404(DiscussionThreadForm, id=thread_id)
-    if request.method == 'POST':
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.user_id = request.user
-            comment.discussion_id = thread
-            comment.save()
-            return redirect('group_dashboard', group_id=thread.group_id.id)
-    else:
-        form = CommentForm()
-    return render(request, 'add_comment.html', {'form': form, 'thread': thread})
+# @login_required
+# def add_comment(request, thread_id):
+#     thread = get_object_or_404(DiscussionThreadForm, id=thread_id)
+#     if request.method == 'POST':
+#         form = CommentForm(request.POST)
+#         if form.is_valid():
+#             comment = form.save(commit=False)
+#             comment.user_id = request.user
+#             comment.discussion_id = thread
+#             comment.save()
+#             return redirect('group_dashboard', group_id=thread.group_id.id)
+#     else:
+#         form = CommentForm()
+#     return render(request, 'add_comment.html', {'form': form, 'thread': thread})
 
 @login_required
 def profile_view(request):

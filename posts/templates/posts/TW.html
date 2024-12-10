@@ -1,0 +1,151 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <link href="{% static 'css/output.css' %}" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
+
+</head>
+<body class="bg-gray-100">
+
+  <header class="bg-yellow-300 shadow-md h-20 flex items-center justify-between px-6">
+    <h1 class="text-2xl font-bold text-black">StudyHive</h1>
+    <h2 class="text-xl font-medium text-black">Welcome, {{ user.username }}</h2>
+  </header>
+  <div class="container mx-auto px-4 py-8">
+
+  <div class="container mx-auto px-4 py-8">
+
+    <div class="flex justify-between items-center mb-4">  
+      <form action="{% url 'create_post' %}" method="post" class="flex">  
+        {% csrf_token %}
+      <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700">Create A Post</button>
+      </form>
+    </div>
+
+    {% if posts %}
+      <ul class="list-disc space-y-8">
+        {% for post in posts %}
+          <li class="post bg-white shadow-md rounded-md p-4 flex flex-col">
+
+            <div class="flex justify-between">
+              <h2 class="text-2xl font-semibold mb-2">{{ post.title }}</h2>
+              {% if post.author == user %}
+
+              <button type="button" class="btn btn-primary hover:scale-110" data-toggle="modal" data-target="#postModal">&#128465; </button>            
+                <div class="modal" id="postModal">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+
+                      <div class="modal-header">
+                        <h4 class="modal-title">Delete Post?</h4>
+                        <button type="button" class="close hover:scale-110" data-dismiss="modal">&times;</button>
+                      </div>
+
+                      <div class="modal-body">
+                        <p> Are you sure you want to delete the post?</p>
+                      </div>
+
+                      <div class="modal-footer">
+                        <form action="{% url 'delete_post' post.pk %}" method="post" class="inline-block">
+                          {% csrf_token %}
+                          <button type="submit" class="px-2 py-1 bg-red-500 text-white rounded-md hover:bg-red-700 hover:scale-110">Delete</button>
+                        </form>
+                        <button type="button" class="px-2 py-1 bg-gray-500 text-white rounded-md hover:bg-blue-700 hover:scale-110" data-dismiss="modal">Cancel</button>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
+                
+              {% endif %}
+            </div>
+
+            <p class="text-gray-700">{{ post.description }}</p>
+            <p class="text-sm text-gray-500 mb-2">By: {{ post.author.username }} on {{ post.created_at }}</p>
+
+            {% if post.comments.all %}
+              <h3 class="text-lg font-medium mb-2">Comments</h3>
+              <ul class="list-disc space-y-2">
+                {% for comment in post.comments.all %}
+                  <li class="comment bg-gray-200 p-2 rounded-md flex flex-col">
+                    <div class="flex justify-between">
+                      <p class="text-gray-700">{{ comment.text }}</p>
+                      {% if comment.author == user %}
+                      <button type="button" class="btn btn-primary hover:scale-110" data-toggle="modal" data-target="#commentModal"> &#128465; </button>            
+                      <div class="modal" id="commentModal">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+      
+                            <div class="modal-header">
+                              <h4 class="modal-title">Delete Post?</h4>
+                              <button type="button" class="close hover:scale-110" data-dismiss="modal">&times;</button>
+                            </div>
+      
+                            <div class="modal-body">
+                              <p> Are you sure you want to delete the post?</p>
+                            </div>
+      
+                            <div class="modal-footer">
+                              <form action="{% url 'delete_comment' comment.pk %}" method="post" class="inline-block">
+                                {% csrf_token %}
+                                <button type="submit" class="px-2 py-1 bg-red-500 text-white rounded-md hover:bg-red-700 hover:scale-110">Delete</button>
+                              </form>
+                              <button type="button" class="px-2 py-1 bg-gray-500 text-white rounded-md hover:bg-blue-700 hover:scale-110" data-dismiss="modal">Cancel</button>
+                            </div>
+      
+                          </div>
+                        </div>
+                      </div>
+                      
+                      {% endif %}
+                    </div>
+                    <p class="text-sm text-gray-500">By: {{ comment.author.username }} on {{ comment.created_at }}</p>
+                  </li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              <p class="text-sm text-gray-500">No comments yet.</p>
+            {% endif %}
+            
+            {% if post.id == pc.id %}
+            <form method="post" class="bg-white shadow-md rounded-md p-8">
+                {% csrf_token %}
+                <div class="mb-4">
+                    <label for="id_text" class="block text-sm font-medium text-gray-700">Comment</label>
+                    <textarea id="id_text" name="text" rows="4" class="mt-1 block w-full border border-gray-300 rounded-md bg-gray-50 p-2 focus:border-indigo-500 focus:ring-indigo-500"></textarea>
+                </div>
+    
+                <div class="flex justify-end">
+                    <button type="button" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md mx-4 hover:bg-gray-400" onclick="window.history.back()">Cancel</button>
+                    <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700">Submit Comment</button>
+                </div>
+            </form>
+          {% else %}
+          <form method="post" class="bg-white shadow-md rounded-md p-8">
+            {% csrf_token %}
+            <div class="flex justify-end">
+                <button type="button" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400" onclick="window.history.back()">Cancel</button>
+            </div>
+        </form>
+          {% endif %}
+
+
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="text-center text-gray-500">There are no posts yet.</p>
+    {% endif %}
+  </div>
+
+</body>
+</html>

@@ -74,12 +74,12 @@ class DiscussionThread(models.Model):
     topic = models.CharField(max_length=100, default="General")
     description = models.TextField(null=True)
 
-class Comment(models.Model):
-    comment_id = models.AutoField(primary_key=True)
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comment')
-    discussion_id = models.ForeignKey(DiscussionThread, on_delete=models.CASCADE, related_name='comment')
-    topic = models.CharField(max_length=100, default="General")
-    description = models.TextField(null=True)
-    timestamp = models.DateTimeField(null=True)
+# class Comment(models.Model):
+#     comment_id = models.AutoField(primary_key=True)
+#     user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comment')
+#     discussion_id = models.ForeignKey(DiscussionThread, on_delete=models.CASCADE, related_name='comment')
+#     topic = models.CharField(max_length=100, default="General")
+#     description = models.TextField(null=True)
+#     timestamp = models.DateTimeField(null=True)
 
 
