@@ -20,6 +20,16 @@
     </header>
   
     <h1 class="text-3xl font-bold mb-4 text-center mt-4">Edit Event</h1>
+
+    <div id="alert-1" class="hidden items-center p-4 mb-4 text-sm text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 dark:border-red-800" role="alert">
+      <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+        <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+      </svg>
+      <span class="sr-only">Info</span>
+      <div>
+        <span class="font-medium" id="alert-message">
+      </div>
+    </div>
   
     <form method="post" class="space-y-4 mx-auto max-w-2xl" onsubmit="return validateForm()">
       {% csrf_token %}
@@ -52,26 +62,43 @@
       </button>
     </form>
     
-    <script>
-      function validateForm() {
-        const startTime = document.getElementById('start_time').value;
-        const endTime = document.getElementById('end_time').value;
-        const today = new Date();
-        const pstOffset = 8 * 60 * 60 * 1000; // 8 hours in milliseconds
-        today.setTime(today.getTime() + pstOffset);
-        const formattedToday = today.toISOString().slice(0, 16).replace('T', ' ');
+      <script>
+        function validateForm() {
+          const startTime = document.getElementById('start_time').value;
+          const endTime = document.getElementById('end_time').value;
+          const today = new Date();
+          const pstOffset = 8 * 60 * 60 * 1000; // 8 hours in milliseconds
+          today.setTime(today.getTime() + pstOffset);
+          const formattedToday = today.toISOString().slice(0, 16).replace('T', ' ');
       
-        if (startTime >= endTime) {
-          alert("Error: People can't time travel! Today's date is: " + formattedToday);
-          return false;
+          if (startTime > endTime) {
+            const errorMessage = "People can't time travel";
+            document.getElementById('alert-message').textContent = errorMessage;
+            showModal();
+            return false;
+          }
+          if (startTime < formattedToday) {
+            const errorMessage = "People can't teleport you know";
+            document.getElementById('alert-message').textContent = errorMessage;
+            showModal();  
+            return false;
+          }
+          if (startTime == endTime) {
+            const errorMessage = "What event is even this??";
+            document.getElementById('alert-message').textContent = errorMessage;
+            showModal();  
+            return false;
+          }
+      
+          return true;
         }
-        if (startTime < formattedToday) {
-          alert("Error: You can't reschedule an event in the past! Today's date is: " + formattedToday);
-          return false;
+        function showModal() {
+          document.getElementById('alert-1').classList.remove('hidden');
         }
       
-        return true;
-      }
+        function closeModal() {
+          document.getElementById('alert-1').classList.add('hidden');
+        }
       </script>
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
   </body>

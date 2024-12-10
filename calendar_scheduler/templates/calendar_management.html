@@ -84,11 +84,11 @@
                 <div class="modal-dialog">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h4 class="modal-title">Delete Post?</h4>
+                      <h4 class="modal-title">Delete Event?</h4>
                       <button type="button" class="close hover:scale-110" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body">
-                      <p> Are you sure you want to delete the post?</p>
+                      <p> Are you sure you want to delete the event?</p>
                     </div>
                     <div class="modal-footer">
                       <form action="{% url 'delete_event' event.pk %}" method="post" class="inline-block">
@@ -154,11 +154,11 @@
                 <div class="modal-dialog">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h4 class="modal-title">Delete Post?</h4>
+                      <h4 class="modal-title">Delete Event?</h4>
                       <button type="button" class="close hover:scale-110" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body">
-                      <p> Are you sure you want to delete the post?</p>
+                      <p> Are you sure you want to delete the event?</p>
                     </div>
                     <div class="modal-footer">
                       <form action="{% url 'delete_event' event.pk %}" method="post" class="inline-block">
@@ -178,6 +178,16 @@
 
     </div>
     <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="CreateEvent" role="tabpanel" aria-labelledby="CreateEvent-tab">
+
+      <div id="alert-1" class="hidden items-center p-4 mb-4 text-sm text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 dark:border-red-800" role="alert">
+        <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+        </svg>
+        <span class="sr-only">Info</span>
+        <div>
+          <span class="font-medium" id="alert-message">
+        </div>
+      </div>
 
       <div class="container mx-auto px-1 my-4 pb-8">
         <h1 class="text-2xl font-bold mb-4">Create a New Event</h1>
@@ -216,23 +226,36 @@
           const pstOffset = 8 * 60 * 60 * 1000; // 8 hours in milliseconds
           today.setTime(today.getTime() + pstOffset);
           const formattedToday = today.toISOString().slice(0, 16).replace('T', ' ');
-        
+      
           if (startTime > endTime) {
-            alert("Error: People can't time travel! Today's date is: " + formattedToday);
+            const errorMessage = "People can't time travel";
+            document.getElementById('alert-message').textContent = errorMessage;
+            showModal();
             return false;
           }
           if (startTime < formattedToday) {
-            alert("Error: You can't schedule an event in the past! Today's date is: " + formattedToday);
+            const errorMessage = "People can't teleport you know";
+            document.getElementById('alert-message').textContent = errorMessage;
+            showModal();  
             return false;
           }
           if (startTime == endTime) {
-            alert("Error: Just 1 minute for an event???");
+            const errorMessage = "What event is even this??";
+            document.getElementById('alert-message').textContent = errorMessage;
+            showModal();  
             return false;
           }
-        
+      
           return true;
         }
-        </script>
+        function showModal() {
+          document.getElementById('alert-1').classList.remove('hidden');
+        }
+      
+        function closeModal() {
+          document.getElementById('alert-1').classList.add('hidden');
+        }
+      </script>
 
 </div>
 
