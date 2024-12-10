@@ -75,83 +75,97 @@
                                     <div class="flex-1 overflow-y-auto p-4 justify-start">
                                       <div class="flex justify-end mb-4 relative">
 
-                                        <div class="flex justify-end mt-2">
-                                          <button id="dropdownMenuIconButton" data-dropdown-toggle="commentdropdownDots-{{comment.pk}}" class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600" type="button">
-                                            <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
-                                            <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/>
-                                            </svg>
-                                          </button>
-                                        </div>
+                                          <div class="flex justify-end mt-2">
+                                            <button id="dropdownMenuIconButton" data-dropdown-toggle="commentdropdownDots-{{comment.pk}}" class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600" type="button">
+                                              <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
+                                              <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/>
+                                              </svg>
+                                            </button>
+                                          </div>
 
-                                        {% if comment.is_reply == True %}
-                                        <div>
-                                          <div class="bg-gray-500 text-white p-3  rounded-3xl max-w-[500px] flex flex-col">
-                                            <div class="order-first">
-                                              <p>{{ comment.reply }}</p>
-                                              <p class="text-xs text-white">{{ comment.author.username }} on {{ comment.created_at }}</p>
+                                          {% if comment.is_reply == True %}
+                                          <div>
+                                            <div class="flex items-start gap-2.5">
+                                              <div class="flex flex-col w-full max-w-[320px] leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-e-xl rounded-es-xl dark:bg-gray-700">
+                                                <div class="flex items-center space-x-2 rtl:space-x-reverse">
+                                                    <span class="text-sm font-semibold text-gray-900 dark:text-white">{{comment.author}}</span>
+                                                    <span class="text-sm font-normal text-gray-500 dark:text-gray-400">{{ comment.created_at }}</span>
+                                                </div>
+                                                <p class="text-sm font-normal py-2.5 text-gray-900 dark:text-white">{{ comment.text }}</p>
+                                              </div>
+                                            </div>
+                                            <div class="flex items-start gap-2.5">
+                                              {% comment %} <img class="w-8 h-8 rounded-full" src="/docs/images/people/profile-picture-3.jpg" alt="Jese image"> {% endcomment %}
+                                              <div class="flex flex-col w-full max-w-[320px] leading-1.5 p-4 border-gray-200 bg-blue-700 rounded-e-xl rounded-es-xl dark:bg-gray-700">
+                                                <div class="flex items-center space-x-2 rtl:space-x-reverse">
+                                                    <span class="text-sm font-semibold text-white dark:text-white">{{comment.author}}</span>
+                                                    <span class="text-sm font-normal text-white dark:text-gray-400">{{ comment.created_at }}</span>
+                                                </div>
+                                                <p class="text-sm font-normal py-2.5 text-white dark:text-white">{{ comment.text }}</p>
+                                                <span class="text-sm font-normal text-white dark:text-gray-400">Delivered</span>
+                                              </div>
                                             </div>
                                           </div>
-                                          <div class="bg-blue-500 text-white p-3 rounded-3xl max-w-[500px] flex flex-col">
-                                            <div class="order-first">
-                                              <p>{{ comment.text }}</p>
-                                              <p class="text-xs text-white">{{ comment.author.username }} on {{ comment.created_at }}</p>
+                                          {% else %}
+                                          <div class="flex items-start gap-2.5">
+                                            {% comment %} <img class="w-8 h-8 rounded-full" src="/docs/images/people/profile-picture-3.jpg" alt="Jese image"> {% endcomment %}
+                                            <div class="flex flex-col w-full max-w-[320px] leading-1.5 p-4 border-gray-200 bg-blue-700 rounded-xl dark:bg-gray-700">
+                                              <div class="flex items-center space-x-2 rtl:space-x-reverse">
+                                                  <span class="text-sm font-semibold text-white dark:text-white">{{comment.author}}</span>
+                                                  <span class="text-sm font-normal text-white dark:text-gray-400">{{ comment.created_at }}</span>
+                                              </div>
+                                              <p class="text-sm font-normal py-2.5 text-white dark:text-white">{{ comment.text }}</p>
+                                              <span class="text-sm font-normal text-white dark:text-gray-400">Delivered</span>
                                             </div>
                                           </div>
-                                        </div>
-                                        {% else %}
-                                        <div class="bg-blue-500 text-white p-3 rounded-xl max-w-[500px] flex flex-col">
-                                          <div class="order-first">
-                                            <p>{{ comment.text }}</p>
-                                            <p class="text-xs text-white">{{ comment.author.username }} on {{ comment.created_at }}</p>
-                                          </div>
-                                        </div>
-                                        {% endif %}
-
-                                      </div>    
-                                      <div id="commentdropdownDots-{{comment.pk}}" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
- 
-                                        <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconButton">
-                                          {% if now < comment.created_at %}
-                                          <li>
-                                            <a href="{% url 'edit_message' comment.pk chat.id %}" class="block px-4 py-2 hover:text-blue-500">Edit</a>       
-                                          </li>
                                           {% endif %}
-                                          <li>
-                                            <a href="#" class="block px-4 py-2 hover:text-red-500"  data-toggle="modal" data-target="#messageModal-{{ comment.pk }}" data-chat-id="{{ chat.pk }}">Delete</a>
-                                          </li>
-                                          <li>
-                                            <a href="{% url 'reply_message' chat.id comment.pk %}" class="block px-4 py-2 hover:text-blue-500">Reply</a>
-                                          </li>
-                                        </ul>  
-                                      </div>
-                                    </div>  
 
-                                    <div class="modal" id="messageModal-{{ comment.pk }}">
-                                      <div class="modal-dialog">
-                                        <div class="modal-content">
-                                          <div class="modal-header">
-                                            <h4 class="modal-title">Delete Comment?</h4>
-                                            <button type="button" class="close hover:scale-110" data-dismiss="modal">&times;</button>
-                                          </div>
-                                          <div class="modal-body">
-                                            <p> Are you sure you want to delete the comment?</p>
-                                            <p> {{comment.text}} </p>
-                                          </div>
-                                          <div class="modal-footer">
-                                            <form action="{% url 'delete_message' comment.pk chat.pk %}" method="post" class="inline-block">
-                                              {% csrf_token %}
-                                              <button type="submit" class="px-2 py-1 bg-red-500 text-white rounded-md hover:bg-red-700 hover:scale-110">Delete</button>
-                                            </form>
-                                            <button type="button" class="px-2 py-1 bg-gray-500 text-white rounded-md hover:bg-blue-700 hover:scale-110" data-dismiss="modal">Cancel</button>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
+                                          </div>    
+                                            <div id="commentdropdownDots-{{comment.pk}}" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
+      
+                                              <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconButton">
+                                                {% if now < comment.created_at %}
+                                                <li>
+                                                  <a href="{% url 'edit_message' comment.pk chat.id %}" class="block px-4 py-2 hover:text-blue-500">Edit</a>       
+                                                </li>
+                                                {% endif %}
+                                                <li>
+                                                  <a href="#" class="block px-4 py-2 hover:text-red-500"  data-toggle="modal" data-target="#messageModal-{{ comment.pk }}" data-chat-id="{{ chat.pk }}">Delete</a>
+                                                </li>
+                                                <li>
+                                                  <a href="{% url 'reply_message' chat.id comment.pk %}" class="block px-4 py-2 hover:text-blue-500">Reply</a>
+                                                </li>
+                                              </ul>  
+                                            </div>
+                                          </div>  
+
+                                          <div class="modal" id="messageModal-{{ comment.pk }}">
+                                            <div class="modal-dialog">
+                                              <div class="modal-content">
+                                                <div class="modal-header">
+                                                  <h4 class="modal-title">Delete Comment?</h4>
+                                                  <button type="button" class="close hover:scale-110" data-dismiss="modal">&times;</button>
+                                                </div>
+                                                <div class="modal-body">
+                                                  <p> Are you sure you want to delete the comment?</p>
+                                                  <p> {{comment.text}} </p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                  <form action="{% url 'delete_message' comment.pk chat.pk %}" method="post" class="inline-block">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="px-2 py-1 bg-red-500 text-white rounded-md hover:bg-red-700 hover:scale-110">Delete</button>
+                                                  </form>
+                                                  <button type="button" class="px-2 py-1 bg-gray-500 text-white rounded-md hover:bg-blue-700 hover:scale-110" data-dismiss="modal">Cancel</button>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div> 
+
                                   {% else %}       
                                     <div class="flex-1 overflow-y-auto p-4 justify-start">
                                       <div class="flex justify-end mb-4 relative">
-                                        <div class="bg-blue-500 text-white  p-3 rounded-tr-none rounded-bl rounded-br-lg max-w-[500px] ">
-                                            <p class="italic">Unsent Message</p> 
+                                        <div class="bg-blue-500 text-white  p-3 rounded-xl max-w-[500px] ">
+                                          <p class="italic">Unsent Message</p> 
                                         </div>
                                       </div>
                                     </div>
@@ -165,18 +179,38 @@
   
                                         {% if comment.is_reply == True %}
                                         <div>
-                                          <div class="bg-gray-500 text-black p-3 rounded-3xl max-w-[500px]">
-                                            <p>{{ comment.reply }}</p>
+                                          <div class="flex items-start gap-2.5">
+                                            <div class="flex flex-col w-full max-w-[320px] leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-xl dark:bg-gray-700">
+                                              <div class="flex items-center space-x-2 rtl:space-x-reverse">
+                                                  <span class="text-sm font-semibold text-gray-900 dark:text-white">{{comment.author}}</span>
+                                                  <span class="text-sm font-normal text-gray-500 dark:text-gray-400">{{ comment.created_at }}</span>
+                                              </div>
+                                              <p class="text-sm font-normal py-2.5 text-gray-900 dark:text-white">{{ comment.text }}</p>
+                                            </div>
                                           </div>
-                                          <div class="bg-gray-300 text-black p-3 rounded-3xl  max-w-[500px] ">
-                                            <p>{{ comment.text }}</p>
-                                            <p class="text-xs text-gray-500">{{ comment.author.username }} on {{ comment.created_at }}</p>
+                                          <div class="flex items-start gap-2.5">
+                                            {% comment %} <img class="w-8 h-8 rounded-full" src="/docs/images/people/profile-picture-3.jpg" alt="Jese image"> {% endcomment %}
+                                            <div class="flex flex-col w-full max-w-[320px] leading-1.5 p-4 border-gray-200 bg-gray-300 rounded-xl dark:bg-gray-700">
+                                              <div class="flex items-center space-x-2 rtl:space-x-reverse">
+                                                  <span class="text-sm font-semibold text-gray-900 dark:text-white">{{comment.author}}</span>
+                                                  <span class="text-sm font-normal text-gray-500 dark:text-gray-400">{{ comment.created_at }}</span>
+                                              </div>
+                                              <p class="text-sm font-normal py-2.5 text-gray-900 dark:text-white">{{ comment.text }}</p>
+                                              <span class="text-sm font-normal text-gray-900 dark:text-gray-400">Delivered</span>
+                                            </div>
                                           </div>
                                         </div>
                                         {% else %}
-                                        <div class="bg-gray-300 text-black p-3 rounded-3xl  max-w-[500px] ">
-                                          <p>{{ comment.text }}</p>
-                                          <p class="text-xs text-gray-500">{{ comment.author.username }} on {{ comment.created_at }}</p>
+                                        <div class="flex items-start gap-2.5">
+                                          <div class="flex flex-col w-full max-w-[320px] leading-1.5 p-4 border-gray-200 bg-gray-300  rounded-xl dark:bg-gray-700">
+                                            <div class="flex items-center space-x-2 rtl:space-x-reverse">
+                                                <span class="text-sm font-semibold text-gray-900 dark:text-white">{{comment.author}}</span>
+                                                <span class="text-sm font-normal text-gray-500 dark:text-gray-400">{{ comment.created_at }}</span>
+                                            </div>
+                                            <p class="text-sm font-normal py-2.5 text-gray-900 dark:text-white">{{ comment.text }}</p>
+                                            <span class="text-sm font-normal text-gray-900 dark:text-gray-400">Delivered</span>
+                                          </div>
+                                          {% comment %} <img class="w-8 h-8 rounded-full" src="/docs/images/people/profile-picture-3.jpg" alt="Jese image"> {% endcomment %}
                                         </div>
 
                                         {% endif %}
@@ -221,7 +255,7 @@
                                   </div>
                                   {% endif %}
                                 {% endif %}
-                                
+   
                               </li>
                             {% endfor %}
                           </ul>
@@ -249,7 +283,6 @@
                     </footer>
                   </form> 
               </div>
-            </div>
 
           </li>
         {% endif %}    
