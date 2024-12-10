@@ -18,13 +18,6 @@ def create_event(request):
 
     return render(request, 'create_event.html', {'form': form})
 
-@login_required
-def event_list(request):
-    events = CalendarEvent.objects.all()
-    today = timezone.now()  # Format the date as needed
-    now = timezone.now()
-    return render(request, 'event_list.html', {'events': events,'user': request.user,'today': today} )
-
 
 @login_required
 def delete_event(request, event_id):
@@ -32,13 +25,6 @@ def delete_event(request, event_id):
     event.delete()
     return redirect('calendar_management') 
 
-
-@login_required
-def upcoming_event_list(request):
-    events = CalendarEvent.objects.all()
-    today = timezone.now()  # Format the date as needed
-    now = timezone.now()
-    return render(request, 'upcoming_event_list.html', {'events': events,'user': request.user,'today': today} )
 
 @login_required
 def calendar_management(request):
@@ -58,13 +44,6 @@ def calendar_management(request):
         form = CalendarEventForm()
 
     return render(request, 'calendar_management.html', {'form': form, 'events': events,'user': request.user,'today': today} )
-
-@login_required
-def attended_event_list(request):
-    events = CalendarEvent.objects.all()
-    today = timezone.now()  # Format the date as needed
-    now = timezone.now()
-    return render(request, 'completed_event_list.html', {'events': events,'user': request.user,'today': today} )
 
 @login_required
 def edit_event(request, event_id):

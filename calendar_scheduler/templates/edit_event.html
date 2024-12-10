@@ -4,22 +4,22 @@
 <head>
   <title>Event Scheduler</title>
 
+  <link href="{% static 'css/output.css' %}" rel="stylesheet">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <link href="{% static 'css/output.css' %}" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet"/>
   <link href="{% static 'css/card_flip.css' %}" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">    
-
-</head>
-<body class = "m-0 p-0 bg-[#f7f7f7]" style="font-family: 'Poppins', sans-serif; transition: background-color 0.5s ease, color 0.5s ease;">
-  {% include 'header.html' %}
-
-  {% include 'sidebar.html' %}
   
-  <main style="margin-left: 220px; padding: 100px 30px 20px;">
+</head>
+<body class="bg-gray-100">
+  <header class="bg-yellow-300 shadow-md h-20">
+    <div class="container mx-auto px-6 py-4 flex items-center justify-between">
+      <h1 class="text-2xl font-bold text-black">StudyHive</h1>
+      <h2 class="text-xl font-medium ">Welcome, {{ user.username }}</h2>
+    </div>
+  </header>
   
     <h1 class="text-3xl font-bold mb-4 text-center mt-4">Edit Event</h1>
 
@@ -63,45 +63,45 @@
         Cancel
       </button>
     </form>
-  </main>  
-  <script>
-    function validateForm() {
-      const startTime = document.getElementById('start_time').value;
-      const endTime = document.getElementById('end_time').value;
-      const today = new Date();
-      const pstOffset = 8 * 60 * 60 * 1000; // 8 hours in milliseconds
-      today.setTime(today.getTime() + pstOffset);
-      const formattedToday = today.toISOString().slice(0, 16).replace('T', ' ');
-  
-      if (startTime > endTime) {
-        const errorMessage = "People can't time travel";
-        document.getElementById('alert-message').textContent = errorMessage;
-        showModal();
-        return false;
-      }
-      if (startTime < formattedToday) {
-        const errorMessage = "People can't teleport you know";
-        document.getElementById('alert-message').textContent = errorMessage;
-        showModal();  
-        return false;
-      }
-      if (startTime == endTime) {
-        const errorMessage = "What event is even this??";
-        document.getElementById('alert-message').textContent = errorMessage;
-        showModal();  
-        return false;
-      }
-  
-      return true;
-    }
-    function showModal() {
-      document.getElementById('alert-1').classList.remove('hidden');
-    }
-  
-    function closeModal() {
-      document.getElementById('alert-1').classList.add('hidden');
-    }
-  </script>
-  <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+    
+      <script>
+        function validateForm() {
+          const startTime = document.getElementById('start_time').value;
+          const endTime = document.getElementById('end_time').value;
+          const today = new Date();
+          const pstOffset = 8 * 60 * 60 * 1000; // 8 hours in milliseconds
+          today.setTime(today.getTime() + pstOffset);
+          const formattedToday = today.toISOString().slice(0, 16).replace('T', ' ');
+      
+          if (startTime > endTime) {
+            const errorMessage = "People can't time travel";
+            document.getElementById('alert-message').textContent = errorMessage;
+            showModal();
+            return false;
+          }
+          if (startTime < formattedToday) {
+            const errorMessage = "People can't teleport you know";
+            document.getElementById('alert-message').textContent = errorMessage;
+            showModal();  
+            return false;
+          }
+          if (startTime == endTime) {
+            const errorMessage = "What event is even this??";
+            document.getElementById('alert-message').textContent = errorMessage;
+            showModal();  
+            return false;
+          }
+      
+          return true;
+        }
+        function showModal() {
+          document.getElementById('alert-1').classList.remove('hidden');
+        }
+      
+        function closeModal() {
+          document.getElementById('alert-1').classList.add('hidden');
+        }
+      </script>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
   </body>
 </html>
