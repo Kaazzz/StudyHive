@@ -40,7 +40,11 @@ INSTALLED_APPS = [
     'groups',
     'accounts',
     'widget_tweaks',
+    'crispy_forms',
+    'crispy_tailwind',
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -57,7 +61,7 @@ ROOT_URLCONF = 'studyhive.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],  # This line ensures custom templates can be found
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

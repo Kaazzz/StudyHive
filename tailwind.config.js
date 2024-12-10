@@ -5,7 +5,8 @@ module.exports = {
     './templates/**/*.html',   
     './accounts/templates/**/*.html',  
     './groups/templates/**/*.html',     
-    './*/templates/**/*.html',        
+    './*/templates/**/*.html',
+    "./node_modules/flowbite/**/*.js",     
   ],
   theme: {
     extend: {},

@@ -4,6 +4,7 @@ from django.contrib import messages
 from .forms import CustomUserCreationForm, CustomLoginForm
 from .models import Profile
 def login_view(request):
+    success = None  # To track login success or failure
     if request.method == 'POST':
         form = CustomLoginForm(request.POST)
         if form.is_valid():
@@ -12,42 +13,46 @@ def login_view(request):
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('home')  # Adjust this to your home URL name
+                success = True  # Login succeeded
             else:
+                success = False  # Login failed
                 messages.error(request, "Invalid username or password.")
     else:
         form = CustomLoginForm()
-    
-    return render(request, 'accounts/login.html', {'form': form})
+
+    return render(request, 'accounts/login.html', {'form': form, 'success': success})
+
 
 def register_view(request):
+    success = None  # To track registration success or failure
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-            user = form.save()  # Save the user first
-            
-            # Save first name and last name after user creation
+            user = form.save()
+
+            # Set additional fields for the user
             user.first_name = form.cleaned_data.get('first_name')
             user.last_name = form.cleaned_data.get('last_name')
-            user.save()  # Save the user's first and last name
-            
-            # Get the cleaned birthday value from the form
-            birthday = form.cleaned_data.get('birthday')
-            
-            # Create the profile if it doesn't already exist
-            profile, created = Profile.objects.get_or_create(user=user)
-            
-            # Set the birthday for the profile
-            profile.birthday = birthday
-            profile.save()  # Save the profile
+            user.save()
 
-            # Provide success feedback
+            # Create or update the profile
+            birthday = form.cleaned_data.get('birthday')
+            profile, created = Profile.objects.get_or_create(user=user)
+            profile.birthday = birthday
+            profile.save()
+
+            success = True
             messages.success(request, f'Account created for {user.username}!')
-            return redirect('login')  # Redirect to login after successful registration
+            return redirect('login')
+        else:
+            success = False
+            messages.error(request, 'Registration failed. Please check your details.')
+
     else:
         form = CustomUserCreationForm()
 
-    return render(request, 'accounts/register.html', {'form': form})
+    return render(request, 'accounts/register.html', {'form': form, 'success': success})
+
 
 from django.contrib.auth import logout
 from django.shortcuts import redirect
