@@ -3,6 +3,7 @@
 <html>
 <head>
   <title>File Upload</title>
+  <link rel="stylesheet" href="/static/css/general.css?">
   <link href="{% static 'css/output.css' %}" rel="stylesheet">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -13,12 +14,7 @@
 
 </head>
 <body class="bg-gray-100">
-  <header class="bg-yellow-300 shadow-md h-20">
-    <div class="container mx-auto px-6 py-4 flex items-center justify-between">
-      <h1 class="text-2xl font-bold text-black">StudyHive</h1>
-      <h2 class="text-xl font-medium ">Welcome, {{ user.username }}</h2>
-    </div>
-  </header>
+  {% include 'header.html' %}
 
   <div class="container mx-auto px-4 py-8 bg-gray-100">
     <div class="bg-white shadow-md rounded-lg p-6">

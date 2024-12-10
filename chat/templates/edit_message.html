@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <link rel="stylesheet" href="/static/css/general.css?">
   <link href="{% static 'css/output.css' %}" rel="stylesheet">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -12,14 +13,10 @@
   <title>Edit Comment</title>
 </head>
 <body class="bg-gray-100">
-  <header class="bg-yellow-300 shadow-md h-20">
-    <div class="container mx-auto px-6 py-4 flex items-center justify-between">
-      <h1 class="text-2xl font-bold text-black">StudyHive</h1>
-      <h2 class="text-xl font-medium ">Welcome, {{ user.username }}</h2>
-    </div>
-  </header>
+  {% include 'header.html' %}
+
   <div class="container mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold mb-4">Edit Message</h1>
+    <h1 class="text-3xl font-bold mb-4 mt-20">Edit Message</h1>
 
     {% if form.errors %}
     <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">

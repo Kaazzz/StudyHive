@@ -3,7 +3,7 @@
 <html>
 <head>
   <title>Event Scheduler</title>
-
+  <link rel="stylesheet" href="/static/css/general.css?">
   <link href="{% static 'css/output.css' %}" rel="stylesheet">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -14,14 +14,9 @@
   
 </head>
 <body class="bg-gray-100">
-  <header class="bg-yellow-300 shadow-md h-20">
-    <div class="container mx-auto px-6 py-4 flex items-center justify-between">
-      <h1 class="text-2xl font-bold text-black">StudyHive</h1>
-      <h2 class="text-xl font-medium ">Welcome, {{ user.username }}</h2>
-    </div>
-  </header>
+  {% include 'header.html' %}
   
-    <h1 class="text-3xl font-bold mb-4 text-center mt-4">Edit Event</h1>
+    <h1 class="text-3xl font-bold mb-4 text-center mt-28">Edit Event</h1>
 
     <div id="alert-1" class="hidden items-center p-4 mb-4 text-sm text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 dark:border-red-800" role="alert">
       <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
