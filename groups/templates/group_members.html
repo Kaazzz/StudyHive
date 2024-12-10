@@ -18,7 +18,8 @@
     <main style="margin-left: 220px; padding: 100px 30px 20px;">
         {% include 'group_navbar.html' %}
 
-        <div class="group-dashboard-container bg-gray-100 dark:bg-gray-900 p-6 rounded-lg shadow-md">
+        <div class="group-dashboard-container bg-gray-100 dark:bg-gray-900 p-6 rounded-lg shadow-md"
+        style = "margin-left: 180px; margin-right:180px;">
             <h1 class="text-2xl font-bold mb-6 yellow-gradient p-4 text-4xl font-bold text-gray-800 dark:text-white mb-4 rounded-md">{{ group.group_name }} - Members</h1>
 
             <!-- Members List -->
@@ -26,7 +27,7 @@
                 <h2 class="text-xl font-semibold mb-4">Group Members</h2>
                 
                 <ul class="divide-y divide-gray-300 dark:divide-gray-700">
-                    {% for member in group.members.all %}
+                    {% for member in sorted_members %}
                         <li class="flex justify-between items-center py-3">
                             <div class="flex items-center space-x-4">
                                 <div class="mr-2 bg-gray-200 dark:bg-gray-600 rounded-full w-12 h-12 flex items-center justify-center text-gray-800 dark:text-gray-200 font-bold">

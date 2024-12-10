@@ -19,45 +19,6 @@
         {% include 'group_navbar.html' %}
 
         Group Files
-        <div class="group-dashboard-container bg-gray-100 dark:bg-gray-900 p-6 rounded-lg shadow-md">
-            <h1 class="dashboard-title yellow-gradient p-4 text-4xl font-bold text-gray-800 dark:text-white mb-4">
-                Welcome to <span>{{ group.group_name }}</span>'s Group Dashboard: 
-            </h1>
-            <div class="dashboard-content space-y-3">
-                <p class="dashboard-description text-lg text-gray-700 dark:text-gray-300">
-                    <strong>Description:</strong> {{ group.description }}
-                </p>
-                <p class="dashboard-subject text-lg text-gray-700 dark:text-gray-300">
-                    <strong>Subject:</strong> {{ group.subject }}
-                </p>
-                <p class="dashboard-members text-lg text-gray-700 dark:text-gray-300">
-                    <strong>Members:</strong> {{ group.members.count }}
-                </p>
-            </div>
-            
-            <div class="dashboard-actions mt-6">
-                <button 
-                    class="action-btn yellow-gradient hover:bg-yellow-600 text-black py-2 px-4 rounded shadow-md transition-all duration-300"
-                    style="--tw-bg-opacity: 1;">
-                    Edit Group Details
-                </button>
-                <button 
-                    class="action-btn hover:bg-red-600 text-white py-2 px-4 rounded shadow-md transition-all duration-300"
-                    style="--tw-bg-opacity: 1; background-color: rgb(239 68 68 / var(--tw-bg-opacity)) /* #ef4444 */;">
-                    Delete Group
-                </button>
-            </div>
-        </div>
-
-        <!-- Display all members -->
-        <h2>Group Members:</h2>
-        <ul>
-            {% for member in group.members.all %}
-                <li>{{ member.first_name }} {{ member.last_name }}</li> <!-- Adjust this if you have a different field for display -->
-            {% empty %}
-                <li>No members in this group yet.</li>
-            {% endfor %}
-        </ul>
     </main>
 </body>
 </html>

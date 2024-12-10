@@ -1,11 +1,12 @@
 from datetime import datetime
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.contrib import messages
 from .forms import StudyGroupForm, JoinGroupForm, DiscussionThreadForm, StudyGroupEditForm
 # from .forms import CommentForm
 from .models import StudyGroup, JoinRequest, DiscussionThread
-from django.db.models import Q, Count
+from django.db.models import Q, Count, Case, When, Value, IntegerField
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.http import require_GET
@@ -179,13 +180,27 @@ def group_requests(request, unique_id):
 
 @login_required
 def group_members(request, unique_id):
+    # Fetch the group by its unique_id
     group = get_object_or_404(StudyGroup, unique_id=unique_id)
 
+    # Fetch all members of the group
+    members = group.members.all()
+
+    # Order members such that the creator (group.user) is always first
+    sorted_members = members.order_by(
+        Case(
+            When(id=group.user.id, then=Value(0)),
+            default=Value(1),
+            output_field=IntegerField()
+        )
+    )
+
+    # Add the sorted members to the context
     context = {
         'group': group,
+        'sorted_members': sorted_members,
     }
 
-    # Add any necessary logic for displaying group members here
     return render(request, 'group_members.html', context)
 
 @login_required
@@ -258,7 +273,7 @@ def home(request):
     # study_groups = StudyGroup.objects.all()  # used if needed 
     
     created_groups = StudyGroup.objects.filter(user=request.user)
-    joined_groups = StudyGroup.objects.filter(members=request.user)
+    joined_groups = StudyGroup.objects.filter(members=request.user).exclude(user=request.user)
     return render(request, 'home.html', {
         'created_groups': created_groups,
         'joined_groups': joined_groups,
@@ -272,6 +287,9 @@ def create_group(request):
             study_group = form.save(commit=False) 
             study_group.user = request.user
             study_group.save()
+
+            study_group.members.add(request.user)
+
             return redirect('home') 
     else:
         form = StudyGroupForm()

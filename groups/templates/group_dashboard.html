@@ -19,7 +19,8 @@
     <main style="margin-left: 220px; padding: 100px 30px 20px;">
         {% include 'group_navbar.html' %}
 
-        <div class="group-dashboard-container bg-gray-100 dark:bg-gray-900 p-6 rounded-lg shadow-md">
+        <div class="group-dashboard-container bg-gray-100 dark:bg-gray-900 p-6 rounded-lg shadow-md"
+        style = "margin-left: 180px; margin-right:180px;">
             <h1 class="dashboard-title yellow-gradient p-4 text-4xl font-bold text-gray-800 dark:text-white mb-4 rounded-md">
                 Welcome to <span>{{ group.group_name }}</span>'s <br>
                 {% if group.is_private %}
