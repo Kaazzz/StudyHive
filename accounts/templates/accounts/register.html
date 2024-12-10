@@ -8,6 +8,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - Study Hive</title>
     <link rel="stylesheet" href="{% static 'css/output.css' %}">
+    <style>
+        /* Modal alert styling */
+        .notification {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 1000;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .notification-show {
+            opacity: 1;
+        }
+
+        .notification-success {
+            background-color: #d1e7dd;
+            color: #0f5132;
+        }
+
+        .notification-error {
+            background-color: #f8d7da;
+            color: #842029;
+        }
+    </style>
 </head>
 <body class="bg-whites font-sans min-h-screen flex flex-col items-center justify-center">
     <div class="grid md:grid-cols-2 items-center gap-4 max-md:gap-8 max-w-6xl max-md:max-w-lg w-full p-4 m-4 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] rounded-md">
@@ -26,38 +54,31 @@
                 <div class="mb-6">
                     <label class="text-gray-800 text-xs block mb-2" for="id_username">Username</label>
                     {{ form.username|add_class:"w-full text-gray-800 text-sm border-b border-gray-300 focus:border-blue-600 px-2 py-3 outline-none" }}
-                    <br>
                 </div>
                 <div class="mb-6">
                     <label class="text-gray-800 text-xs block mb-2" for="id_first_name">First Name</label>
                     {{ form.first_name|add_class:"w-full text-gray-800 text-sm border-b border-gray-300 focus:border-blue-600 px-2 py-3 outline-none" }}
-                    <br>
                 </div>
                 <div class="mb-6">
                     <label class="text-gray-800 text-xs block mb-2" for="id_last_name">Last Name</label>
                     {{ form.last_name|add_class:"w-full text-gray-800 text-sm border-b border-gray-300 focus:border-blue-600 px-2 py-3 outline-none" }}
-                    <br>
                 </div>
                 
                 <div class="mb-6">
                     <label class="text-gray-800 text-xs block mb-2" for="id_email">Email</label>
                     {{ form.email|add_class:"w-full text-gray-800 text-sm border-b border-gray-300 focus:border-blue-600 px-2 py-3 outline-none" }}
-                    <br>
                 </div>
                 <div class="mb-6">
                     <label class="text-gray-800 text-xs block mb-2" for="id_birthday">Birthday</label>
                     {{ form.birthday|add_class:"w-full text-gray-800 text-sm border-b border-gray-300 focus:border-blue-600 px-2 py-3 outline-none" }}
-                    <br>
                 </div>
                 <div class="mb-6">
                     <label class="text-gray-800 text-xs block mb-2" for="id_password1">Password</label>
                     {{ form.password1|add_class:"w-full text-gray-800 text-sm border-b border-gray-300 focus:border-blue-600 px-2 py-3 outline-none" }}
-                    <br>
                 </div>
                 <div class="mb-6">
                     <label class="text-gray-800 text-xs block mb-2" for="id_password2">Confirm Password</label>
                     {{ form.password2|add_class:"w-full text-gray-800 text-sm border-b border-gray-300 focus:border-blue-600 px-2 py-3 outline-none" }}
-                    <br>
                 </div>
 
                 <div class="mt-12">
@@ -74,14 +95,27 @@
         </div>
     </div>
 
+    <!-- Notifications/Modal Alert -->
     {% if messages %}
     <div class="messages">
         {% for message in messages %}
-            <div class="alert {{ message.tags }}">
+            <div class="notification 
+                {% if message.tags == 'success' %}notification-success{% else %}notification-error{% endif %} notification-show">
                 {{ message }}
             </div>
         {% endfor %}
     </div>
     {% endif %}
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const notifications = document.querySelectorAll('.notification');
+            notifications.forEach(notification => {
+                setTimeout(() => {
+                    notification.classList.remove('notification-show');
+                }, 5000); // Hide after 5 seconds
+            });
+        });
+    </script>
 </body>
 </html>

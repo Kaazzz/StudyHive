@@ -8,6 +8,28 @@
     <link href="{% static 'css/output.css' %}" rel="stylesheet">
     
     <title>StudyHive - Profile</title>
+    <style>
+        /* Ensure the body and html take up full height */
+        html, body {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        main {
+            flex: 1; /* Ensures the main content takes up remaining space */
+        }
+
+        /* Footer styles */
+        footer {
+            background-color: #2d2d2d;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            font-size: 0.875rem;
+        }
+    </style>
 </head>
 <body class="bg-gray-100 font-sans">
 
@@ -31,7 +53,7 @@
                 <div>
                     <h2 class="text-2xl font-semibold">{{ user.username }}</h2>
                     <p class="text-sm text-gray-600">Member since {{ user.date_joined|date:"F j, Y" }}</p>
-                    <p class="text-gray-600 mt-1">"You don't have a bio"</p>
+                    <p class="text-gray-600 mt-1"></p>
                 </div>
             </div>
     
@@ -47,7 +69,8 @@
                     <p><strong>Last Login:</strong> {{ user.last_login|date:"F j, Y" }}</p>
                     <p><strong>Username:</strong> {{ user.username }}</p>
                     <p class="mt-2 text-blue-600 font-medium hover:underline cursor-pointer">
-                    <a href="{% url 'edit_profile' %}">Edit Personal Info</a>
+                        <a href="{% url 'edit_profile' %}">Edit Personal Info</a>
+                    </p>
                 </div>
     
                 <!-- Account Settings -->
@@ -70,16 +93,16 @@
                 <a href="#" class="mt-4 text-blue-600 font-medium hover:underline">View All Activity</a>
             </div>
             <br>
-                <a href="{% url 'home' %}" class="inline-block text-blue-600 font-medium mb-4 hover:underline">
-                    ← Back to Home
-                </a>
+            <a href="{% url 'home' %}" class="inline-block text-blue-600 font-medium mb-4 hover:underline">
+                ← Back to Home
+            </a>
         </div>
         
     </main>
 
     <!-- Footer -->
-    <footer class="mt-10 bg-gray-800 text-white py-4">
-        <div class="container mx-auto text-center text-sm">
+    <footer>
+        <div>
             © 2024 StudyHive. All rights reserved.
         </div>
     </footer>

@@ -44,8 +44,12 @@ INSTALLED_APPS = [
     'posts',
     'widget_tweaks',
     'django_extensions',
+    'crispy_forms',
+    'crispy_tailwind',
     # 'django_browser_reload',
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
