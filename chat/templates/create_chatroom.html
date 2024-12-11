@@ -1,7 +1,45 @@
-<h1>Welcome {{ user.username }}</h1>
+{% load static %}
 
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Create Chatroom</button>
-  </form>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="{% static 'css/output.css' %}" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet"/>
+  <link href="{% static 'css/card_flip.css' %}" rel="stylesheet">
+  <title>Create Chat Room</title>
+</head>
+<body class="bg-gray-100">
+  <header class="bg-yellow-300 shadow-md h-20">
+    <div class="container mx-auto px-6 py-4 flex items-center justify-between">
+      <h1 class="text-2xl font-bold text-black">StudyHive</h1>
+      <h2 class="text-xl font-medium ">Welcome, {{ user.username }}</h2>
+    </div>
+  </header>
+
+  <div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold text-center mb-8">Create a New Chat Room</h1>
+
+    <form method="post">  {% csrf_token %}
+
+      <div class="mb-3">
+        <label for="title" class="form-label">Chat Room Title</label>
+        <input type="text" class="form-control" id="title" name="title" required>
+      </div>
+      <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+      </div>
+
+      <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        Create Chat Room
+    </button>
+    </form>
+  </div>
+</body>
+</html>

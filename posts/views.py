@@ -3,6 +3,7 @@ from .models import Post, Comment
 from .forms import PostForm,CommentForm
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
+from groups.models import StudyGroup
 # Create your views here.
 
 
@@ -11,11 +12,13 @@ def Posts(request):
     return render(request, 'post.html', {'posts': posts})
 
 
-def Create_Post(request):
+def Create_Post(request): #put group_id here
+    #get the group_id
     if request.method == 'POST':
         form = PostForm(request.POST)
         if form.is_valid():
             post = form.save(commit=False)
+            #save the group_id
             post.author = request.user
             post.save()  
             return redirect('post')  

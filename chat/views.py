@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.utils import timezone
 from datetime import timedelta
-
+from django.contrib.auth.models import User 
 # Create your views here.
 
 
@@ -22,12 +22,22 @@ def create_chat(request):
         if form.is_valid():
             post = form.save(commit=False)  # Prevent initial save
             post.author = request.user
-            post.save()
-            return redirect('chat')  # Redirect to the chat list view
+            post.save()  # Save the chat room instance first
+
+            # Get selected members from the form
+            selected_members = request.POST.getlist('members')
+
+            for username in selected_members:
+                user = User.objects.get(username=username)
+                post.members.add(user)
+
+            return redirect('chat')
     else:
         form = Chat_RoomForm()
 
-    return render(request, 'create_chatroom.html', {'form': form})
+    # Add members selection field to the template context
+    context = {'form': form, 'users': User.objects.all().exclude(username=request.user)}  # Exclude current user
+    return render(request, 'create_chatroom.html', context)
 
 
 @login_required
@@ -104,13 +114,18 @@ def edit_chat(request, chat_id):
         # Update the existing post instance with form data
         form = Chat_RoomForm(request.POST, instance=chat_room)
         if form.is_valid():
+            selected_users = request.POST.getlist('members')
+            for user_id in selected_users:
+                user = User.objects.get(pk=user_id)  # Get user object based on ID
+                chat_room.members.add(user)
             form.save()
             return redirect('send_message', chat_id=chat_id)
     else:
         # Pre-populate the form with existing post data
         form = Chat_RoomForm(instance=chat_room)
+        users = chat_room.members.all() 
 
-    return render(request, 'edit_chat_room.html', {'form': form, 'chat': chat_room})
+    return render(request, 'edit_chat_room.html', {'form': form, 'chat': chat_room, 'users': users})
 
 @login_required
 def edit_message(request, message_id, chat_id):

@@ -24,9 +24,10 @@
 
   <div class="container mx-auto px-4 py-8">
 
-    <div class="flex justify-between items-center mb-4">  
-      <form action="{% url 'create_post' %}" method="post" class="flex">  
+    <div class="flex justify-between items-center mb-4"> 
+       <form action="{% url 'create_post' %}" method="post" class="flex">  {% comment %} put group_id here {% endcomment %}
         {% csrf_token %}
+        <input type="hidden" name="group_id" value="{{ group_id }}">
       <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700">Create A Post</button>
       </form>
     </div>
