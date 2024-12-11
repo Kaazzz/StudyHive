@@ -33,7 +33,6 @@ document.addEventListener("DOMContentLoaded", function() {
         modeIcon.src = staticUrls.lightModeLogo;
         homeIcon.src = staticUrls.lightModeHome;
         messageIcon.src = staticUrls.lightModeMessage;
-        notifIcon.src = staticUrls.lightModeNotif;
         logoIcon.src = staticUrls.logo;
 
         // Set the color for dark mode elements
@@ -56,7 +55,6 @@ document.addEventListener("DOMContentLoaded", function() {
             modeIcon.src = staticUrls.lightModeLogo;
             homeIcon.src = staticUrls.lightModeHome;
             messageIcon.src = staticUrls.lightModeMessage;
-            notifIcon.src = staticUrls.lightModeNotif; 
             logoIcon.src = staticUrls.logo;
 
             // Change to dark mode colors
@@ -78,7 +76,6 @@ document.addEventListener("DOMContentLoaded", function() {
             modeIcon.src = staticUrls.darkModeLogo;
             homeIcon.src = staticUrls.darkModeHome;
             messageIcon.src = staticUrls.darkModeMessage;
-            notifIcon.src = staticUrls.darkModeNotif; 
             logoIcon.src = staticUrls.darkLogo;
 
             // Reset to light mode colors

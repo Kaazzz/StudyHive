@@ -7,18 +7,220 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ group.group_name }} - Files</title>
     <link rel="stylesheet" href="{% static 'css/output.css' %}">
-    <link rel="stylesheet" href="/static/css/general.css?">
+    <link rel="stylesheet" href="{% static 'css/general.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">    
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+        }
+        .main-container {
+            margin-left: 220px;
+            padding: 100px 30px 20px;
+        }
+        h1 {
+            color: #333;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        form {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        form button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        form button:hover {
+            background-color: #45a049;
+        }
+        .file-list {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        .file-item {
+            background-color: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .file-item a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .file-item a:hover {
+            text-decoration: underline;
+        }
+        .delete-btn {
+            background-color: #f44336;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .delete-btn:hover {
+            background-color: #e53935;
+        }
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            padding-top: 60px;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 400px;
+            border-radius: 8px;
+        }
+        .modal-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .modal-footer button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .modal-footer .confirm-delete {
+            background-color: #f44336;
+            color: white;
+        }
+        .modal-footer .cancel-delete {
+            background-color: #808080;
+            color: white;
+        }
+    </style>
 </head>
 <body class = "m-0 p-0 bg-[#f7f7f7]" style="font-family: 'Poppins', sans-serif; transition: background-color 0.5s ease, color 0.5s ease;">
     {% include 'header.html' %}
-
     {% include 'sidebar.html' %}
 
-    <main style="margin-left: 220px; padding: 100px 30px 20px;">
+    <main class="main-container" style="margin-left: 220px; padding: 100px 30px 20px;">
         {% include 'group_navbar.html' %}
 
-        Group Files
-    </main>
+        <div class="group-dashboard-container bg-gray-100 dark:bg-gray-900 p-6 rounded-lg shadow-md"
+        style = "margin-left: 180px; margin-right:180px;">
+
+            <h1 class="dashboard-title yellow-gradient p-4 text-4xl font-bold text-gray-800 dark:text-white mb-4 rounded-md">
+            Group Files for {{ group.group_name }}</h1>
+
+            <form action="{% url 'group_files' group.unique_id %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    {{ form.as_p }}
+                </div>
+                
+                <button type="submit"
+                class="mt-4 action-btn text-white py-2 px-4 rounded shadow-md transition-all duration-300"
+                style="--tw-bg-opacity: 1; background: linear-gradient(to left, #ef4444, #E9B033);"
+                onmouseover="this.style.background = 'linear-gradient(to left, #1A1A1B, #353437)';" 
+                onmouseout="this.style.background ='linear-gradient(to left, #ef4444, #E9B033)';">
+                Upload File</button>
+            </form>
+
+            {% if files %}
+                <ul class="file-list">
+                    {% for file in files %}
+                        <li class="file-item" id="file-{{ file.id }}">
+                            <div>
+                                <a href="{{ file.file.url }}" target="_blank" style="color: #E9B033">{{ file.file.name }}</a> 
+                                <h2 class="text-lg font-bold text-gray-800 mb-4">
+                                - Uploaded by {{ file.user_id.username }} on {{ file.uploaded_at|date:"F j, Y, g:i a" }}</h2>
+                            </div>
+                            <button class="delete-btn" onclick="openDeleteModal('{{ file.id }}')">Delete</button>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No files uploaded yet.</p>
+            {% endif %}
+        </main>
+
+        <!-- Modal -->
+        <div id="deleteModal" class="modal">
+            <div class="modal-content">
+                <h3>Are you sure you want to delete this file?</h3>
+                <div class="modal-footer">
+                    <form id="deleteForm" method="POST">
+                        {% csrf_token %}
+                        <button type="button" class="cancel-delete" onclick="closeDeleteModal()">Cancel</button>
+                        <button type="submit" class="confirm-delete">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var deleteFileId = null;
+        var groupId = "{{ group.unique_id }}";  // Dynamically pass the group_id from Django template
+
+        // Function to open the delete modal and set the file ID
+        function openDeleteModal(fileId) {
+            deleteFileId = fileId;  // Store the file ID to delete
+            document.getElementById("deleteModal").style.display = "block";  // Show the modal
+        }
+
+        // Function to close the delete modal
+        function closeDeleteModal() {
+            document.getElementById("deleteModal").style.display = "none";  // Hide the modal
+        }
+
+        // Handle file deletion when the confirm button is clicked
+        document.getElementById("deleteForm").onsubmit = function(event) {
+            event.preventDefault();  // Prevent default form submission
+
+            // Send the AJAX request to delete the file
+            fetch(`/delete_file/${groupId}/${deleteFileId}/`, {  // Use dynamic group_id in the URL
+                method: 'DELETE',
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name="csrfmiddlewaretoken"]').value
+                },
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Remove the file from the page (without reloading the page)
+                    document.getElementById(`file-${deleteFileId}`).remove();
+                    closeDeleteModal();  // Close the modal after successful deletion
+                } else {
+                    alert("Error deleting file.");
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert("Error deleting file.");
+            });
+        }
+    </script>
 </body>
 </html>

@@ -112,145 +112,138 @@
         }
     </style>
 </head>
-<body>
+<body class = "m-0 p-0 bg-[#f7f7f7]" style="font-family: 'Poppins', sans-serif; transition: background-color 0.5s ease, color 0.5s ease;">
     {% include 'header.html' %}
     {% include 'sidebar.html' %}
 
-    <main>
+    <main style="margin-left: 220px; padding: 100px 30px 20px;">
         {% include 'group_navbar.html' %}
 
-        <section class="requests">
-            <h1>Join Requests for {{ group.group_name }}</h1>
+        <div class="group-dashboard-container bg-gray-100 dark:bg-gray-900 p-6 rounded-lg shadow-md"
+        style = "margin-left: 180px; margin-right:180px;">
+            <section class="requests">
+                <h1 class="dashboard-title yellow-gradient p-4 text-4xl font-bold text-gray-800 dark:text-white mb-4 rounded-md">
+                Join Requests for {{ group.group_name }}</h1>
 
-            <!-- Pending Requests -->
-            <h2>Pending Requests</h2>
-            {% if pending_requests %}
-                {% for request in pending_requests %}
-                    <div class="card">
-                        <div class="card-header">
-                            <h3>{{ request.user.username }}</h3>
-                            <span>Requested on {{ request.date }}</span>
+                <!-- Pending Requests -->
+                <h2 class="text-xl font-semibold mb-4">Pending Requests</h2>
+                {% if pending_requests %}
+                    {% for request in pending_requests %}
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>{{ request.user.username }}</h3>
+                                <span>Requested on {{ request.date }}</span>
+                            </div>
+                            <div class="card-actions">
+                                {% csrf_token %}
+                                <a href="#" 
+                                    class="btn btn-accept action-link" 
+                                    data-url="{% url 'accept_request' group.unique_id request.join_request_id %}" 
+                                    data-id="{{ request.id }}" 
+                                    data-action="accept">Accept</a>
+                                <a href="#" 
+                                    class="btn btn-reject action-link" 
+                                    data-url="{% url 'reject_request' group.unique_id request.join_request_id %}" 
+                                    data-id="{{ request.id }}" 
+                                    data-action="reject">Reject</a>
+                            </div>
                         </div>
-                        <div class="card-actions">
-                            <a href="#" 
-                                class="btn btn-accept action-link" 
-                                data-url="{% url 'accept_request' group.unique_id request.join_request_id %}" 
-                                data-id="{{ request.id }}" 
-                                data-action="accept">Accept</a>
-                            <a href="#" 
-                                class="btn btn-reject action-link" 
-                                data-url="{% url 'reject_request' group.unique_id request.join_request_id %}" 
-                                data-id="{{ request.id }}" 
-                                data-action="reject">Reject</a>
-                        </div>
-                    </div>
-                {% endfor %}
-            {% else %}
-                <p>No pending requests.</p>
-            {% endif %}
+                    {% endfor %}
+                {% else %}
+                    <p class="text-sm mb-4">No pending requests.</p>
+                {% endif %}
 
-            <!-- Join History -->
-            <h2>Join History</h2>
-            {% if processed_requests %}
-                {% for request in processed_requests %}
-                    <div class="card">
-                        <div class="card-header">
-                            <h3>{{ request.user.username }}</h3>
-                            <span>{{ request.processed_at|date:"F j, Y, g:i a" }}</span>
+                <!-- Join History -->
+                <h2 class="text-xl font-semibold mb-4">Join History</h2>
+                {% if processed_requests %}
+                    {% for request in processed_requests %}
+                        <div class="card"
+                        style="background: #FFFFFF;"
+                        onmouseover="this.style.transform='scale(1.05)'; this.style.background='linear-gradient(to right, #FFE03C, #E9B033)';" 
+                        onmouseout="this.style.transform='scale(1)'; this.style.background='#FFFFFF';">
+                            <div class="card-header">
+                                <h3 style="color: rgb(31 41 55);">{{ request.user.first_name }} {{ request.user.last_name }}</h3>
+                                <span>{{ request.processed_at|date:"F j, Y, g:i a" }}</span>
+                            </div>
+                            <p>
+                                {% if request.status == 'accepted' %}
+                                    <span class="status status-accepted">Accepted</span>
+                                {% elif request.status == 'rejected' %}
+                                    <span class="status status-rejected">Rejected</span>
+                                {% endif %}
+                                by {{ request.processed_by.username }}
+                            </p>
                         </div>
-                        <p>
-                            {% if request.status == 'accepted' %}
-                                <span class="status status-accepted">Accepted</span>
-                            {% elif request.status == 'rejected' %}
-                                <span class="status status-rejected">Rejected</span>
-                            {% endif %}
-                            by {{ request.processed_by.username }}
-                        </p>
-                    </div>
-                {% endfor %}
-            {% else %}
-                <p>No processed requests yet.</p>
-            {% endif %}
-        </section>
+                    {% endfor %}
+                {% else %}
+                    <p>No processed requests yet.</p>
+                {% endif %}
+            </section>
+        </div>
     </main>
-</body>
-</html>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+        const actionLinks = document.querySelectorAll('.action-link');
 
+        actionLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();  // Prevent the default link behavior
+                
+                const action = link.dataset.action;  // 'accept' or 'reject'
+                const requestId = link.dataset.id;  // The ID of the request
+                const url = link.dataset.url;  // The URL for accept or reject action
 
-<script>
-    const refreshBtn = document.getElementById("btnRefresh");
+                // Send AJAX request
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                    },
+                    body: JSON.stringify({
+                        'join_request_id': requestId,  // The ID of the request being processed
+                    }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Handle success
+                    alert(data.message);  // Show success message
+                    const statusElement = link.closest('.card').querySelector('.status');
+                    if (statusElement) {
+                        // If status element exists, update it
+                        if (action === 'accept') {
+                            statusElement.classList.add('status-accepted');
+                            statusElement.textContent = 'Accepted';
+                        } else if (action === 'reject') {
+                            statusElement.classList.add('status-rejected');
+                            statusElement.textContent = 'Rejected';
+                        }
+                    } else {
+                        // If status element doesn't exist, create it
+                        const newStatusElement = document.createElement('span');
+                        newStatusElement.classList.add('status');
+                        if (action === 'accept') {
+                            newStatusElement.classList.add('status-accepted');
+                            newStatusElement.textContent = 'Accepted';
+                        } else if (action === 'reject') {
+                            newStatusElement.classList.add('status-rejected');
+                            newStatusElement.textContent = 'Rejected';
+                        }
+                        link.closest('.card').appendChild(newStatusElement);
+                    }
 
-    function handleClick() {
-    window.location.reload();
-    }
-
-    refreshBtn.addEventListener("click", handleClick);
-
-
-    // Handle click events on Accept/Reject links
-    document.addEventListener('DOMContentLoaded', function () {
-        const joinRequestsList = document.getElementById('join-requests-list');
-        
-        joinRequestsList.addEventListener('click', function (event) {
-            event.preventDefault();
-
-            // Check if the clicked element is an action link
-            const actionLink = event.target.closest('.action-link');
-            if (!actionLink) return;
-
-            const requestId = actionLink.dataset.id; // Get the join request ID
-            const actionUrl = actionLink.dataset.url; // Get the API endpoint
-            const actionType = actionLink.dataset.action; // Get the action (accept/reject)
-
-            // Send AJAX POST request
-            fetch(actionUrl, {
-                method: 'POST',
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'X-CSRFToken': getCookie('csrftoken') // CSRF token for Django
-                },
-                body: JSON.stringify({ action: actionType })
-            })
-            .then(response => {
-                // Log the raw response for debugging
-                console.log('Raw Response:', response);
-
-                if (!response.ok) {
-                    // Handle non-2xx status codes
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-
-                return response.json(); // Parse JSON if response is OK
-            })
-            .then(data => {
-                console.log('Parsed Data:', data); // Debug the parsed JSON response
-
-                // Update the UI based on the response
-                const listItem = document.getElementById(`request-${requestId}`);
-                listItem.remove();
-                alert(data.message);
-            })
-            .catch(error => {
-                console.error('Error:', error); // Log detailed errors
-                alert(`Something went wrong: ${error.message}`);
+                    location.reload();
+                })
+                .catch(error => {
+                    // Handle error
+                    console.error('Error:', error);
+                    alert('An error occurred while processing your request.');
+                });
             });
         });
     });
 
-    // Helper function to get the CSRF token from cookies
-    function getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            const cookies = document.cookie.split(';');
-            for (let i = 0; i < cookies.length; i++) {
-                const cookie = cookies[i].trim();
-                // Does this cookie string begin with the name we want?
-                if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
-        }
-        return cookieValue;
-    }
-</script>
+    </script>
+
+</body>
+</html>

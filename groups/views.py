@@ -3,15 +3,52 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
-from .forms import StudyGroupForm, JoinGroupForm, DiscussionThreadForm, StudyGroupEditForm
+from .forms import StudyGroupForm, JoinGroupForm, DiscussionThreadForm, StudyGroupEditForm, UploadFileForm
 # from .forms import CommentForm
-from .models import StudyGroup, JoinRequest, DiscussionThread
+from .models import StudyGroup, JoinRequest, DiscussionThread, GroupFiles
 from django.db.models import Q, Count, Case, When, Value, IntegerField
-from django.http import JsonResponse
+from django.http import JsonResponse, Http404
 from django.shortcuts import render
 from django.views.decorators.http import require_GET
 
 import json
+
+def group_files_view(request, group_id):
+    # Retrieve the group using unique_id, as you're passing that in the URL
+    group = get_object_or_404(StudyGroup, unique_id=group_id)
+    
+    files = GroupFiles.objects.filter(group_id=group)
+
+    if request.method == 'POST' and request.FILES:
+        # Handle file upload
+        form = UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            file_instance = form.save(commit=False)
+            file_instance.group_id = group
+            file_instance.user_id = request.user
+            file_instance.save()
+            # Redirect using the unique_id, not the id
+            return redirect('group_files', group_id=group.unique_id)
+    else:
+        form = UploadFileForm()
+
+    context = {
+        'group': group,
+        'files': files,
+        'form': form,
+    }
+    return render(request, 'group_files.html', context)
+
+def delete_file(request, group_id, file_id):
+    # Get the group object
+    group = get_object_or_404(StudyGroup, unique_id=group_id)
+    # Get the file object
+    file = get_object_or_404(GroupFiles, id=file_id, group_id=group)
+
+    if request.method == 'DELETE':
+        file.delete()
+        return JsonResponse({'status': 'success'}, status=200)
+    return JsonResponse({'status': 'error'}, status=400)
 
 # previous version
 @login_required
@@ -96,7 +133,6 @@ def profile_view(request):
 def home_page(request):
     return render(request, 'home_page.html', {'user': request.user})
 
-# JoinRequest Private
 @login_required
 def accept_request(request, unique_id, join_request_id):
     if request.method == 'POST':
@@ -122,8 +158,6 @@ def accept_request(request, unique_id, join_request_id):
                 'message': f'{join_request.user.username}: accepted by {request.user.username}',
                 'join_request_id': join_request_id
             }
-
-            # return render(request, 'group_requests.html')
             return JsonResponse(response_data, status=200)
 
         except StudyGroup.DoesNotExist:
@@ -162,6 +196,73 @@ def reject_request(request, unique_id, join_request_id):
             return JsonResponse({'message': 'Join request not found.'}, status=404)
 
     return JsonResponse({'message': 'Invalid request.'}, status=400)
+
+# # JoinRequest Private
+# @login_required
+# def accept_request(request, unique_id, join_request_id):
+#     if request.method == 'POST':
+#         try:
+#             # Fetch the group using the unique_id
+#             study_group = StudyGroup.objects.get(unique_id=unique_id)
+
+#             # Fetch the join request using join_request_id
+#             join_request = JoinRequest.objects.get(join_request_id=join_request_id, group=study_group)
+
+#             # Add the user who made the join request to the group's members
+#             study_group.members.add(join_request.user)
+#             study_group.save()
+
+#             # Update join request status and set processed_by
+#             join_request.status = 'accepted'
+#             join_request.processed_by = request.user
+#             join_request.processed_at = datetime.now()
+#             join_request.save()
+
+#             # Prepare response data
+#             response_data = {
+#                 'message': f'{join_request.user.username}: accepted by {request.user.username}',
+#                 'join_request_id': join_request_id
+#             }
+
+#             # return render(request, 'group_requests.html')
+#             return JsonResponse(response_data, status=200)
+
+#         except StudyGroup.DoesNotExist:
+#             return JsonResponse({'message': 'Group not found.'}, status=404)
+#         except JoinRequest.DoesNotExist:
+#             return JsonResponse({'message': 'Join request not found.'}, status=404)
+
+#     return JsonResponse({'message': 'Invalid request.'}, status=400)
+
+# @login_required
+# def reject_request(request, unique_id, join_request_id):
+#     if request.method == 'POST':
+#         try:
+#             # Fetch the group using the unique_id
+#             study_group = StudyGroup.objects.get(unique_id=unique_id)
+
+#             # Fetch the join request using join_request_id
+#             join_request = JoinRequest.objects.get(join_request_id=join_request_id, group=study_group)
+
+#             # Update join request status to rejected and set processed_by
+#             join_request.status = 'rejected'
+#             join_request.processed_by = request.user
+#             join_request.processed_at = datetime.now()
+#             join_request.save()
+
+#             # Prepare response data
+#             response_data = {
+#                 'message': f'{join_request.user.username}: rejected by {request.user.username}',
+#                 'join_request_id': join_request_id
+#             }
+#             return JsonResponse(response_data, status=200)
+
+#         except StudyGroup.DoesNotExist:
+#             return JsonResponse({'message': 'Group not found.'}, status=404)
+#         except JoinRequest.DoesNotExist:
+#             return JsonResponse({'message': 'Join request not found.'}, status=404)
+
+#     return JsonResponse({'message': 'Invalid request.'}, status=400)
 
 @login_required
 def group_requests(request, unique_id):
@@ -220,16 +321,16 @@ def remove_member(request, unique_id, member_id):
     messages.success(request, f"{member.first_name} {member.last_name} has been removed.")
     return redirect('group_members', unique_id=unique_id)
 
-@login_required
-def group_files(request, unique_id):
-    group = get_object_or_404(StudyGroup, unique_id=unique_id)
+# @login_required
+# def group_files(request, unique_id):
+#     group = get_object_or_404(StudyGroup, unique_id=unique_id)
 
-    context = {
-        'group': group,
-    }
+#     context = {
+#         'group': group,
+#     }
 
-    # Add any necessary logic for managing group files here
-    return render(request, 'group_files.html', context)
+#     # Add any necessary logic for managing group files here
+#     return render(request, 'group_files.html', context)
 
 def request_join(request):
     if request.method == 'POST':

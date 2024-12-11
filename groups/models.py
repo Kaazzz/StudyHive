@@ -63,6 +63,7 @@ class JoinRequest(models.Model):
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')  # Status of the request
     processed_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, related_name='processed_requests')  # Admin who processed the request
     processed_at = models.DateTimeField(null=True, blank=True)
+    date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"Request {self.join_request_id} - {self.user.username} to {self.group.group_name}"
@@ -81,5 +82,14 @@ class DiscussionThread(models.Model):
 #     topic = models.CharField(max_length=100, default="General")
 #     description = models.TextField(null=True)
 #     timestamp = models.DateTimeField(null=True)
+
+class GroupFiles(models.Model):
+    group_id = models.ForeignKey('groups.StudyGroup', on_delete=models.CASCADE)
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+    file = models.FileField(upload_to='group_files/')
+
+    def __str__(self):
+        return f"File: {self.file.name}, Group: {self.group_id.group_name}, Uploaded by: {self.user_id.username}"
 
 

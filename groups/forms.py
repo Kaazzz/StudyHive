@@ -1,5 +1,5 @@
 from django import forms
-from .models import StudyGroup, DiscussionThread
+from .models import StudyGroup, DiscussionThread, GroupFiles
 # from .models import Comment
 
 
@@ -34,3 +34,9 @@ class StudyGroupEditForm(forms.ModelForm):
 #     class Meta:
 #         model = Comment
 #         fields = ['description']
+
+
+class UploadFileForm(forms.ModelForm):
+    class Meta:
+        model = GroupFiles
+        fields = ['file']

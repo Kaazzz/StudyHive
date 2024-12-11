@@ -1,4 +1,3 @@
-{% comment %} Note: Might use a hyperlink for other pages of our web app {% endcomment %}
 {% load static %}
 
 <head>
@@ -7,13 +6,20 @@
         .gray-gradient {
             background: linear-gradient(to left, #BDBDBD, #eaeaea);
         }
+        .active-link {
+            transform: scale(1.1);
+            transition: transform 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+        }
     </style>
 </head>
+
 <div 
     class="gray-gradient sidebar fixed top-2 left-0 h-screen flex flex-col items-center justify-center p-4 shadow-md" 
     style="width: 100px;">
-    
-    <a href="{% url 'home' %}" class="mt-2 text-xs text-center">
+
+    <a href="{% url 'home' %}" class="mt-2 text-xs text-center {% if request.path == '/home/' %}active-link{% endif %}">
         <div id="switchModeMygroups" class="tooltip-container flex cursor-pointer flex-col items-center">
             <img 
                 id="mode-icon-mygroups"
@@ -23,12 +29,12 @@
                 onmouseout="this.style.boxShadow='none';">
         </div>
 
-        <div class="tooltip-container flex cursor-pointer flex-col items-center mb-6">
-            My Groups
+        <div class="tooltip-container flex cursor-pointer flex-col items-center mb-4">
+            Groups
         </div>
     </a>
 
-    <a href="{% url 'calendar_management' %}" class="mt-2 text-xs text-center">
+    <a href="{% url 'calendar_management' %}" class="mt-2 text-xs text-center {% if request.path == '/home/calendar/' %}active-link{% endif %}">
         <div id="switchModeCalendar" class="tooltip-container flex cursor-pointer flex-col items-center">
             <img 
                 id="mode-icon-calendar"
@@ -38,27 +44,12 @@
                 onmouseout="this.style.boxShadow='none';">
         </div>
 
-        <div class="tooltip-container flex cursor-pointer flex-col items-center mb-6">
+        <div class="tooltip-container flex cursor-pointer flex-col items-center mb-4">
             Calendar
         </div>
     </a>
 
-    {% comment %} <a href="{% url 'home' %}" class="mt-2 text-sm text-center">
-        <div id="switchModeAboutus" class="tooltip-container flex cursor-pointer flex-col items-center">
-            <img 
-                id="mode-icon-aboutus"
-                src="{% static 'media/dark-mode-aboutus.svg' %}" 
-                class="w-16 h-16 rounded-full object-cover transition-shadow duration-300" 
-                onmouseover="this.style.boxShadow='0 4px 10px rgba(0, 0, 0, 0.2)';" 
-                onmouseout="this.style.boxShadow='none';">
-        </div>
-
-        <div class="tooltip-container flex cursor-pointer flex-col items-center mb-6">
-            About Us
-        </div>
-    </a> {% endcomment %}
-
-    <a href="{% url 'logout' %}" class="mt-2 text-xs text-center">
+    <a href="{% url 'logout' %}" class="mt-2 text-xs text-center {% if request.path == '/logout/' %}active-link{% endif %}">
         <div id="switchModeLogout" class="tooltip-container flex cursor-pointer flex-col items-center">
             <img 
                 id="mode-icon-logout"
@@ -68,7 +59,7 @@
                 onmouseout="this.style.boxShadow='none';">
         </div>
 
-        <div class="tooltip-container flex cursor-pointer flex-col items-center mb-6">
+        <div class="tooltip-container flex cursor-pointer flex-col items-center mb-4">
             Logout
         </div>
     </a>

@@ -1,0 +1,75 @@
+{% comment %} Note: Might use a hyperlink for other pages of our web app {% endcomment %}
+{% load static %}
+
+<head>
+    <link rel="stylesheet" href="/static/css/general.css?">
+    <style>
+        .gray-gradient {
+            background: linear-gradient(to left, #BDBDBD, #eaeaea);
+        }
+    </style>
+</head>
+<div 
+    class="gray-gradient sidebar fixed top-2 left-0 h-screen flex flex-col items-center justify-center p-4 shadow-md" 
+    style="width: 100px;">
+    
+    <a href="{% url 'home' %}" class="mt-2 text-xs text-center">
+        <div id="switchModeMygroups" class="tooltip-container flex cursor-pointer flex-col items-center">
+            <img 
+                id="mode-icon-mygroups"
+                src="{% static 'media/dark-mode-mygroups.svg' %}" 
+                class="w-16 h-16 rounded-full object-cover transition-shadow duration-300" 
+                onmouseover="this.style.boxShadow='0 4px 10px rgba(0, 0, 0, 0.2)';" 
+                onmouseout="this.style.boxShadow='none';">
+        </div>
+
+        <div class="tooltip-container flex cursor-pointer flex-col items-center mb-6">
+            My Groups
+        </div>
+    </a>
+
+    <a href="{% url 'calendar_management' %}" class="mt-2 text-xs text-center">
+        <div id="switchModeCalendar" class="tooltip-container flex cursor-pointer flex-col items-center">
+            <img 
+                id="mode-icon-calendar"
+                src="{% static 'media/dark-mode-calendar.svg' %}" 
+                class="w-16 h-16 rounded-full object-cover transition-shadow duration-300" 
+                onmouseover="this.style.boxShadow='0 4px 10px rgba(0, 0, 0, 0.2)';" 
+                onmouseout="this.style.boxShadow='none';">
+        </div>
+
+        <div class="tooltip-container flex cursor-pointer flex-col items-center mb-6">
+            Calendar
+        </div>
+    </a>
+
+    {% comment %} <a href="{% url 'home' %}" class="mt-2 text-sm text-center">
+        <div id="switchModeAboutus" class="tooltip-container flex cursor-pointer flex-col items-center">
+            <img 
+                id="mode-icon-aboutus"
+                src="{% static 'media/dark-mode-aboutus.svg' %}" 
+                class="w-16 h-16 rounded-full object-cover transition-shadow duration-300" 
+                onmouseover="this.style.boxShadow='0 4px 10px rgba(0, 0, 0, 0.2)';" 
+                onmouseout="this.style.boxShadow='none';">
+        </div>
+
+        <div class="tooltip-container flex cursor-pointer flex-col items-center mb-6">
+            About Us
+        </div>
+    </a> {% endcomment %}
+
+    <a href="{% url 'logout' %}" class="mt-2 text-xs text-center">
+        <div id="switchModeLogout" class="tooltip-container flex cursor-pointer flex-col items-center">
+            <img 
+                id="mode-icon-logout"
+                src="{% static 'media/dark-mode-logout.svg' %}" 
+                class="w-16 h-16 rounded-full object-cover transition-shadow duration-300" 
+                onmouseover="this.style.boxShadow='0 4px 10px rgba(0, 0, 0, 0.2)';" 
+                onmouseout="this.style.boxShadow='none';">
+        </div>
+
+        <div class="tooltip-container flex cursor-pointer flex-col items-center mb-6">
+            Logout
+        </div>
+    </a>
+</div>
