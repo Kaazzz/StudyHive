@@ -33,6 +33,9 @@ class StudyGroup(models.Model):
     
     def get_dashboard_url(self):
         return reverse('group_dashboard', args=[self.unique_id])
+    
+    def get_posts_url(self):
+        return reverse('group_posts', args=[self.unique_id])
 
     def get_members_url(self):
         return reverse('group_members', args=[self.unique_id])
@@ -75,14 +78,6 @@ class DiscussionThread(models.Model):
     topic = models.CharField(max_length=100, default="General")
     description = models.TextField(null=True)
 
-# class Comment(models.Model):
-#     comment_id = models.AutoField(primary_key=True)
-#     user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comment')
-#     discussion_id = models.ForeignKey(DiscussionThread, on_delete=models.CASCADE, related_name='comment')
-#     topic = models.CharField(max_length=100, default="General")
-#     description = models.TextField(null=True)
-#     timestamp = models.DateTimeField(null=True)
-
 class GroupFiles(models.Model):
     group_id = models.ForeignKey('groups.StudyGroup', on_delete=models.CASCADE)
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -91,5 +86,4 @@ class GroupFiles(models.Model):
 
     def __str__(self):
         return f"File: {self.file.name}, Group: {self.group_id.group_name}, Uploaded by: {self.user_id.username}"
-
 

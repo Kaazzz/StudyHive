@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import StudyGroup, JoinRequest
+from .models import StudyGroup, JoinRequest, GroupFiles
 
 class StudyGroupAdmin(admin.ModelAdmin):
     list_display = ('group_name', 'subject', 'created_at', 'is_private')  # Customize fields to display
@@ -8,3 +8,4 @@ class StudyGroupAdmin(admin.ModelAdmin):
 
 admin.site.register(StudyGroup)
 admin.site.register(JoinRequest)
+admin.site.register(GroupFiles)

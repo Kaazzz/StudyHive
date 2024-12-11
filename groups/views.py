@@ -4,14 +4,175 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
 from .forms import StudyGroupForm, JoinGroupForm, DiscussionThreadForm, StudyGroupEditForm, UploadFileForm
-# from .forms import CommentForm
 from .models import StudyGroup, JoinRequest, DiscussionThread, GroupFiles
+from posts.models import Post, Comment
 from django.db.models import Q, Count, Case, When, Value, IntegerField
 from django.http import JsonResponse, Http404
 from django.shortcuts import render
 from django.views.decorators.http import require_GET
 
 import json
+
+@login_required
+def group_posts(request, unique_id):
+    # Get the group by unique_id
+    group = get_object_or_404(StudyGroup, unique_id=unique_id)
+    
+    # Fetch all posts related to this group
+    posts = Post.objects.filter(group=group).order_by('-created_at')
+
+    # Handle creating a new post
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        description = request.POST.get('description')
+        if title and description:
+            new_post = Post(title=title, description=description, author=request.user, group=group)
+            new_post.save()
+            return redirect('group_posts', unique_id=unique_id)
+
+    # Render the group posts page with the group and its posts
+    return render(request, 'group_posts.html', {'group': group, 'posts': posts})
+
+@login_required
+def post_detail(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    group = post.group  # Get the group for the post
+
+    # Get all comments for this post
+    comments = Comment.objects.filter(post=post).order_by('-created_at')
+
+    # Add a new comment
+    if request.method == 'POST' and 'comment_text' in request.POST:
+        text = request.POST.get('comment_text')
+        if text:
+            new_comment = Comment(text=text, author=request.user, post=post, group=group)
+            new_comment.save()
+            return redirect('post_detail', post_id=post.id)
+
+    # Edit a comment (if the user is the author)
+    if request.method == 'POST' and 'edit_comment_id' in request.POST:
+        comment_id = request.POST.get('edit_comment_id')
+        new_text = request.POST.get('edit_comment_text')
+        if new_text:
+            comment = get_object_or_404(Comment, id=comment_id, author=request.user)
+            comment.text = new_text
+            comment.save()
+            return redirect('post_detail', post_id=post.id)
+
+    # Delete a comment (if the user is the author)
+    if request.method == 'POST' and 'delete_comment_id' in request.POST:
+        comment_id = request.POST.get('delete_comment_id')
+        comment = get_object_or_404(Comment, id=comment_id, author=request.user)
+        comment.delete()
+        return redirect('post_detail', post_id=post.id)
+
+    return render(request, 'post_detail.html', {'post': post, 'group': group, 'comments': comments})
+
+# Post
+@login_required
+def create_post(request, unique_id):
+    group = get_object_or_404(StudyGroup, unique_id=unique_id)
+    
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        description = request.POST.get('description')
+        if title and description:
+            Post.objects.create(
+                title=title,
+                description=description,
+                author=request.user,
+                group_id=group
+            )
+            messages.success(request, "Post created successfully!")
+            return redirect('group_dashboard', unique_id=unique_id)
+        else:
+            messages.error(request, "Title and description are required.")
+    
+    return render(request, 'groups/create_post.html', {'group': group})
+
+
+# To be checked
+@login_required
+def add_comment(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    
+    if request.method == 'POST':
+        text = request.POST.get('text')
+        if text:
+            comment = Comment.objects.create(
+                post=post,
+                text=text,
+                author=request.user,
+                group=post.group  # Assign the same group as the post
+            )
+            # Return the comment data as JSON
+            return JsonResponse({
+                'success': True,
+                'comment': {
+                    'id': comment.id,
+                    'text': comment.text,
+                    'author': comment.author.username,
+                    'created_at': comment.created_at.strftime('%Y-%m-%d %H:%M:%S')
+                }
+            })
+        return JsonResponse({'success': False, 'error': 'Comment text is required.'}, status=400)
+
+    return JsonResponse({'success': False, 'error': 'Invalid request method.'}, status=405)
+
+# Edit
+def edit_comment(request, comment_id):
+    if request.method == "POST":
+        comment = get_object_or_404(Comment, id=comment_id)
+
+        # Ensure the user is the comment author
+        if comment.author == request.user:
+            new_text = request.POST.get('text', '').strip()
+            if new_text:
+                comment.text = new_text
+                comment.save()
+                return JsonResponse({"success": True, "comment": {"text": comment.text}})
+            else:
+                return JsonResponse({"success": False, "error": "Comment cannot be empty."})
+        return JsonResponse({"success": False, "error": "You are not the author of this comment."})
+    return JsonResponse({"success": False, "error": "Invalid request method."})
+
+@login_required
+def edit_post(request, post_id):
+    post = get_object_or_404(Post, id=post_id, author=request.user)
+    
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        description = request.POST.get('description')
+        if title and description:
+            post.title = title
+            post.description = description
+            post.save()
+            messages.success(request, "Post updated successfully!")
+        else:
+            messages.error(request, "Title and description cannot be empty.")
+        return redirect('group_dashboard', unique_id=post.group_id.unique_id)
+    
+    return render(request, 'groups/edit_post.html', {'post': post})
+
+# Delete
+def delete_comment(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id)
+
+    # Ensure that the user is the author of the comment or an admin
+    if comment.author == request.user or request.user.is_staff:
+        comment.delete()
+        return JsonResponse({'success': True})
+    else:
+        return JsonResponse({'error': 'You are not authorized to delete this comment.'}, status=403)
+
+@login_required
+def delete_post(request, post_id):
+    post = get_object_or_404(Post, id=post_id, author=request.user)
+    unique_id = post.group_id.unique_id
+    post.delete()
+    messages.success(request, "Post deleted successfully!")
+    return redirect('group_dashboard', unique_id=unique_id)
+
 
 def group_files_view(request, group_id):
     # Retrieve the group using unique_id, as you're passing that in the URL
@@ -51,11 +212,12 @@ def delete_file(request, group_id, file_id):
     return JsonResponse({'status': 'error'}, status=400)
 
 # previous version
-@login_required
 def group_dashboard(request, unique_id):
+    # Get the group object or return a 404 if not found
     group = get_object_or_404(StudyGroup, unique_id=unique_id)
 
-    threads = DiscussionThread.objects.filter(group_id=group)
+    # Retrieve all posts for the group (using filter to allow multiple posts)
+    posts = Post.objects.filter(group=group)
 
     if request.method == 'POST':
         # Handle the request to join the group
@@ -68,8 +230,8 @@ def group_dashboard(request, unique_id):
         # After joining, redirect back to the same group dashboard
         return redirect('group_dashboard', unique_id=unique_id)
 
-    # If it's a GET request, just render the dashboard
-    return render(request, 'group_dashboard.html', {'group': group, 'threads': threads})
+    # If it's a GET request, just render the dashboard with posts
+    return render(request, 'group_dashboard.html', {'group': group, 'posts': posts})
 
 def edit_group_details(request, unique_id):
     group = get_object_or_404(StudyGroup, unique_id=unique_id)  # Get the group by unique_id
@@ -109,21 +271,6 @@ def create_discussion_thread(request, unique_id):
     else:
         form = DiscussionThreadForm()
     return render(request, 'create_thread.html', {'form': form, 'group': group})
-
-# @login_required
-# def add_comment(request, thread_id):
-#     thread = get_object_or_404(DiscussionThreadForm, id=thread_id)
-#     if request.method == 'POST':
-#         form = CommentForm(request.POST)
-#         if form.is_valid():
-#             comment = form.save(commit=False)
-#             comment.user_id = request.user
-#             comment.discussion_id = thread
-#             comment.save()
-#             return redirect('group_dashboard', group_id=thread.group_id.id)
-#     else:
-#         form = CommentForm()
-#     return render(request, 'add_comment.html', {'form': form, 'thread': thread})
 
 @login_required
 def profile_view(request):

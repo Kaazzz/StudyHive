@@ -1,0 +1,64 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ group.group_name }} - Posts</title>
+    <link rel="stylesheet" href="{% static 'css/output.css' %}">
+    <link rel="stylesheet" href="/static/css/general.css?">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="m-0 p-0 bg-[#f7f7f7]" style="font-family: 'Poppins', sans-serif; transition: background-color 0.5s ease, color 0.5s ease;">
+    {% include 'header.html' %}
+    {% include 'sidebar.html' %}
+
+    <main style="margin-left: 220px; padding: 100px 30px 20px;">
+        {% include 'group_navbar.html' %}
+        
+        <div class="group-dashboard-container bg-gray-100 dark:bg-gray-900 p-6 rounded-lg shadow-md"
+        style="margin-left: 180px; margin-right:180px;">
+
+            <!-- Create Post Form -->
+            <div class="create-post-form p-6 rounded-md shadow-md self-center"
+                style="margin-right: 100px; margin-left: 100px; background: linear-gradient(to right, rgba(255, 224, 60, 0.8), rgba(233, 176, 51, 0.6));">
+                <h3 class="text-xl font-bold mb-4 text-gray-800 dark:text-white">Create a Post</h3>
+                <form method="POST">
+                    {% csrf_token %}
+                    <label for="title" class="block text-lg font-medium mb-2">Title:</label>
+                    <input type="text" id="title" name="title" required
+                           class="w-full px-4 py-2 border rounded-md mb-4"
+                           style="background-color: #ececec;">
+
+                    <label for="description" class="block text-lg font-medium mb-2">Description:</label>
+                    <textarea id="description" name="description" required
+                              class="w-full px-4 py-2 border rounded-md mb-4"
+                              style="background-color: #ececec; resize: none"></textarea>
+
+                    <button type="submit" 
+                            class="w-full py-3 rounded-md yellow-gradient mb-4"
+                            onmouseover="this.style.background = 'linear-gradient(to left, #1A1A1B, #353437)'; this.style.color='white';"
+                            onmouseout="this.style.background ='linear-gradient(to right, #FFE03C, #E9B033)'; this.style.color='#1A1A1B';">
+                        Create Post
+                    </button>
+                </form>
+            </div>
+
+            <!-- Display Posts -->
+            <h2 class="text-2xl font-bold mb-6">Posts in {{ group.group_name }}</h2>
+            <div class="post-list">
+                {% for post in posts %}
+                    <div class="post-card bg-white p-4 rounded-lg shadow-md mb-4">
+                        <h3 class="font-bold text-xl">{{ post.title }}</h3>
+                        <p class="mb-2">{{ post.description }}</p>
+                        <p class="text-sm text-gray-500">By: {{ post.author.username }} | {{ post.created_at }}</p>
+                        <a href="{% url 'post_detail' post_id=post.id %}"
+                           class="text-blue-600 hover:text-blue-800">View Post</a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </main>
+</body>
+</html>

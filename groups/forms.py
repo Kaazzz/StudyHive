@@ -1,7 +1,6 @@
 from django import forms
 from .models import StudyGroup, DiscussionThread, GroupFiles
-# from .models import Comment
-
+from posts.models import Post, Comment
 
 class StudyGroupForm(forms.ModelForm):
     class Meta:
@@ -29,12 +28,6 @@ class StudyGroupEditForm(forms.ModelForm):
         widgets = {
             'description': forms.Textarea(attrs={'rows': 4, 'cols': 15}),
         }
-
-# class CommentForm(forms.ModelForm):
-#     class Meta:
-#         model = Comment
-#         fields = ['description']
-
 
 class UploadFileForm(forms.ModelForm):
     class Meta:

@@ -93,12 +93,24 @@
 <div class="navbar-container">
     <nav class="navbar">
         <a href="{% url 'group_dashboard' group.unique_id %}" 
-           class="navbar-link {% if request.path == group.get_dashboard_url %}active{% endif %}">Dashboard</a>
+           class="navbar-link {% if request.path == group.get_dashboard_url %}active{% endif %}">
+           Dashboard
+        </a>
+        <a href="{% url 'group_posts' group.unique_id %}"
+            class="navbar-link {% if request.path == group.get_posts_url %}active{% endif %}">
+            Posts
+            </a>
         <a href="{% url 'group_members' group.unique_id %}" 
-           class="navbar-link {% if request.path == group.get_members_url %}active{% endif %}">Members</a>
+           class="navbar-link {% if request.path == group.get_members_url %}active{% endif %}">
+           Members
+        </a>
         <a href="{% url 'group_requests' group.unique_id %}" 
-           class="navbar-link {% if request.path == group.get_requests_url %}active{% endif %}">Requests</a>
+           class="navbar-link {% if request.path == group.get_requests_url %}active{% endif %}">
+           Requests
+        </a>
         <a href="{% url 'group_files' group.unique_id %}" 
-           class="navbar-link {% if request.path == group.get_files_url %}active{% endif %}">Files</a>
+           class="navbar-link {% if request.path == group.get_files_url %}active{% endif %}">
+           Files
+        </a>
     </nav>
 </div>

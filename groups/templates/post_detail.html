@@ -1,0 +1,68 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ post.title }} - Post Details</title>
+    <link rel="stylesheet" href="{% static 'css/output.css' %}">
+    <link rel="stylesheet" href="{% static 'css/general.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="m-0 p-0 bg-[#f7f7f7]" style="font-family: 'Poppins', sans-serif;">
+    {% include 'header.html' %}
+    {% include 'sidebar.html' %}
+    
+    <main style="margin-left: 220px; padding: 100px 30px 20px;">
+        {% include 'group_navbar.html' %}
+
+        <div class="post-details-container bg-gray-100 dark:bg-gray-900 p-6 rounded-lg shadow-md"
+            style="margin-left: 180px; margin-right: 180px; background: linear-gradient(to right, rgba(255, 224, 60, 0.8), rgba(233, 176, 51, 0.6));">
+            
+            <a href="{% if group.unique_id %}{% url 'group_posts' group.unique_id %}{% else %}#{% endif %}" class="text-blue-500 hover:text-blue-700">Back to Group Posts</a>
+            
+            <h1 class="text-3xl font-bold mt-4">{{ post.title }}</h1>
+            <p class="text-gray-700 dark:text-white mt-2">{{ post.description }}</p>
+            <p class="text-gray-600 dark:text-gray-300 mt-4">Posted by: {{ post.author }} on {{ post.created_at }}</p>
+            
+            <div class="comment-section mt-6">
+                <h2 class="text-xl font-semibold mb-4">Comments</h2>
+                
+                <form method="POST" class="bg-white p-4 rounded-md shadow-md mb-6">
+                    {% csrf_token %}
+                    <textarea name="comment_text" placeholder="Add a comment" required class="w-full p-3 border rounded-md" rows="3"></textarea>
+                    <button type="submit" class="w-full py-2 mt-4 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 transition">Post Comment</button>
+                </form>
+
+                <ul>
+                    {% for comment in comments %}
+                        <li class="bg-white p-4 mb-4 rounded-md shadow-sm">
+                            <p class="text-lg">{{ comment.author }}: <span class="text-gray-700 dark:text-white">{{ comment.text }}</span></p>
+                            <p class="text-sm text-gray-500">{{ comment.created_at }}</p>
+
+                            {% if comment.author == user %}
+                                <!-- Edit Comment Form -->
+                                <form method="POST" style="display:inline;">
+                                    {% csrf_token %}
+                                    <textarea name="edit_comment_text" placeholder="Edit comment" required class="w-full p-3 border rounded-md" rows="3">{{ comment.text }}</textarea>
+                                    <input type="hidden" name="edit_comment_id" value="{{ comment.id }}">
+                                    <button type="submit" class="mt-2 bg-yellow-500 text-white rounded-md py-2 px-4 hover:bg-yellow-600 transition">Edit Comment</button>
+                                </form>
+
+                                <!-- Delete Comment Form -->
+                                <form method="POST" style="display:inline;" class="ml-2">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="delete_comment_id" value="{{ comment.id }}">
+                                    <button type="submit" class="mt-2 bg-red-500 text-white rounded-md py-2 px-4 hover:bg-red-600 transition">Delete Comment</button>
+                                </form>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

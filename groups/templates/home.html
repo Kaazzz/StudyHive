@@ -118,23 +118,6 @@
         </section>
 
     </main>
-
-    <!-- Modal Structure -->
-    {% comment %} <div id="groupModal" class="modal" style="display: none;">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Group Name: <span id="modalGroupName"></span></h2>
-            <p>Description: <span id="modalDescription"></span></p>
-            <p>Subject: <span id="modalSubject"></span></p>
-            <p>Creator: <span id="modalCreator"></span></p>
-            <p>Members: <span id="modalMembers"></span></p>
-            <p>Private: <span id="modalPrivate"></span></p>
-            <p>Code: <span id="modalCode"></span></p>
-            <button id="enterGroupButton" onclick="enterGroup()">Enter Group</button>
-        </div>
-    </div> {% endcomment %}
-
-
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -188,5 +171,3 @@
     </script>
 </body>
 </html>
-{% comment %} console.log("Group Code:", groupCode);
-window.location.href = '/groups/' + encodeURIComponent(groupCode) + '/'; {% endcomment %}

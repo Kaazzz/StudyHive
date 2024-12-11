@@ -8,7 +8,6 @@ from datetime import timedelta
 
 # Create your views here.
 
-
 @login_required
 def chat(request):
     chats = Chat_Room.objects.all()

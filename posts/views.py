@@ -5,11 +5,9 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 # Create your views here.
 
-
 def Posts(request):
     posts = Post.objects.all()
     return render(request, 'post.html', {'posts': posts})
-
 
 def Create_Post(request):
     if request.method == 'POST':
