@@ -1,6 +1,6 @@
 {% load static %}
 
-<div id="search-container" class="flex items-center rounded-md px-2" style="background-color: #ececec;">
+<div id="search-container" class="flex items-center rounded-md px-2 dark: text-black" style="background-color: #ececec;">
     <input 
         type="text" 
         id="searchInput" 
@@ -10,7 +10,7 @@
     />
     <select 
         id="filterSelect"
-        class="px-3 py-1 text-sm border border-gray-300 rounded-md black-gradient text-white ml-4 focus:outline-none focus:ring-0 focus:border-none"
+        class="px-3 py-1 text-sm border border-gray-300 rounded-md text-white ml-4 focus:outline-none focus:ring-0 focus:border-none"
         style="outline: none; box-shadow: none; background-color: #010600;" 
     >
         <option value="all">All</option>
@@ -21,7 +21,7 @@
 </div>
 
 <button 
-    class="px-3 py-1 ml-2 text-base black-gradient text-white border-none rounded-md cursor-pointer"
+    class="px-3 py-1 ml-2 text-base text-white border-none rounded-md cursor-pointer"
     id="searchButton">
     Search
 </button>

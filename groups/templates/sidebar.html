@@ -1,66 +1,43 @@
 {% load static %}
 
-<head>
-    <link rel="stylesheet" href="/static/css/general.css?">
-    <style>
-        .gray-gradient {
-            background: linear-gradient(to left, #BDBDBD, #eaeaea);
-        }
-        .active-link {
-            transform: scale(1.1);
-            transition: transform 0.3s ease;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            border-radius: 12px;
-        }
-    </style>
-</head>
-
 <div 
-    class="gray-gradient sidebar fixed top-2 left-0 h-screen flex flex-col items-center justify-center p-4 shadow-md" 
-    style="width: 100px;">
+    class="gray-gradient sidebar fixed top-2 left-0 h-screen flex flex-col items-center justify-center p-4 shadow-lg sidebar light-shadow" 
+    id="sidebar"
+    style="width: 100px; box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);">
 
-    <a href="{% url 'home' %}" class="mt-2 text-xs text-center {% if request.path == '/home/' %}active-link{% endif %}">
-        <div id="switchModeMygroups" class="tooltip-container flex cursor-pointer flex-col items-center">
+    <a href="{% url 'home' %}" class="mt-6 text-xs text-center {% if active_page == 'home' %}active-link{% endif %}">
+        <div class="tooltip-container flex cursor-pointer flex-col items-center">
             <img 
+                class="w-16 h-16 rounded-full object-cover transition-shadow duration-300"
                 id="mode-icon-mygroups"
                 src="{% static 'media/dark-mode-mygroups.svg' %}" 
-                class="w-16 h-16 rounded-full object-cover transition-shadow duration-300" 
-                onmouseover="this.style.boxShadow='0 4px 10px rgba(0, 0, 0, 0.2)';" 
-                onmouseout="this.style.boxShadow='none';">
-        </div>
-
-        <div class="tooltip-container flex cursor-pointer flex-col items-center mb-4">
-            Groups
+                loading="lazy" 
+                alt="My Groups">
+            <span class="tooltip-text">Groups</span>
         </div>
     </a>
 
-    <a href="{% url 'calendar_management' %}" class="mt-2 text-xs text-center {% if request.path == '/home/calendar/' %}active-link{% endif %}">
-        <div id="switchModeCalendar" class="tooltip-container flex cursor-pointer flex-col items-center">
+    <a href="{% url 'calendar_management' %}" class="mt-6 text-xs text-center {% if active_page == 'calendar' %}active-link{% endif %}">
+        <div class="tooltip-container flex cursor-pointer flex-col items-center">
             <img 
+                class="w-16 h-16 rounded-full object-cover transition-shadow duration-300"
                 id="mode-icon-calendar"
                 src="{% static 'media/dark-mode-calendar.svg' %}" 
-                class="w-16 h-16 rounded-full object-cover transition-shadow duration-300" 
-                onmouseover="this.style.boxShadow='0 4px 10px rgba(0, 0, 0, 0.2)';" 
-                onmouseout="this.style.boxShadow='none';">
-        </div>
-
-        <div class="tooltip-container flex cursor-pointer flex-col items-center mb-4">
-            Calendar
+                loading="lazy" 
+                alt="Calendar">
+            <span class="tooltip-text">Calendar</span>
         </div>
     </a>
 
-    <a href="{% url 'logout' %}" class="mt-2 text-xs text-center {% if request.path == '/logout/' %}active-link{% endif %}">
-        <div id="switchModeLogout" class="tooltip-container flex cursor-pointer flex-col items-center">
+    <a href="{% url 'logout' %}" class="mt-6 text-xs text-center {% if active_page == 'logout' %}active-link{% endif %}">
+        <div class="tooltip-container flex cursor-pointer flex-col items-center">
             <img 
+                class="w-16 h-16 rounded-full object-cover transition-shadow duration-300"
                 id="mode-icon-logout"
                 src="{% static 'media/dark-mode-logout.svg' %}" 
-                class="w-16 h-16 rounded-full object-cover transition-shadow duration-300" 
-                onmouseover="this.style.boxShadow='0 4px 10px rgba(0, 0, 0, 0.2)';" 
-                onmouseout="this.style.boxShadow='none';">
-        </div>
-
-        <div class="tooltip-container flex cursor-pointer flex-col items-center mb-4">
-            Logout
+                loading="lazy" 
+                alt="Logout">
+            <span class="tooltip-text">Logout</span>
         </div>
     </a>
 </div>

@@ -6,14 +6,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StudyHive - Study Groups</title>
     <link rel="stylesheet" href="{% static 'css/output.css' %}">
-    <link rel="stylesheet" href="/static/css/general.css?">
+    <link rel="stylesheet" href="/static/css/general.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">    
+    <style>
+        :root {
+            --bg-color-light: #f7f7f7;
+            --text-color-light: #1A1A1B;
+            --bg-color-dark: #1A1A1B;
+            --text-color-dark: #f7f7f7;
+        }
+
+        body.light {
+            background-color: var(--bg-color-light);
+            color: var(--text-color-light);
+        }
+
+        body.dark {
+            background-color: var(--bg-color-dark);
+            color: var(--text-color-dark);
+        }
+
+        .theme-toggle-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 15px;
+            background: linear-gradient(to right, #FFE03C, #E9B033);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: var(--text-color-light);
+            font-weight: 600;
+        }
+
+        .theme-toggle-button:hover {
+            background: linear-gradient(to left, #353437, #1A1A1B);
+            color: white;
+        }
+    </style>
 </head>
 
-<body class = "m-0 p-0 bg-[#f7f7f7]" style="font-family: 'Poppins', sans-serif; transition: background-color 0.5s ease, color 0.5s ease;">
+<body class="light" style="font-family: 'Poppins', sans-serif; transition: background-color 0.5s ease, color 0.5s ease;">
     {% include 'header.html' %}
 
     {% include 'sidebar.html' %}
+
+    <!-- Theme Toggle Button -->
+    <button id="themeToggleButton" class="theme-toggle-button">Switch to Dark Theme</button>
 
     <main style="margin-left: 220px; padding: 100px 30px 20px;">
         <div class="join-or-create-container flex flex-col items-end relative space-y-2" style="position: relative; width: 240px; margin-left: auto;">
@@ -21,48 +60,43 @@
             <button 
                 id="dropDownButton" 
                 class="rounded px-3 py-2 shadow yellow-gradient" 
-                style="width: 100%; color: #1A1A1B; text-align: center;"
+                style="width: 100%; color: var(--text-color-light); text-align: center;"
                 onclick="toggleDropdown()"
                 onmouseover="this.style.background = 'linear-gradient(to left, #1A1A1B, #353437)'; this.style.color='white';" 
-                onmouseout="this.style.background ='linear-gradient(to right, #FFE03C, #E9B033)'; this.style.color='#1A1A1B';">
+                onmouseout="this.style.background ='linear-gradient(to right, #FFE03C, #E9B033)'; this.style.color='var(--text-color-light)';">
                 Join or create study group
             </button>
             <!-- Dropdown Menu -->
             <div 
                 id="dropdownMenu" 
                 class="hidden absolute top-full shadow z-10 yellow-gradient"
-                style="width: inherit; color: #1A1A1B; display: none; right: 0; border-radius: 5px;">
+                style="width: inherit; color: var(--text-color-light); display: none; right: 0; border-radius: 5px;">
                 <button 
                     class="text-center transition rounded yellow-gradient" 
                     onclick="window.location.href='{% url 'create_group' %}'"
-                    style="width: 100%; padding: 8px; border: none; text-align: center; right: 0; color: #1A1A1B;"
+                    style="width: 100%; padding: 8px; border: none; text-align: center; right: 0; color: var(--text-color-light);"
                     onmouseover="this.style.background = 'linear-gradient(to left, #1A1A1B, #353437)'; this.style.color='white';" 
-                    onmouseout="this.style.background ='linear-gradient(to right, #FFE03C, #E9B033)'; this.style.color='#1A1A1B';">
+                    onmouseout="this.style.background ='linear-gradient(to right, #FFE03C, #E9B033)'; this.style.color='var(--text-color-light)';">
                     Create study group
                 </button>
                 <button 
                     class="text-center transition rounded yellow-gradient" 
                     onclick="window.location.href='{% url 'join_group' %}'"
-                    style="width: 100%; padding: 8px; border: none; text-align: center; right: 0; color: #1A1A1B;"
+                    style="width: 100%; padding: 8px; border: none; text-align: center; right: 0; color: var(--text-color-light);"
                     onmouseover="this.style.background = 'linear-gradient(to left, #1A1A1B, #353437)'; this.style.color='white';" 
-                    onmouseout="this.style.background ='linear-gradient(to right, #FFE03C, #E9B033)'; this.style.color='#1A1A1B';">
+                    onmouseout="this.style.background ='linear-gradient(to right, #FFE03C, #E9B033)'; this.style.color='var(--text-color-light)';">
                     Join study group
                 </button>
             </div>
         </div>
 
-        <!-- Results Section -->
-        {% comment %} <section class="group-grid mt-5">
-            <div id="resultsContainer" class="results-container"></div>
-        </section> {% endcomment %}
-
         <h2 class="text-2xl font-semibold mb-4">Study Groups</h2>
 
-        <section class="group-grid mb-8">
+        <section class="group-grid mb-8 ">
             <h3 class="text-xl font-medium mb-4">Your Created Groups</h3>
             <div class="group-cards created-groups">
                 {% for group in created_groups %}
-                    <div class="group-card bg-gray-100" 
+                    <div class="group-card bg-gray-100 text-black" 
                         data-id="{{ group.unique_id }}" 
                         data-name="{{ group.group_name }}" 
                         data-description="{{ group.description }}" 
@@ -78,7 +112,7 @@
                         <button class="enter-group-button border-none px-3 py-1 cursor-pointer rounded-md flex justify-center items-center mx-auto"
                         onclick="redirectToGroupDashboard('{{ group.unique_id }}')"
                         onmouseover="this.style.background = 'linear-gradient(to left, #1A1A1B, #353437)'; this.style.color='white';" 
-                        onmouseout="this.style.background ='none'; this.style.color='#1A1A1B';">
+                        onmouseout="this.style.background ='none'; this.style.color='var(--text-color-light)';">
                         Enter</button>
                     </div>
                 {% empty %}
@@ -91,7 +125,7 @@
             <h3 class="text-xl font-medium mb-4">Your Joined Groups</h3>
             <div class="group-cards joined-groups">
                 {% for group in joined_groups %}
-                    <div class="group-card bg-gray-100" 
+                    <div class="group-card bg-gray-100 text-black" 
                         data-id="{{ group.unique_id }}" 
                         data-name="{{ group.group_name }}" 
                         data-description="{{ group.description }}" 
@@ -108,7 +142,7 @@
                         <button class="enter-group-button border-none px-3 py-1 cursor-pointer rounded-md flex justify-center items-center mx-auto"
                         onclick="redirectToGroupDashboard('{{ group.unique_id }}')"
                         onmouseover="this.style.background = 'linear-gradient(to left, #1A1A1B, #353437)'; this.style.color='white';" 
-                        onmouseout="this.style.background ='none'; this.style.color='#1A1A1B';">
+                        onmouseout="this.style.background ='none'; this.style.color='var(--text-color-light)';">
                         Enter</button>
                     </div>
                 {% empty %}
@@ -118,54 +152,26 @@
         </section>
 
     </main>
-    
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Para sa dropdown sa join or create
-            const joinGroupButton = document.getElementById('dropDownButton');
-            const dropdownMenu = document.getElementById('dropdownMenu');
+            // Theme Toggle
+            const themeToggleButton = document.getElementById('themeToggleButton');
+            const body = document.body;
 
-            joinGroupButton.addEventListener('click', (event) => {
-                console.log("Join Group Button clicked"); // Log when the button is clicked
-                dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
-                event.stopPropagation();
-            });
-
-            // Hide dropdown when clicking outside of the dropdown or button
-            document.addEventListener('click', (event) => {
-                if (!dropdownMenu.contains(event.target) && !joinGroupButton.contains(event.target)) {
-                    console.log("Click detected outside of dropdown, hiding dropdown"); // Log when clicking outside
-                    dropdownMenu.style.display = 'none';
+            themeToggleButton.addEventListener('click', function() {
+                if (body.classList.contains('light')) {
+                    body.classList.replace('light', 'dark');
+                    this.textContent = 'Switch to Light Theme';
+                } else {
+                    body.classList.replace('dark', 'light');
+                    this.textContent = 'Switch to Dark Theme';
                 }
             });
-
-            window.addEventListener('keydown', function(event) {
-                if (event.key === 'Escape' && modal.style.display === 'block') {
-                    modal.style.display = "none"; // Hide the modal
-                }
-            });
-
-            // Modal functionality for group cards
-            const modal = document.getElementById("groupModal");
-            const closeModal = document.getElementsByClassName("close")[0];
-
-            function openModal(groupData) {
-                document.getElementById("modalGroupName").textContent = groupData.name;
-                document.getElementById("modalDescription").textContent = groupData.description;
-                document.getElementById("modalSubject").textContent = groupData.subject;
-                document.getElementById("modalCreator").textContent = groupData.creator;
-                document.getElementById("modalMembers").textContent = groupData.members;
-                document.getElementById("modalPrivate").textContent = groupData.private;
-                document.getElementById("modalCode").textContent = groupData.code;
-                modal.style.display = "block"; // Show the modal
-            }
         });
 
         function redirectToGroupDashboard(groupCode) {
-            // Encode the groupCode to ensure it is URL-safe
             const encodedGroupCode = encodeURIComponent(groupCode);
-            
-            // Generate the URL and redirect
             window.location.href = `{% url 'group_dashboard' 'GROUP_CODE' %}`.replace('GROUP_CODE', encodedGroupCode);
         }
     </script>
