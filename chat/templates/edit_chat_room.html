@@ -46,7 +46,7 @@
         <textarea name="description" id="id_description">{{ chat.description }}</textarea>
       </div>
       <div class="flex justify-end mx-4">
-        <a href="{% url 'post' %}" class="bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-2 px-4 rounded mx-4">Cancel</a>
+        <a href="javascript:history.back()" class="bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-2 px-4 rounded mx-4">Cancel</a>
         <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4">Update Post</button>
       </div>
     </form>
